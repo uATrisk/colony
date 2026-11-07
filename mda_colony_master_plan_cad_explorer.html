@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-  <title>SITE PLAN — 12.0m Main Boulevard Vastu Master Plan (164 Plots | 0% South-Facing | 13.00% Parks)</title>
+  <title>SITE PLAN — 12.0m Main Boulevard Vastu Master Plan (0% South-Facing | 13.00% Parks)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,7 @@
       border-radius: 3px;
     }
 
-    /* CAD Blueprint Grid Styles */
+    /* CAD Viewport Styles */
     .cad-viewport-dark {
       background-color: #060b14;
       background-image:
@@ -74,12 +74,11 @@
     }
     .cad-interactive:hover {
       filter: brightness(1.25);
-      stroke-width: 2.2px !important;
     }
     .cad-selected {
       stroke: #facc15 !important;
       stroke-width: 3.2px !important;
-      filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.85)) !important;
+      filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.9)) !important;
     }
     .plot-dimmed {
       opacity: 0.18 !important;
@@ -115,11 +114,11 @@
             12M MAIN BOULEVARD VASTU PLAN
           </h1>
           <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-            0% SOUTH • 12M ROAD • 164 PLOTS
+            0% SOUTH • 12M ROAD • 162 PLOTS
           </span>
         </div>
         <p class="text-[10px] sm:text-[11px] text-slate-400 font-mono truncate hidden xs:block">
-          29,274.03 m² | 38.45 Bighas | 35,011.4 Gaj • 12m Main Spine from East Gate to West Wing
+          29,274.03 m² | 38.45 Bighas | 35,011.4 Gaj • 12m Main Spine from East Gate to West Avenue-1
         </p>
       </div>
     </div>
@@ -166,13 +165,13 @@
     </div>
   </header>
 
-  <!-- SECONDARY CONTROL BAR: FILTER CHIPS & LAYERS -->
+  <!-- SECONDARY CONTROL BAR: FILTER CHIPS & SEARCH -->
   <div class="bg-slate-900/90 border-b border-slate-800 px-3 sm:px-4 py-2 flex items-center justify-between gap-2 overflow-x-auto text-xs shrink-0 z-20">
     <div class="flex items-center gap-1.5 shrink-0">
-      <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] transition">All (164)</button>
-      <button data-filter="FACE-E" class="filter-btn px-2.5 py-1 rounded-md text-emerald-300 hover:bg-slate-800 font-semibold text-[11px] transition">→ East (82)</button>
-      <button data-filter="FACE-W" class="filter-btn px-2.5 py-1 rounded-md text-indigo-300 hover:bg-slate-800 font-semibold text-[11px] transition">← West (64)</button>
-      <button data-filter="FACE-N" class="filter-btn px-2.5 py-1 rounded-md text-cyan-300 hover:bg-slate-800 font-semibold text-[11px] transition">↑ North (18)</button>
+      <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] transition">All Plots (162)</button>
+      <button data-filter="FACE-E" class="filter-btn px-2.5 py-1 rounded-md text-emerald-300 hover:bg-slate-800 font-semibold text-[11px] transition">→ East (78)</button>
+      <button data-filter="FACE-W" class="filter-btn px-2.5 py-1 rounded-md text-indigo-300 hover:bg-slate-800 font-semibold text-[11px] transition">← West (63)</button>
+      <button data-filter="FACE-N" class="filter-btn px-2.5 py-1 rounded-md text-cyan-300 hover:bg-slate-800 font-semibold text-[11px] transition">↑ North (21)</button>
       <span class="px-2 py-1 rounded-md bg-emerald-950/70 text-emerald-400 border border-emerald-600/40 font-mono font-bold text-[10px]">
         ↓ South: 0 (0%)
       </span>
@@ -200,7 +199,7 @@
 
     <!-- Search Plot -->
     <div class="relative flex items-center shrink-0">
-      <input id="plotSearchInput" type="number" min="1" max="164" placeholder="Plot # (1-164)" class="w-28 sm:w-32 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
+      <input id="plotSearchInput" type="number" min="1" max="162" placeholder="Plot # (1-162)" class="w-28 sm:w-32 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
       <button id="btnPlotSearch" class="absolute right-1 text-slate-400 hover:text-sky-400 p-0.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -223,12 +222,11 @@
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
               12m Spine Vastu Master Plan
             </span>
-            <span class="text-[10px] font-mono text-emerald-300 font-bold">164 Plots</span>
+            <span class="text-[10px] font-mono text-emerald-300 font-bold">162 Plots</span>
           </div>
-          <!-- Stacked Progress Bar -->
           <div class="w-full h-2 rounded-full overflow-hidden flex bg-slate-800 mb-2">
             <div style="width: 67.48%" class="bg-sky-500" title="Plotted Area: 67.48%"></div>
-            <div style="width: 17.50%" class="bg-indigo-500" title="Roads (12m Spine + 9m Comb): 17.50%"></div>
+            <div style="width: 17.50%" class="bg-indigo-500" title="Roads: 17.50%"></div>
             <div style="width: 13.00%" class="bg-emerald-500" title="Parks: 13.00%"></div>
             <div style="width: 2.02%" class="bg-amber-500" title="Shops & Utilities: 2.02%"></div>
           </div>
@@ -387,45 +385,45 @@
 
               <!-- 2. ROADS LAYER: 12.0M MAIN ROAD (FROM START TO END) + 9.0M COMB AVENUES -->
               <g id="svgLayerRoads">
-                <!-- 12.0M (40'-0") MAIN SPINE ROAD: RUNS FROM EAST GATE (x=935) ALL THE WAY TILL 1E-18E BELT / WEST AVE-1 (x=47) -->
+                <!-- 12.0M (40'-0") MAIN SPINE ROAD: RUNS FROM EAST GATE (x=935) ALL THE WAY TILL WEST AVE-1 (x=47) -->
                 <!-- y = 258 to 298 (Height = 40.0 ft = 12.0m) -->
-                <rect x="47" y="258" width="888" height="40" fill="#0f172a" fill-opacity="0.75" />
+                <rect data-type="ROAD" data-id="ROAD-MAIN" class="cad-interactive" x="47" y="258" width="888" height="40" fill="#0f172a" fill-opacity="0.8" />
 
                 <!-- East Entrance Trumpet Flare -->
-                <rect x="876" y="253" width="59" height="50" fill="#0f172a" fill-opacity="0.8" />
+                <rect data-type="ROAD" data-id="ROAD-GATE-FLARE" class="cad-interactive" x="876" y="253" width="59" height="50" fill="#0f172a" fill-opacity="0.85" />
 
                 <!-- Landscaped Boulevard Central Median Divider -->
-                <rect x="55" y="277" width="865" height="2.5" rx="1.2" fill="#10b981" stroke="#34d399" stroke-width="0.6" />
+                <rect x="55" y="277" width="865" height="2.5" rx="1.2" fill="#10b981" stroke="#34d399" stroke-width="0.6" pointer-events="none" />
 
                 <!-- 9.0M (30'-0") INTERNAL COMB AVENUES -->
-                <!-- West Avenue-1 (x = 47 to 77, y = 8 to 368) directly serving Plots 1E–18E and 19W–34W -->
-                <rect x="47" y="8" width="30" height="360" fill="#0f172a" fill-opacity="0.55" />
+                <!-- West Avenue-1 (x = 47 to 77, y = 8 to 368) directly serving Plots 1–15 and 16–30 -->
+                <rect data-type="ROAD" data-id="ROAD-WEST-AVE-1" class="cad-interactive" x="47" y="8" width="30" height="360" fill="#0f172a" fill-opacity="0.65" />
 
-                <!-- West Avenue-2 (x = 165 to 195, y = 8 to 368) directly serving Plots 35E–50E and Park-1 -->
-                <rect x="165" y="8" width="30" height="360" fill="#0f172a" fill-opacity="0.55" />
+                <!-- West Avenue-2 (x = 165 to 195, y = 8 to 368) directly serving Plots 31–45 and Park-1 -->
+                <rect data-type="ROAD" data-id="ROAD-WEST-AVE-2" class="cad-interactive" x="165" y="8" width="30" height="360" fill="#0f172a" fill-opacity="0.65" />
 
-                <!-- West South Connector (x = 47 to 195, y = 338 to 368) serving North-Facing Plots 51–56 -->
-                <rect x="47" y="338" width="148" height="30" fill="#0f172a" fill-opacity="0.55" />
+                <!-- West South Connector (x = 47 to 195, y = 338 to 368) serving North-Facing Plots 46–54 -->
+                <rect data-type="ROAD" data-id="ROAD-WEST-CONN" class="cad-interactive" x="47" y="338" width="148" height="30" fill="#0f172a" fill-opacity="0.65" />
 
                 <!-- East Comb Avenue-1 (x = 538 to 568, y = 154 to 410) -->
-                <rect x="538" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+                <rect data-type="ROAD" data-id="ROAD-EAST-AVE-1" class="cad-interactive" x="538" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.65" />
                 <!-- East Comb Avenue-2 (x = 692 to 722, y = 154 to 410) -->
-                <rect x="692" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+                <rect data-type="ROAD" data-id="ROAD-EAST-AVE-2" class="cad-interactive" x="692" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.65" />
                 <!-- East Comb Avenue-3 (x = 846 to 876, y = 154 to 410) -->
-                <rect x="846" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+                <rect data-type="ROAD" data-id="ROAD-EAST-AVE-3" class="cad-interactive" x="846" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.65" />
 
                 <!-- Animated Traffic Flow Centerlines -->
-                <line x1="918" y1="267" x2="60" y2="267" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" />
-                <line x1="60" y1="289" x2="918" y2="289" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" />
+                <line x1="918" y1="267" x2="60" y2="267" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" pointer-events="none" />
+                <line x1="60" y1="289" x2="918" y2="289" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" pointer-events="none" />
 
-                <line x1="62" y1="350" x2="62" y2="20" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
-                <line x1="180" y1="350" x2="180" y2="20" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
-                <line x1="553" y1="162" x2="553" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
-                <line x1="707" y1="162" x2="707" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
-                <line x1="861" y1="162" x2="861" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
+                <line x1="62" y1="350" x2="62" y2="20" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" pointer-events="none" />
+                <line x1="180" y1="350" x2="180" y2="20" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" pointer-events="none" />
+                <line x1="553" y1="162" x2="553" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" pointer-events="none" />
+                <line x1="707" y1="162" x2="707" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" pointer-events="none" />
+                <line x1="861" y1="162" x2="861" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" pointer-events="none" />
 
                 <!-- Road Width Labels -->
-                <g font-family="JetBrains Mono" font-weight="700" font-size="7" fill="#bae6fd">
+                <g font-family="JetBrains Mono" font-weight="700" font-size="7" fill="#bae6fd" pointer-events="none">
                   <text x="335" y="271" text-anchor="middle">◀── 40'-0" (12.0M) MAIN CENTRAL ARTERIAL BOULEVARD (ZERO SOUTH-FACING) ──▶</text>
                   <text x="630" y="271" text-anchor="middle">◀── 40'-0" (12.0M) MAIN ARTERIAL SPINE ──▶</text>
                   <text x="800" y="271" text-anchor="middle">◀── MAIN ENTRY SPINE ──▶</text>
@@ -441,7 +439,7 @@
                 </g>
               </g>
 
-              <!-- 3. PLOTS LAYER (164 VASTU PLOTS — 0 SOUTH-FACING) -->
+              <!-- 3. PLOTS LAYER (162 VASTU PLOTS — 0 SOUTH-FACING) -->
               <g id="svgLayerPlots"></g>
               <g id="svgLayerArrows" class="pointer-events-none"></g>
               <g id="svgLayerSetbacks" class="hidden pointer-events-none"></g>
@@ -541,10 +539,10 @@
             <g transform="translate(468, 485)">
               <rect x="-295" y="-18" width="590" height="34" rx="5" fill="#0f172a" fill-opacity="0.95" stroke="#334155" stroke-width="1.2" />
               <text x="0" y="-3" text-anchor="middle" fill="#f8fafc" font-size="9" font-weight="700" letter-spacing="1">
-                12M MAIN BOULEVARD VASTU PLAN — 164 PLOTS • 0% SOUTH-FACING • 13.00% PARKS
+                12M MAIN BOULEVARD VASTU PLAN — 162 PLOTS • 0% SOUTH-FACING • 13.00% PARKS
               </text>
               <text x="0" y="10" text-anchor="middle" fill="#34d399" font-size="7.5" font-weight="600">
-                82 EAST • 64 WEST • 18 NORTH • 0 SOUTH • 12.0M MAIN SPINE FROM EAST GATE TO WEST BELT
+                78 EAST • 63 WEST • 21 NORTH • 0 SOUTH • 12.0M MAIN SPINE FROM EAST GATE TO WEST BELT
               </text>
             </g>
 
@@ -558,22 +556,22 @@
       <div class="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">CAD Plot Inspector</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">CAD Inspector</h2>
         </div>
         <span id="inspectorBadge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
-          SELECT PLOT
+          SELECT ENTITY
         </span>
       </div>
 
       <div class="p-4 flex-1 flex flex-col gap-4 text-xs font-sans">
-        <!-- Plot Details Card -->
+        <!-- Asset Details Card -->
         <div class="bg-slate-950/80 rounded-xl p-3.5 border border-slate-800 space-y-2.5">
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">Plot / Asset No:</span>
-            <span id="inspectPlotNo" class="font-mono font-bold text-base text-white">Click any plot</span>
+            <span class="text-slate-400">Selected Item:</span>
+            <span id="inspectPlotNo" class="font-mono font-bold text-base text-white">Click plot / road / park</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">Vastu Facing:</span>
+            <span class="text-slate-400">Classification / Facing:</span>
             <span id="inspectFacing" class="font-bold text-emerald-400">--</span>
           </div>
           <div class="flex items-center justify-between">
@@ -581,11 +579,11 @@
             <span id="inspectDims" class="font-mono font-bold text-sky-300">--</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">Plot Area:</span>
+            <span class="text-slate-400">Area / Capacity:</span>
             <span id="inspectArea" class="font-mono font-bold text-amber-300">--</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-slate-400">Abutting Road:</span>
+            <span class="text-slate-400">Abutting Road / Role:</span>
             <span id="inspectRoad" class="font-mono font-medium text-slate-200 text-right">--</span>
           </div>
         </div>
@@ -603,7 +601,7 @@
           </div>
           <div class="flex justify-between text-slate-400">
             <span>Total Residential Plots:</span>
-            <span class="text-white font-bold">164 Plots</span>
+            <span class="text-white font-bold">162 Plots</span>
           </div>
           <div class="flex justify-between text-slate-400">
             <span>South-Facing Plots:</span>
@@ -626,7 +624,7 @@
             100% Vastu Compliant Layout
           </div>
           <p class="text-slate-300">
-            Zero plots face South. Every entrance gate is situated in positive Vastu padas (East, North, West). Every plot abuts an approved 9m or 12m road.
+            Zero plots face South. Every plot abuts an approved 9m or 12m road with unobstructed access.
           </p>
         </div>
       </div>
@@ -639,7 +637,7 @@
     <div class="p-3 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/95 backdrop-blur-md z-10">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Plot Inspector</h3>
+        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">CAD Inspector</h3>
       </div>
       <div class="w-10 h-1 bg-slate-700 rounded-full mx-auto"></div>
       <button id="btnCloseMobileDrawer" class="p-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
@@ -652,11 +650,11 @@
     <div class="p-4 space-y-3 text-xs">
       <div class="bg-slate-950/90 rounded-xl p-3 border border-slate-800 space-y-2">
         <div class="flex items-center justify-between">
-          <span class="text-slate-400">Plot / Asset:</span>
-          <span id="mInspectPlotNo" class="font-mono font-bold text-base text-white">Select a plot</span>
+          <span class="text-slate-400">Selected Item:</span>
+          <span id="mInspectPlotNo" class="font-mono font-bold text-base text-white">Click plot / road / park</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-slate-400">Facing:</span>
+          <span class="text-slate-400">Classification / Facing:</span>
           <span id="mInspectFacing" class="font-bold text-emerald-400">--</span>
         </div>
         <div class="flex items-center justify-between">
@@ -664,11 +662,11 @@
           <span id="mInspectDims" class="font-mono font-bold text-sky-300">--</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-slate-400">Area:</span>
+          <span class="text-slate-400">Area / Capacity:</span>
           <span id="mInspectArea" class="font-mono font-bold text-amber-300">--</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-slate-400">Abutting Road:</span>
+          <span class="text-slate-400">Abutting Road / Role:</span>
           <span id="mInspectRoad" class="font-mono text-slate-200">--</span>
         </div>
       </div>
@@ -688,7 +686,7 @@
         </div>
         <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
           <div class="text-slate-400">Total Plots:</div>
-          <div class="text-sky-400 font-bold">164 Plots</div>
+          <div class="text-sky-400 font-bold">162 Plots</div>
         </div>
       </div>
     </div>
@@ -714,12 +712,12 @@
           <div class="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-600/50">
             <div class="text-slate-400 text-[11px]">South-Facing Plots</div>
             <div class="text-base sm:text-lg font-bold text-emerald-300 mt-1">0 Plots (0%)</div>
-            <div class="text-[10px] text-emerald-200 mt-1">100% East (82), West (64), North (18)</div>
+            <div class="text-[10px] text-emerald-200 mt-1">100% East (78), West (63), North (21)</div>
           </div>
           <div class="p-3.5 rounded-xl bg-sky-950/40 border border-sky-600/50">
             <div class="text-slate-400 text-[11px]">Main Road Width</div>
             <div class="text-base sm:text-lg font-bold text-sky-300 mt-1">12.0m (40'-0")</div>
-            <div class="text-[10px] text-sky-200 mt-1">Full spine from East Gate to West Ave-1</div>
+            <div class="text-[10px] text-sky-200 mt-1">From East Gate to West Ave-1</div>
           </div>
           <div class="p-3.5 rounded-xl bg-amber-950/40 border border-amber-600/50">
             <div class="text-slate-400 text-[11px]">Parks &amp; Green Space</div>
@@ -748,7 +746,7 @@
               </thead>
               <tbody class="divide-y divide-slate-800/80 bg-slate-900/60">
                 <tr class="bg-sky-950/20">
-                  <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Net Saleable Residential Plotted Area (164 Plots)</td>
+                  <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Net Saleable Residential Plotted Area (162 Plots)</td>
                   <td class="py-2.5 px-3 text-right font-bold text-sky-300">19,752.57</td>
                   <td class="py-2.5 px-3 text-right font-bold text-sky-300">23,623.85</td>
                   <td class="py-2.5 px-3 text-right font-bold text-sky-300">25.94</td>
@@ -795,7 +793,8 @@
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /***************************************************************************
-     * 1. ARCHITECTURAL DATA MODEL: ALL 164 PLOTS (0 SOUTH-FACING)
+     * 1. ARCHITECTURAL DATA MODEL: ALL 162 PLOTS (0 SOUTH-FACING)
+     * CLEANLY DIVIDED: NO PLOTS OVERLAP OR SIT INSIDE THE 12M ROAD!
      ***************************************************************************/
     const plotsData = [];
 
@@ -838,54 +837,87 @@
       }
     }
 
-    // --- 1. WEST WING PLOTS (Plots 1 to 56) ---
-    // Col-W1: Plots 1 to 18 (18 Plots, EAST-FACING → onto 30' West Avenue-1, backed directly on West Boundary Wall)
+    // --- WEST WING PLOTS (Cleanly split above and below the 12.0m Main Road) ---
+    // 1. Col-W1 North (Plots 1 to 12): ABOVE 12m road (y = 8 to 258, height = 250)
     createPlotRange({
-      startNo: 1, count: 18, category: 'D', facingCode: 'E',
+      startNo: 1, count: 12, category: 'D', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' West Ave-1)',
-      blockName: 'West Wing Col-W1 (East Facing)',
-      xStart: 3, yStart: 8, totalWidth: 44, totalHeight: 360, direction: 'vertical',
-      nominalSizeFt: "20'-0\" × 44'-0\"", nominalSizeM: "6.10m × 13.41m",
-      areaGaj: 98, areaSqFt: 880, areaSqM: 81.75,
+      blockName: 'West Wing Col-W1 North (East Facing)',
+      xStart: 3, yStart: 8, totalWidth: 44, totalHeight: 250, direction: 'vertical',
+      nominalSizeFt: "20'-10\" × 44'-0\"", nominalSizeM: "6.35m × 13.41m",
+      areaGaj: 102, areaSqFt: 917, areaSqM: 85.19,
       roadWidth: "30'-0\" (9.0m) West Avenue-1"
     });
 
-    // Col-W2: Plots 19 to 34 (16 Plots, WEST-FACING ← onto 30' West Avenue-1)
+    // 2. Col-W1 South (Plots 13 to 15): BELOW 12m road (y = 298 to 368, height = 70)
     createPlotRange({
-      startNo: 19, count: 16, category: 'C', facingCode: 'W',
+      startNo: 13, count: 3, category: 'C', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' West Ave-1)',
+      blockName: 'West Wing Col-W1 South (East Facing)',
+      xStart: 3, yStart: 298, totalWidth: 44, totalHeight: 70, direction: 'vertical',
+      nominalSizeFt: "23'-4\" × 44'-0\"", nominalSizeM: "7.11m × 13.41m",
+      areaGaj: 114, areaSqFt: 1027, areaSqM: 95.41,
+      roadWidth: "30'-0\" (9.0m) West Avenue-1"
+    });
+
+    // 3. Col-W2 North (Plots 16 to 27): ABOVE 12m road (y = 8 to 258, height = 250)
+    createPlotRange({
+      startNo: 16, count: 12, category: 'D', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' West Ave-1)',
-      blockName: 'West Wing Col-W2 (West Facing)',
-      xStart: 77, yStart: 8, totalWidth: 44, totalHeight: 330, direction: 'vertical',
-      nominalSizeFt: "20'-7\" × 44'-0\"", nominalSizeM: "6.28m × 13.41m",
-      areaGaj: 101, areaSqFt: 907, areaSqM: 84.26,
+      blockName: 'West Wing Col-W2 North (West Facing)',
+      xStart: 77, yStart: 8, totalWidth: 44, totalHeight: 250, direction: 'vertical',
+      nominalSizeFt: "20'-10\" × 44'-0\"", nominalSizeM: "6.35m × 13.41m",
+      areaGaj: 102, areaSqFt: 917, areaSqM: 85.19,
       roadWidth: "30'-0\" (9.0m) West Avenue-1"
     });
 
-    // Col-W3: Plots 35 to 50 (16 Plots, EAST-FACING → onto 30' West Avenue-2 & Park-1)
+    // 4. Col-W2 South (Plots 28 to 30): BELOW 12m road (y = 298 to 368, height = 70)
     createPlotRange({
-      startNo: 35, count: 16, category: 'C', facingCode: 'E',
+      startNo: 28, count: 3, category: 'C', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' West Ave-1)',
+      blockName: 'West Wing Col-W2 South (West Facing)',
+      xStart: 77, yStart: 298, totalWidth: 44, totalHeight: 70, direction: 'vertical',
+      nominalSizeFt: "23'-4\" × 44'-0\"", nominalSizeM: "7.11m × 13.41m",
+      areaGaj: 114, areaSqFt: 1027, areaSqM: 95.41,
+      roadWidth: "30'-0\" (9.0m) West Avenue-1"
+    });
+
+    // 5. Col-W3 North (Plots 31 to 42): ABOVE 12m road (y = 8 to 258, height = 250)
+    createPlotRange({
+      startNo: 31, count: 12, category: 'D', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' West Ave-2 & Park)',
-      blockName: 'West Wing Col-W3 (East Facing)',
-      xStart: 121, yStart: 8, totalWidth: 44, totalHeight: 330, direction: 'vertical',
-      nominalSizeFt: "20'-7\" × 44'-0\"", nominalSizeM: "6.28m × 13.41m",
-      areaGaj: 101, areaSqFt: 907, areaSqM: 84.26,
+      blockName: 'West Wing Col-W3 North (East Facing)',
+      xStart: 121, yStart: 8, totalWidth: 44, totalHeight: 250, direction: 'vertical',
+      nominalSizeFt: "20'-10\" × 44'-0\"", nominalSizeM: "6.35m × 13.41m",
+      areaGaj: 102, areaSqFt: 917, areaSqM: 85.19,
       roadWidth: "30'-0\" (9.0m) West Avenue-2"
     });
 
-    // West Wing South Row: Plots 51 to 56 (6 Plots, NORTH-FACING ↑ onto 30' West Connector Road)
+    // 6. Col-W3 South (Plots 43 to 45): BELOW 12m road (y = 298 to 368, height = 70)
     createPlotRange({
-      startNo: 51, count: 6, category: 'C', facingCode: 'N',
+      startNo: 43, count: 3, category: 'C', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' West Ave-2)',
+      blockName: 'West Wing Col-W3 South (East Facing)',
+      xStart: 121, yStart: 298, totalWidth: 44, totalHeight: 70, direction: 'vertical',
+      nominalSizeFt: "23'-4\" × 44'-0\"", nominalSizeM: "7.11m × 13.41m",
+      areaGaj: 114, areaSqFt: 1027, areaSqM: 95.41,
+      roadWidth: "30'-0\" (9.0m) West Avenue-2"
+    });
+
+    // 7. West South Row (Plots 46 to 54): FILLS ENTIRE BOTTOM-LEFT CORNER (x = 3 to 208, y = 368 to 412.46)
+    createPlotRange({
+      startNo: 46, count: 9, category: 'C', facingCode: 'N',
       facingLabel: 'NORTH-FACING (↑ 30\' Connector Road)',
-      blockName: 'West Wing South Row (North Facing)',
-      xStart: 47, yStart: 368, totalWidth: 148, totalHeight: 42.5, direction: 'horizontal',
-      nominalSizeFt: "24'-8\" × 42'-6\"", nominalSizeM: "7.52m × 12.95m",
-      areaGaj: 116, areaSqFt: 1048, areaSqM: 97.36,
+      blockName: 'West Wing South Row (Fills Corner)',
+      xStart: 3, yStart: 368, totalWidth: 205, totalHeight: 44.46, direction: 'horizontal',
+      nominalSizeFt: "22'-9\" × 44'-5\"", nominalSizeM: "6.93m × 13.55m",
+      areaGaj: 112, areaSqFt: 1012, areaSqM: 94.02,
       roadWidth: "30'-0\" (9.0m) West Connector Road"
     });
 
-    // --- 2. 12.0M MAIN BOULEVARD PRIME ROW (Plots 57 to 68 — 12 Plots, NORTH-FACING) ---
+    // 8. 12.0M MAIN BOULEVARD PRIME ROW (Plots 55 to 66 — 12 Plots, NORTH-FACING)
     createPlotRange({
-      startNo: 57, count: 12, category: 'A', facingCode: 'N',
+      startNo: 55, count: 12, category: 'A', facingCode: 'N',
       facingLabel: 'NORTH-FACING (↑ 12.0m Main Boulevard & Park View)',
       blockName: 'Central Boulevard Row (North & Park Facing)',
       xStart: 212, yStart: 298, totalWidth: 241, totalHeight: 35, direction: 'horizontal',
@@ -894,10 +926,10 @@
       roadWidth: "40'-0\" (12.0m) Main Spine Boulevard"
     });
 
-    // --- 3. EAST COMB BLOCKS (Plots 69 to 164 — STRICTLY EAST & WEST FACING) ---
-    // Block-E1 North (Plots 69–76): 8 EAST-FACING (y=154..258)
+    // --- EAST COMB BLOCKS (Plots 67 to 162 — 96 Plots, STRICTLY EAST & WEST FACING) ---
+    // Block-E1 North (Plots 67–74): 8 EAST-FACING (y=154..258)
     createPlotRange({
-      startNo: 69, count: 8, category: 'A', facingCode: 'E',
+      startNo: 67, count: 8, category: 'A', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-1)',
       blockName: 'Block-E1 North (East Facing)',
       xStart: 476, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
@@ -906,9 +938,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
     });
 
-    // Block-E1 South (Plots 77–84): 8 EAST-FACING (y=298..410)
+    // Block-E1 South (Plots 75–82): 8 EAST-FACING (y=298..410)
     createPlotRange({
-      startNo: 77, count: 8, category: 'A', facingCode: 'E',
+      startNo: 75, count: 8, category: 'A', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-1)',
       blockName: 'Block-E1 South (East Facing)',
       xStart: 476, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
@@ -917,9 +949,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
     });
 
-    // Block-E2 West Col North (Plots 85–92): 8 WEST-FACING
+    // Block-E2 West Col North (Plots 83–90): 8 WEST-FACING
     createPlotRange({
-      startNo: 85, count: 8, category: 'B', facingCode: 'W',
+      startNo: 83, count: 8, category: 'B', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-1)',
       blockName: 'Block-E2 West Col (West Facing)',
       xStart: 568, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
@@ -928,9 +960,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
     });
 
-    // Block-E2 West Col South (Plots 93–100): 8 WEST-FACING
+    // Block-E2 West Col South (Plots 91–98): 8 WEST-FACING
     createPlotRange({
-      startNo: 93, count: 8, category: 'B', facingCode: 'W',
+      startNo: 91, count: 8, category: 'B', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-1)',
       blockName: 'Block-E2 West Col (West Facing)',
       xStart: 568, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
@@ -939,9 +971,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
     });
 
-    // Block-E2 East Col North (Plots 101–108): 8 EAST-FACING
+    // Block-E2 East Col North (Plots 99–106): 8 EAST-FACING
     createPlotRange({
-      startNo: 101, count: 8, category: 'B', facingCode: 'E',
+      startNo: 99, count: 8, category: 'B', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-2)',
       blockName: 'Block-E2 East Col (East Facing)',
       xStart: 630, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
@@ -950,9 +982,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
     });
 
-    // Block-E2 East Col South (Plots 109–116): 8 EAST-FACING
+    // Block-E2 East Col South (Plots 107–114): 8 EAST-FACING
     createPlotRange({
-      startNo: 109, count: 8, category: 'B', facingCode: 'E',
+      startNo: 107, count: 8, category: 'B', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-2)',
       blockName: 'Block-E2 East Col (East Facing)',
       xStart: 630, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
@@ -961,9 +993,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
     });
 
-    // Block-E3 West Col North (Plots 117–124): 8 WEST-FACING
+    // Block-E3 West Col North (Plots 115–122): 8 WEST-FACING
     createPlotRange({
-      startNo: 117, count: 8, category: 'B', facingCode: 'W',
+      startNo: 115, count: 8, category: 'B', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-2)',
       blockName: 'Block-E3 West Col (West Facing)',
       xStart: 722, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
@@ -972,9 +1004,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
     });
 
-    // Block-E3 West Col South (Plots 125–132): 8 WEST-FACING
+    // Block-E3 West Col South (Plots 123–130): 8 WEST-FACING
     createPlotRange({
-      startNo: 125, count: 8, category: 'B', facingCode: 'W',
+      startNo: 123, count: 8, category: 'B', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-2)',
       blockName: 'Block-E3 West Col (West Facing)',
       xStart: 722, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
@@ -983,9 +1015,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
     });
 
-    // Block-E3 East Col North (Plots 133–140): 8 EAST-FACING
+    // Block-E3 East Col North (Plots 131–138): 8 EAST-FACING
     createPlotRange({
-      startNo: 133, count: 8, category: 'B', facingCode: 'E',
+      startNo: 131, count: 8, category: 'B', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-3)',
       blockName: 'Block-E3 East Col (East Facing)',
       xStart: 784, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
@@ -994,9 +1026,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
     });
 
-    // Block-E3 East Col South (Plots 141–148): 8 EAST-FACING
+    // Block-E3 East Col South (Plots 139–146): 8 EAST-FACING
     createPlotRange({
-      startNo: 141, count: 8, category: 'B', facingCode: 'E',
+      startNo: 139, count: 8, category: 'B', facingCode: 'E',
       facingLabel: 'EAST-FACING (→ 30\' Comb Ave-3)',
       blockName: 'Block-E3 East Col (East Facing)',
       xStart: 784, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
@@ -1005,9 +1037,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
     });
 
-    // Block-E4 East Edge North (Plots 149–156): 8 WEST-FACING
+    // Block-E4 East Edge North (Plots 147–154): 8 WEST-FACING
     createPlotRange({
-      startNo: 149, count: 8, category: 'C', facingCode: 'W',
+      startNo: 147, count: 8, category: 'C', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
       blockName: 'Block-E4 East Edge (West Facing)',
       xStart: 876, yStart: 166, totalWidth: 49, totalHeight: 92, direction: 'vertical',
@@ -1016,9 +1048,9 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
     });
 
-    // Block-E4 East Edge South (Plots 157–164): 8 WEST-FACING
+    // Block-E4 East Edge South (Plots 155–162): 8 WEST-FACING
     createPlotRange({
-      startNo: 157, count: 8, category: 'C', facingCode: 'W',
+      startNo: 155, count: 8, category: 'C', facingCode: 'W',
       facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
       blockName: 'Block-E4 East Edge (West Facing)',
       xStart: 876, yStart: 303, totalWidth: 49, totalHeight: 107, direction: 'vertical',
@@ -1027,7 +1059,101 @@
       roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
     });
 
-    // Colors
+    // Asset Metadata Catalogs (for Roads, Parks, Utilities)
+    const assetsCatalog = {
+      'ROAD-MAIN': {
+        title: '40\'-0" (12.0M) MAIN CENTRAL SPINE BOULEVARD',
+        facing: 'East-West Central Arterial Spine (0% South-Facing)',
+        dims: "888'-0\" Long × 40'-0\" Wide (270.66m × 12.00m)",
+        area: "35,520 Sq.Ft | 3,946.7 Gaj (3,300.0 SQM)",
+        role: "Primary Colony Spine with Dual 18.5' Carriageways & Central Green Median"
+      },
+      'ROAD-GATE-FLARE': {
+        title: 'MAIN ENTRANCE TRUMPET FLARE (50\'-0" WIDE)',
+        facing: 'East Entry Portal',
+        dims: "59'-0\" Long × 50'-0\" Wide (17.98m × 15.24m)",
+        area: "2,950 Sq.Ft | 327.8 Gaj (274.06 SQM)",
+        role: "Trumpet Entrance connecting to 22'-6\" East Main Road"
+      },
+      'ROAD-WEST-AVE-1': {
+        title: '30\'-0" (9.0M) WEST AVENUE-1',
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "360'-0\" Long × 30'-0\" Wide (109.73m × 9.00m)",
+        area: "10,800 Sq.Ft | 1,200.0 Gaj (1,003.35 SQM)",
+        role: "Serves Plots 1–15 (East) & Plots 16–30 (West)"
+      },
+      'ROAD-WEST-AVE-2': {
+        title: '30\'-0" (9.0M) WEST AVENUE-2',
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "360'-0\" Long × 30'-0\" Wide (109.73m × 9.00m)",
+        area: "10,800 Sq.Ft | 1,200.0 Gaj (1,003.35 SQM)",
+        role: "Serves Plots 31–45 (East) & Central Park-1"
+      },
+      'ROAD-WEST-CONN': {
+        title: '30\'-0" (9.0M) WEST SOUTH CONNECTOR',
+        facing: 'East-West Connector Road',
+        dims: "148'-0\" Long × 30'-0\" Wide (45.11m × 9.00m)",
+        area: "4,440 Sq.Ft | 493.3 Gaj (412.49 SQM)",
+        role: "Direct frontage for North-Facing Plots 46–54"
+      },
+      'ROAD-EAST-AVE-1': {
+        title: '30\'-0" (9.0M) EAST COMB AVENUE-1',
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "256'-0\" Long × 30'-0\" Wide (78.03m × 9.00m)",
+        area: "7,680 Sq.Ft | 853.3 Gaj (713.49 SQM)",
+        role: "Serves Block-E1 (East) & Block-E2 (West)"
+      },
+      'ROAD-EAST-AVE-2': {
+        title: '30\'-0" (9.0M) EAST COMB AVENUE-2',
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "256'-0\" Long × 30'-0\" Wide (78.03m × 9.00m)",
+        area: "7,680 Sq.Ft | 853.3 Gaj (713.49 SQM)",
+        role: "Serves Block-E2 (East) & Block-E3 (West)"
+      },
+      'ROAD-EAST-AVE-3': {
+        title: '30\'-0" (9.0M) EAST COMB AVENUE-3',
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "256'-0\" Long × 30'-0\" Wide (78.03m × 9.00m)",
+        area: "7,680 Sq.Ft | 853.3 Gaj (713.49 SQM)",
+        role: "Serves Block-E3 (East) & Block-E4 (West)"
+      },
+      'PARK-1': {
+        title: 'PARK-1: CENTRAL VASTU COMMUNITY PARK',
+        facing: 'North of 12m Spine (Absorbs South Frontage)',
+        dims: "281'-0\" × 160'-0\" (85.65m × 48.77m)",
+        area: "33,967 Sq.Ft | 3,774.1 Gaj (3,155.62 SQM • 10.78%)",
+        role: "Central Park with Jogging Track, Gazebo, Kids Turf & Senior Deck"
+      },
+      'PARK-2': {
+        title: 'PARK-2: NORTH CHAKROAD GREEN BUFFER',
+        facing: 'Linear Buffer along Sealed North Wall',
+        dims: "Continuous 8'-0\" to 16'-0\" Wide Green Strip",
+        area: "6,997 Sq.Ft | 777.4 Gaj (650.00 SQM • 2.22%)",
+        role: "Eco-Buffer Insulating Colony from Closed Chakroad"
+      },
+      'UTIL-GATE': {
+        title: 'MAIN SECURITY GATE COMPLEX & GUARD CABIN',
+        facing: 'East Colony Entrance',
+        dims: "40'-0\" Right-of-Way Portal (12.0m)",
+        area: "RFID Boom Barriers, CCTV Surveillance & Guard Post",
+        role: "24×7 Controlled Access to Township"
+      },
+      'UTIL-SHOPS': {
+        title: 'COMMERCIAL SHOPPING ARCADE (SHOPS S1–S10)',
+        facing: 'Fronting 12.0m Main Boulevard',
+        dims: "16'-0\" Deep × 54'-0\" Frontage",
+        area: "864 Sq.Ft | 96.0 Gaj (80.27 SQM)",
+        role: "Convenience Grocery, Pharmacy & Daily Needs Stores"
+      },
+      'UTIL-STP': {
+        title: 'SEWAGE TREATMENT PLANT (250 KLD STP)',
+        facing: 'North-East Buffer Pocket',
+        dims: "22'-0\" × 18'-0\" (6.71m × 5.49m)",
+        area: "396 Sq.Ft | 44.0 Gaj (36.79 SQM)",
+        role: "Zero-Discharge Wastewater Recycling for Parks"
+      }
+    };
+
     const vastuColors = {
       E: { fill: '#065f46', stroke: '#34d399', text: '#ecfdf5', arrow: '#34d399' },
       W: { fill: '#312e81', stroke: '#818cf8', text: '#eef2ff', arrow: '#a5b4fc' },
@@ -1133,50 +1259,72 @@
     renderTrees();
 
     /***************************************************************************
-     * 3. SELECTION & INSPECTOR POPULATION
+     * 3. COMPREHENSIVE SELECTION & INSPECTOR (PLOTS, ROADS, PARKS, UTILITIES)
      ***************************************************************************/
     let selectedElementNode = null;
 
-    function selectPlot(plotNo) {
-      const plot = plotsData.find(p => p.plotNo === plotNo);
-      if (!plot) return;
-
+    function selectEntity(type, id) {
       if (selectedElementNode) {
         selectedElementNode.classList.remove('cad-selected');
       }
-      const node = document.querySelector(`[data-id="${plot.id}"] rect`);
+
+      const node = document.querySelector(`[data-id="${id}"]`);
       if (node) {
         node.classList.add('cad-selected');
         selectedElementNode = node;
       }
 
-      // Update Desktop Inspector
-      document.getElementById('inspectPlotNo').textContent = `Plot #${plot.plotNo}`;
-      document.getElementById('inspectFacing').textContent = plot.facingLabel;
-      document.getElementById('inspectDims').textContent = `${plot.nominalSizeFt} (${plot.nominalSizeM})`;
-      document.getElementById('inspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft / ${plot.areaSqM} m²)`;
-      document.getElementById('inspectRoad').textContent = plot.roadWidth;
-      document.getElementById('inspectorBadge').textContent = `${plot.facingCode}-FACING`;
+      if (type === 'PLOT') {
+        const plotNo = parseInt(id.replace('PLOT-', ''), 10);
+        const plot = plotsData.find(p => p.plotNo === plotNo);
+        if (!plot) return;
 
-      // Update Mobile Drawer
-      document.getElementById('mInspectPlotNo').textContent = `Plot #${plot.plotNo}`;
-      document.getElementById('mInspectFacing').textContent = plot.facingLabel;
-      document.getElementById('mInspectDims').textContent = `${plot.nominalSizeFt}`;
-      document.getElementById('mInspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft)`;
-      document.getElementById('mInspectRoad').textContent = plot.roadWidth;
-      document.getElementById('mobilePillLabel').textContent = `Plot #${plot.plotNo} (${plot.areaGaj}G)`;
+        document.getElementById('inspectPlotNo').textContent = `Plot #${plot.plotNo}`;
+        document.getElementById('inspectFacing').textContent = plot.facingLabel;
+        document.getElementById('inspectDims').textContent = `${plot.nominalSizeFt} (${plot.nominalSizeM})`;
+        document.getElementById('inspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft / ${plot.areaSqM} m²)`;
+        document.getElementById('inspectRoad').textContent = plot.roadWidth;
+        document.getElementById('inspectorBadge').textContent = `${plot.facingCode}-FACING PLOT`;
+
+        document.getElementById('mInspectPlotNo').textContent = `Plot #${plot.plotNo}`;
+        document.getElementById('mInspectFacing').textContent = plot.facingLabel;
+        document.getElementById('mInspectDims').textContent = `${plot.nominalSizeFt}`;
+        document.getElementById('mInspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft)`;
+        document.getElementById('mInspectRoad').textContent = plot.roadWidth;
+        document.getElementById('mobilePillLabel').textContent = `Plot #${plot.plotNo} (${plot.areaGaj}G)`;
+      } else {
+        const asset = assetsCatalog[id];
+        if (!asset) return;
+
+        document.getElementById('inspectPlotNo').textContent = asset.title;
+        document.getElementById('inspectFacing').textContent = asset.facing;
+        document.getElementById('inspectDims').textContent = asset.dims;
+        document.getElementById('inspectArea').textContent = asset.area;
+        document.getElementById('inspectRoad').textContent = asset.role;
+        document.getElementById('inspectorBadge').textContent = type;
+
+        document.getElementById('mInspectPlotNo').textContent = asset.title;
+        document.getElementById('mInspectFacing').textContent = asset.facing;
+        document.getElementById('mInspectDims').textContent = asset.dims;
+        document.getElementById('mInspectArea').textContent = asset.area;
+        document.getElementById('mInspectRoad').textContent = asset.role;
+        document.getElementById('mobilePillLabel').textContent = asset.title.split(' ')[0];
+      }
 
       if (window.innerWidth < 768) {
         openMobileDrawer();
       }
     }
 
-    svgLayerPlots.addEventListener('click', (e) => {
-      const group = e.target.closest('[data-type="PLOT"]');
-      if (!group) return;
-      const id = group.getAttribute('data-id');
-      const plotNo = parseInt(id.replace('PLOT-', ''), 10);
-      selectPlot(plotNo);
+    // Global SVG Click Listener for Any Entity (Plot, Road, Park, Utility)
+    masterPlanSvg.addEventListener('click', (e) => {
+      const interactiveEl = e.target.closest('[data-type]');
+      if (!interactiveEl) return;
+      const type = interactiveEl.getAttribute('data-type');
+      const id = interactiveEl.getAttribute('data-id');
+      if (type && id) {
+        selectEntity(type, id);
+      }
     });
 
     /***************************************************************************
@@ -1198,7 +1346,6 @@
       zoomReadout.textContent = `${zoomPct}%`;
     }
 
-    // Mouse Panning & Zoom
     let isPanning = false;
     let panStart = { x: 0, y: 0 };
 
@@ -1305,7 +1452,6 @@
       }
     }, { passive: true });
 
-    // Zoom Buttons
     document.getElementById('btnZoomIn').addEventListener('click', () => {
       vb.x += vb.w * 0.1; vb.y += vb.h * 0.1;
       vb.w *= 0.8; vb.h *= 0.8;
@@ -1321,7 +1467,6 @@
       updateSvgViewBox();
     });
 
-    // 180° Orientation Flip
     document.getElementById('btnFlipOrientation').addEventListener('click', () => {
       isFlipped180 = !isFlipped180;
       const label = document.getElementById('flipBtnLabel');
@@ -1371,11 +1516,11 @@
 
     function jumpToPlot() {
       const val = parseInt(document.getElementById('plotSearchInput').value, 10);
-      if (isNaN(val) || val < 1 || val > 164) return;
+      if (isNaN(val) || val < 1 || val > 162) return;
       const plot = plotsData.find(p => p.plotNo === val);
       if (!plot) return;
 
-      selectPlot(val);
+      selectEntity('PLOT', plot.id);
       vb.w = 340;
       vb.h = 180;
       vb.x = plot.x - 140;
@@ -1441,8 +1586,8 @@
       }
     });
 
-    // Select Plot 57 (12m Boulevard North-Facing) by default
-    setTimeout(() => { selectPlot(57); }, 200);
+    // Select Plot 55 (12m Boulevard North-Facing) by default
+    setTimeout(() => { selectEntity('PLOT', 'PLOT-55'); }, 200);
   </script>
 </body>
 </html>
