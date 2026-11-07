@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <title>SITE PLAN — 12.0m Main Boulevard Vastu Master Plan (0% South-Facing | 13.84% Parks | 16.0% Roads)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      background-color: #030712;
+      touch-action: manipulation;
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.5);
+      border-radius: 3px;
+    }
+
+    /* CAD Blueprint Grid Styles */
+    .cad-viewport-dark {
+      background-color: #060b14;
+      background-image:
+        linear-gradient(to right, rgba(30, 58, 138, 0.16) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 58, 138, 0.16) 1px, transparent 1px),
+        linear-gradient(to right, rgba(30, 58, 138, 0.32) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 58, 138, 0.32) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+    .cad-viewport-light {
+      background-color: #f8fafc;
+      background-image:
+        linear-gradient(to right, rgba(148, 163, 184, 0.22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.22) 1px, transparent 1px),
+        linear-gradient(to right, rgba(100, 116, 139, 0.32) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(100, 116, 139, 0.32) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+
+    /* Interactive SVG Elements */
+    .cad-interactive {
+      cursor: pointer;
+      transition: filter 0.15s ease, opacity 0.15s ease, stroke-width 0.15s ease;
+    }
+    .cad-interactive:hover {
+      filter: brightness(1.25);
+      stroke-width: 2.2px !important;
+    }
+    .cad-selected {
+      stroke: #facc15 !important;
+      stroke-width: 3.2px !important;
+      filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.85)) !important;
+    }
+    .plot-dimmed {
+      opacity: 0.18 !important;
+    }
+
+    @keyframes flowDash {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+    .road-flow-line {
+      animation: flowDash 1.5s linear infinite;
+    }
+
+    /* Mobile Sheet Drawer Animation */
+    .drawer-transition {
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans h-full w-full flex flex-col select-none overflow-hidden">
+
+  <!-- TOP HEADER (DESKTOP & MOBILE FRIENDLY) -->
+  <header class="h-14 bg-slate-900/95 border-b border-slate-800 px-3 sm:px-4 flex items-center justify-between gap-2 shrink-0 z-30 backdrop-blur-md">
+    <!-- Brand Title -->
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+        </svg>
+      </div>
+      <div class="truncate">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <h1 class="text-xs sm:text-sm md:text-base font-bold text-white tracking-tight truncate">
+            12M BOULEVARD MASTER PLAN
+          </h1>
+          <span class="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            0% SOUTH • 12M ROAD
+          </span>
+        </div>
+        <p class="text-[10px] sm:text-[11px] text-slate-400 font-mono truncate hidden xs:block">
+          29,274.03 m² | 38.45 Bighas | 35,011.4 Gaj • 12m Main Spine across Colony
+        </p>
+      </div>
+    </div>
+
+    <!-- Center Badges (Desktop) -->
+    <div class="hidden lg:flex items-center gap-2 text-xs font-mono">
+      <div class="px-2 py-1 rounded bg-emerald-950/80 border border-emerald-600/50 text-emerald-300 flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>South-Facing: <b>0 (0%)</b></span>
+      </div>
+      <div class="px-2 py-1 rounded bg-sky-950/70 border border-sky-600/50 text-sky-300 flex items-center gap-1.5">
+        <span>Main Road: <b>12.0m (40')</b></span>
+      </div>
+      <div class="px-2 py-1 rounded bg-amber-950/70 border border-amber-600/50 text-amber-300 flex items-center gap-1.5">
+        <span>Parks: <b>13.84% (4,051 m²)</b></span>
+      </div>
+      <div class="px-2 py-1 rounded bg-indigo-950/70 border border-indigo-600/50 text-indigo-300 flex items-center gap-1.5">
+        <span>Roads: <b>16.00%</b></span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+      <button id="btnOpenAreaModal" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium flex items-center gap-1 shadow transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span class="hidden sm:inline">Area Report</span>
+      </button>
+
+      <button id="btnToggleTheme" title="Toggle Theme" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-medium flex items-center gap-1 transition">
+        <svg id="themeIcon" class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <span id="themeBtnLabel" class="hidden md:inline">Print Mode</span>
+      </button>
+
+      <button id="btnFlipOrientation" title="Flip Orientation" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-400 text-xs font-medium flex items-center gap-1 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span id="flipBtnLabel" class="hidden md:inline">Flip 180°</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SECONDARY CONTROL BAR: FILTER CHIPS & LAYERS -->
+  <div class="bg-slate-900/90 border-b border-slate-800 px-3 sm:px-4 py-2 flex items-center justify-between gap-2 overflow-x-auto text-xs shrink-0 z-20">
+    <!-- Facing Filter Chips -->
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] transition">All (140)</button>
+      <button data-filter="FACE-E" class="filter-btn px-2.5 py-1 rounded-md text-emerald-300 hover:bg-slate-800 font-semibold text-[11px] transition">→ East (74)</button>
+      <button data-filter="FACE-W" class="filter-btn px-2.5 py-1 rounded-md text-indigo-300 hover:bg-slate-800 font-semibold text-[11px] transition">← West (66)</button>
+      <button data-filter="FACE-N" class="filter-btn px-2.5 py-1 rounded-md text-cyan-300 hover:bg-slate-800 font-semibold text-[11px] transition">↑ North (20)</button>
+      <span class="px-2 py-1 rounded-md bg-emerald-950/70 text-emerald-400 border border-emerald-600/40 font-mono font-bold text-[10px]">
+        ↓ South: 0 (0%)
+      </span>
+    </div>
+
+    <!-- Layer Toggles -->
+    <div class="hidden sm:flex items-center gap-2 shrink-0">
+      <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 cursor-pointer text-[11px]">
+        <input type="checkbox" id="layerArrows" checked class="accent-emerald-400 rounded" />
+        <span class="text-emerald-300">Vastu Gates</span>
+      </label>
+      <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 cursor-pointer text-[11px]">
+        <input type="checkbox" id="layerDims" checked class="accent-amber-400 rounded" />
+        <span class="text-amber-300">Dims</span>
+      </label>
+      <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 cursor-pointer text-[11px]">
+        <input type="checkbox" id="layerParks" checked class="accent-emerald-400 rounded" />
+        <span class="text-emerald-300">13.8% Parks</span>
+      </label>
+      <label class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 cursor-pointer text-[11px]">
+        <input type="checkbox" id="layerRoads" checked class="accent-indigo-400 rounded" />
+        <span class="text-indigo-300">12m Road</span>
+      </label>
+    </div>
+
+    <!-- Search Plot -->
+    <div class="relative flex items-center shrink-0">
+      <input id="plotSearchInput" type="number" min="1" max="140" placeholder="Plot # (1-140)" class="w-28 sm:w-32 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
+      <button id="btnPlotSearch" class="absolute right-1 text-slate-400 hover:text-sky-400 p-0.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN CANVAS & SIDEBAR CONTAINER -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- CAD CANVAS VIEWPORT -->
+    <main id="cadCanvasContainer" class="flex-1 relative overflow-hidden cad-viewport-dark cursor-grab active:cursor-grabbing select-none" style="touch-action: none;">
+
+      <!-- Floating Floating Legend & KPIs (Desktop) -->
+      <div class="hidden sm:flex absolute top-3 left-3 z-10 pointer-events-none flex-col gap-2 max-w-xs">
+        <div class="bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-xl p-3 shadow-xl pointer-events-auto">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              Optimized 12m Master Plan
+            </span>
+            <span class="text-[10px] font-mono text-emerald-300 font-bold">100% Vastu</span>
+          </div>
+          <!-- Stacked Progress Bar -->
+          <div class="w-full h-2 rounded-full overflow-hidden flex bg-slate-800 mb-2">
+            <div style="width: 68.14%" class="bg-sky-500" title="Plotted Area: 68.14%"></div>
+            <div style="width: 16.00%" class="bg-indigo-500" title="Roads (12m Spine + 9m Comb): 16.00%"></div>
+            <div style="width: 13.84%" class="bg-emerald-500" title="Parks: 13.84%"></div>
+            <div style="width: 2.02%" class="bg-amber-500" title="Shops & Utilities: 2.02%"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] font-mono">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 flex items-center gap-1"><i class="w-2 h-2 rounded-sm bg-sky-500 inline-block"></i>Plotted:</span>
+              <span class="text-sky-300 font-bold">68.14%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 flex items-center gap-1"><i class="w-2 h-2 rounded-sm bg-indigo-500 inline-block"></i>Roads:</span>
+              <span class="text-emerald-300 font-bold">16.00% ↓</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 flex items-center gap-1"><i class="w-2 h-2 rounded-sm bg-emerald-500 inline-block"></i>Parks:</span>
+              <span class="text-emerald-300 font-bold">13.84% (13-15%)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-300 flex items-center gap-1"><i class="w-2 h-2 rounded-sm bg-amber-500 inline-block"></i>Utility:</span>
+              <span class="text-amber-300 font-bold">2.02%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Bottom Zoom & Pan Controls -->
+      <div class="absolute bottom-4 left-3 sm:left-4 z-10 flex items-center gap-1 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-xl p-1 shadow-xl">
+        <button id="btnZoomIn" title="Zoom In (+)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-mono text-base font-bold transition">+</button>
+        <button id="btnZoomOut" title="Zoom Out (-)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-mono text-base font-bold transition">−</button>
+        <button id="btnResetView" title="Fit Master Plan" class="px-2 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1 text-xs font-medium transition">
+          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+          <span class="hidden xs:inline">Fit</span>
+        </button>
+        <div class="px-2 text-[10px] sm:text-[11px] font-mono text-slate-400 border-l border-slate-700" id="zoomLevelReadout">100%</div>
+        <div class="hidden md:block px-2 text-[11px] font-mono text-amber-300 border-l border-slate-700" id="cursorCoordReadout">X: 0'-0" , Y: 0'-0"</div>
+      </div>
+
+      <!-- Mobile Floating Inspector Pill -->
+      <button id="btnOpenMobileDrawer" class="md:hidden absolute bottom-4 right-3 z-10 px-3 py-2 rounded-xl bg-indigo-600/95 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg backdrop-blur-md border border-indigo-400/40">
+        <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span id="mobilePillLabel">Plot Inspector</span>
+      </button>
+
+      <!-- SVG ARCHITECTURAL CANVAS -->
+      <svg id="masterPlanSvg" class="w-full h-full block" viewBox="-115 -95 1210 645" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="dimArrowStart" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 10 1 L 1 5 L 10 9 z" fill="#fbbf24" />
+          </marker>
+          <marker id="dimArrowEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+          </marker>
+          <marker id="roadArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 2 L 8 5 L 0 8 z" fill="#38bdf8" opacity="0.85" />
+          </marker>
+
+          <!-- Park Grass Pattern -->
+          <pattern id="parkGrassPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+            <rect width="24" height="24" fill="#064e3b" fill-opacity="0.65" />
+            <circle cx="6" cy="6" r="1.1" fill="#34d399" fill-opacity="0.4" />
+            <circle cx="18" cy="14" r="1.3" fill="#10b981" fill-opacity="0.4" />
+            <path d="M 10 20 L 12 16 L 14 20" stroke="#34d399" stroke-width="0.7" fill="none" opacity="0.35" />
+          </pattern>
+
+          <pattern id="chakroadHatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="12" height="12" fill="#450a0a" fill-opacity="0.35" />
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#f43f5e" stroke-width="1.5" stroke-opacity="0.4" />
+          </pattern>
+
+          <pattern id="wideningHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.45" />
+          </pattern>
+
+          <!-- Exact Site Polygon ClipPath -->
+          <clipPath id="sitePolygonClip">
+            <polygon points="
+              0,0
+              211.08,0
+              211.08,103.75
+              453.96,103.75
+              535.00,138.00
+              931.75,147.96
+              936.25,412.46
+              717.46,412.46
+              590.42,412.46
+              453.96,412.46
+              453.96,333.42
+              272.33,333.42
+              212.08,353.50
+              212.08,412.46
+              211.08,412.46
+              0,412.46
+              0,103.75
+            " />
+          </clipPath>
+        </defs>
+
+        <g id="cadRootGroup">
+          <g id="cadOrientationGroup">
+
+            <!-- CLIPPED INTERIOR -->
+            <g clip-path="url(#sitePolygonClip)">
+              <!-- Base Asphalt -->
+              <rect x="-20" y="-20" width="1000" height="460" fill="#1e293b" id="baseRoadSurface" />
+
+              <!-- Front Road Widening Strip -->
+              <polygon points="925.0,147.5 931.75,147.96 936.25,412.46 925.5,412.46" fill="url(#wideningHatch)" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,2" />
+
+              <!-- 1. PARKS LAYER (13.84% TOTAL = 4,051.50 SQM — MIN 13% MAX 15%) -->
+              <g id="svgLayerParks">
+                <!-- PARK-2: NORTH CHAKROAD ECO-BUFFER (650.00 SQM / 2.22%) -->
+                <polygon
+                  data-type="PARK"
+                  data-id="PARK-2"
+                  class="cad-interactive"
+                  points="
+                    0,0 211.08,0 211.08,103.75 453.96,103.75 535.0,138.0 925.0,147.7
+                    925.0,154.0 476.0,154.0 453.96,112.0 195.0,112.0 195.0,8.0 0,8.0
+                  "
+                  fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="1.3"
+                />
+                <text x="665" y="149" text-anchor="middle" fill="#a7f3d0" font-size="6.2" font-family="JetBrains Mono" font-weight="700" pointer-events="none">
+                  PARK-2: NORTH CHAKROAD GREEN BUFFER (650 m² • 2.22%)
+                </text>
+
+                <!-- PARK-3: WEST BOTANICAL PROMENADE & ECO-BUFFER (465.00 SQM / 1.59%) -->
+                <!-- Replaced disadvantaged single-loaded strip 1E-18E, insulating the closed Chakroad boundary -->
+                <g data-type="PARK" data-id="PARK-3" class="cad-interactive">
+                  <rect x="2" y="8" width="45" height="248" rx="4" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="1.6" />
+                  <line x1="24.5" y1="18" x2="24.5" y2="246" stroke="#fde68a" stroke-width="1.6" stroke-opacity="0.6" stroke-dasharray="3,2" />
+                  <text x="24.5" y="130" text-anchor="middle" fill="#a7f3d0" font-size="6.2" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 24.5 130)">
+                    PARK-3: WEST BOTANICAL PROMENADE (465 m² • 1.59%)
+                  </text>
+                </g>
+
+                <!-- PARK-1: CENTRAL VASTU COMMUNITY PARK (2,936.50 SQM / 10.03%) -->
+                <!-- Sits directly North of the 12m Main Spine Road (y=108 to y=258), absorbing all south frontage -->
+                <g data-type="PARK" data-id="PARK-1" class="cad-interactive">
+                  <rect x="195.0" y="108.0" width="281.0" height="150.0" rx="6" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="2.2" />
+                  <!-- 8' Jogging Track -->
+                  <rect x="205.0" y="118.0" width="261.0" height="130.0" rx="12" fill="none" stroke="#fde68a" stroke-width="3" stroke-opacity="0.55" />
+                  <rect x="205.0" y="118.0" width="261.0" height="130.0" rx="12" fill="none" stroke="#10b981" stroke-width="0.9" stroke-dasharray="4,3" />
+                  <!-- Walkways -->
+                  <line x1="335.5" y1="118" x2="335.5" y2="248" stroke="#cbd5e1" stroke-width="2" stroke-opacity="0.4" />
+                  <line x1="205" y1="183" x2="466" y2="183" stroke="#cbd5e1" stroke-width="2" stroke-opacity="0.4" />
+                  <!-- Gazebo -->
+                  <circle cx="335.5" cy="183" r="16" fill="#047857" stroke="#34d399" stroke-width="1.5" />
+                  <circle cx="335.5" cy="183" r="9" fill="#f59e0b" fill-opacity="0.9" stroke="#fef3c7" stroke-width="1" />
+                  <!-- Subzones -->
+                  <text x="335.5" y="212" text-anchor="middle" fill="#ecfdf5" font-size="9.5" font-family="JetBrains Mono" font-weight="700">
+                    PARK-1: CENTRAL VASTU COMMUNITY PARK
+                  </text>
+                  <text x="335.5" y="225" text-anchor="middle" fill="#6ee7b7" font-size="7.5" font-family="JetBrains Mono" font-weight="700">
+                    2,936.50 SQM (31,608 SQFT • 10.03% OF SITE)
+                  </text>
+                  <text x="335.5" y="237" text-anchor="middle" fill="#fde68a" font-size="6.5" font-family="JetBrains Mono" font-weight="600">
+                    ★ PLACED NORTH OF 12M MAIN ROAD SO ZERO PLOTS FACE SOUTH ★
+                  </text>
+                </g>
+
+                <g id="svgTreeCanopies"></g>
+              </g>
+
+              <!-- 2. ROADS LAYER: 12.0M MAIN ROAD + 9.0M COMB AVENUES (16.00% TOTAL) -->
+              <g id="svgLayerRoads">
+                <!-- 12.0M (40'-0") MAIN SPINE ROAD: RUNS STRAIGHT FROM WEST BOUNDARY (x=0) TO EAST GATE (x=935) -->
+                <!-- y = 258 to 298 (Height = 40.0 ft = 12.0m) -->
+                <rect x="0" y="258" width="935" height="40" fill="#0f172a" fill-opacity="0.75" />
+
+                <!-- East Entrance Trumpet Flare -->
+                <rect x="876" y="253" width="59" height="50" fill="#0f172a" fill-opacity="0.8" />
+
+                <!-- Landscaped Boulevard Central Median Divider -->
+                <rect x="15" y="277" width="905" height="2.5" rx="1.2" fill="#10b981" stroke="#34d399" stroke-width="0.6" />
+
+                <!-- 9.0M (30'-0") INTERNAL DOUBLE-LOADED COMB AVENUES -->
+                <!-- West Avenue (x = 135 to 165, y = 8 to 258) -->
+                <rect x="135" y="8" width="30" height="250" fill="#0f172a" fill-opacity="0.55" />
+
+                <!-- West South Connector (x = 0 to 195, y = 338 to 368) serving North-Facing Plots -->
+                <rect x="0" y="338" width="195" height="30" fill="#0f172a" fill-opacity="0.55" />
+
+                <!-- East Comb Avenue-1 (x = 538 to 568, y = 154 to 410) -->
+                <rect x="538" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+                <!-- East Comb Avenue-2 (x = 692 to 722, y = 154 to 410) -->
+                <rect x="692" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+                <!-- East Comb Avenue-3 (x = 846 to 876, y = 154 to 410) -->
+                <rect x="846" y="154" width="30" height="256" fill="#0f172a" fill-opacity="0.55" />
+
+                <!-- Animated Traffic Flow Centerlines -->
+                <line x1="918" y1="267" x2="25" y2="267" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" />
+                <line x1="25" y1="289" x2="918" y2="289" stroke="#38bdf8" stroke-width="1.1" stroke-dasharray="8,8" class="road-flow-line" marker-end="url(#roadArrow)" />
+
+                <line x1="150" y1="245" x2="150" y2="20" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
+                <line x1="553" y1="162" x2="553" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
+                <line x1="707" y1="162" x2="707" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
+                <line x1="861" y1="162" x2="861" y2="402" stroke="#38bdf8" stroke-width="0.7" stroke-dasharray="5,5" opacity="0.6" />
+
+                <!-- Road Width Labels -->
+                <g font-family="JetBrains Mono" font-weight="700" font-size="7" fill="#bae6fd">
+                  <text x="335" y="271" text-anchor="middle">◀── 40'-0" (12.0M) MAIN CENTRAL ARTERIAL BOULEVARD (PARK ON NORTH • PLOTS FACE NORTH) ──▶</text>
+                  <text x="730" y="271" text-anchor="middle">◀── 40'-0" (12.0M) MAIN ARTERIAL SPINE ──▶</text>
+                  <text x="70" y="271" text-anchor="middle">◀── 40'-0" (12.0M) WEST BOULEVARD ──▶</text>
+                  <text x="100" y="355" text-anchor="middle" font-size="6.3">30'-0" (9.0M) CONNECTOR</text>
+                  <text x="150" y="140" text-anchor="middle" font-size="6.3" transform="rotate(-90 150 140)">30'-0" (9.0M) WEST AVE</text>
+                  <text x="555" y="205" text-anchor="middle" font-size="6.3" transform="rotate(-90 555 205)">30'-0" AVE-1</text>
+                  <text x="555" y="355" text-anchor="middle" font-size="6.3" transform="rotate(-90 555 355)">30'-0" AVE-1</text>
+                  <text x="709" y="205" text-anchor="middle" font-size="6.3" transform="rotate(-90 709 205)">30'-0" AVE-2</text>
+                  <text x="709" y="355" text-anchor="middle" font-size="6.3" transform="rotate(-90 709 355)">30'-0" AVE-2</text>
+                  <text x="863" y="205" text-anchor="middle" font-size="6.3" transform="rotate(-90 863 205)">30'-0" AVE-3</text>
+                  <text x="863" y="355" text-anchor="middle" font-size="6.3" transform="rotate(-90 863 355)">30'-0" AVE-3</text>
+                </g>
+              </g>
+
+              <!-- 3. PLOTS LAYER (140 VASTU PLOTS — 0 SOUTH-FACING) -->
+              <g id="svgLayerPlots"></g>
+              <g id="svgLayerArrows" class="pointer-events-none"></g>
+              <g id="svgLayerSetbacks" class="hidden pointer-events-none"></g>
+
+              <!-- 4. CIVIC UTILITIES & COMMERCIAL SHOPS (2.02%) -->
+              <g id="svgLayerUtilities">
+                <!-- Entrance Gate Complex -->
+                <g data-type="UTILITY" data-id="UTIL-GATE" class="cad-interactive">
+                  <rect x="916" y="254" width="12" height="5" fill="#f59e0b" stroke="#fef3c7" stroke-width="1" />
+                  <rect x="916" y="297" width="12" height="5" fill="#f59e0b" stroke="#fef3c7" stroke-width="1" />
+                  <rect x="902" y="273" width="14" height="10" rx="1.5" fill="#d97706" stroke="#fef3c7" stroke-width="1.2" />
+                  <text x="909" y="279.5" text-anchor="middle" fill="#fffbeb" font-size="4.6" font-family="JetBrains Mono" font-weight="700">GUARD</text>
+                </g>
+
+                <!-- Shopping Arcade along 12m Main Spine -->
+                <g data-type="UTILITY" data-id="UTIL-SHOPS" class="cad-interactive">
+                  <rect x="195" y="298" width="16" height="54" rx="2" fill="#78350f" fill-opacity="0.9" stroke="#f59e0b" stroke-width="1.3" />
+                  <text x="203" y="325" text-anchor="middle" fill="#fef3c7" font-size="5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 203 325)">12 SHOPS (S1-S12)</text>
+                </g>
+
+                <!-- STP -->
+                <g data-type="UTILITY" data-id="UTIL-STP" class="cad-interactive">
+                  <rect x="885" y="148" width="22" height="18" rx="2" fill="#312e81" stroke="#818cf8" stroke-width="1.2" />
+                  <text x="896" y="159" text-anchor="middle" fill="#e0e7ff" font-size="4.8" font-family="JetBrains Mono" font-weight="700">STP</text>
+                </g>
+              </g>
+            </g> <!-- End of Clipped Interior -->
+
+            <!-- EXISTING BOUNDARIES & CHAKROAD WALL -->
+            <g id="svgLayerChakroad">
+              <polygon
+                points="-18,-22 229,-22 229,85 469,85 548,120 948,130 948,148 535,138 453.96,103.75 211.08,103.75 211.08,0 0,0 -18,0"
+                fill="url(#chakroadHatch)" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="6,4"
+              />
+              <polyline
+                points="0,103.75 0,0 211.08,0 211.08,103.75 453.96,103.75 535.0,138.0 931.75,147.96"
+                fill="none" stroke="#f43f5e" stroke-width="4.2" stroke-linecap="round"
+              />
+            </g>
+
+            <!-- EXTERNAL MAIN ROAD 22'-6" WD. ON EAST -->
+            <g id="svgLayerExternalRoads">
+              <polygon points="931.75,147.96 970,148.5 975,412.46 936.25,412.46" fill="#334155" fill-opacity="0.85" stroke="#38bdf8" stroke-width="1.5" />
+              <line x1="951" y1="120" x2="956" y2="440" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="10,8" />
+              <text x="952" y="210" text-anchor="middle" fill="#f8fafc" font-family="JetBrains Mono" font-size="9.5" font-weight="700" transform="rotate(89 952 210)">
+                ROAD 22'-6" WD. (MAIN ENTRY)
+              </text>
+              <text x="984" y="275" text-anchor="middle" fill="#fde047" font-family="JetBrains Mono" font-size="8.5" font-weight="700" transform="rotate(89 984 275)">
+                ★ ONLY ENTRY/EXIT TO COLONY ★
+              </text>
+              <path d="M 974 272 L 938 272" stroke="#facc15" stroke-width="3" marker-end="url(#dimArrowEnd)" />
+            </g>
+
+            <!-- SITE BOUNDARY OUTLINE -->
+            <polygon
+              points="
+                0,0 211.08,0 211.08,103.75 453.96,103.75 535.00,138.00 931.75,147.96
+                936.25,412.46 717.46,412.46 590.42,412.46 453.96,412.46 453.96,333.42
+                272.33,333.42 212.08,353.50 212.08,412.46 211.08,412.46 0,412.46 0,103.75
+              "
+              fill="none" stroke="#f8fafc" stroke-width="2.2" pointer-events="none"
+            />
+
+            <!-- DIMENSION CALLOUTS LAYER -->
+            <g id="svgLayerDims" font-family="JetBrains Mono" font-weight="700" font-size="9.5" fill="#fef08a" pointer-events="none">
+              <!-- East Front Dimension -->
+              <line x1="948" y1="148" x2="952.5" y2="412.5" stroke="#fbbf24" stroke-width="1.2" marker-start="url(#dimArrowStart)" marker-end="url(#dimArrowEnd)" />
+              <text x="965" y="325" text-anchor="middle" transform="rotate(89 965 325)">264'-6"</text>
+
+              <!-- North Chakroad Dimensions -->
+              <text x="105.5" y="-12" text-anchor="middle">211'-1"</text>
+              <text x="332.5" y="90" text-anchor="middle">242'-10 1/2"</text>
+              <text x="495" y="112" text-anchor="middle" transform="rotate(22 495 112)">87'-8"</text>
+              <text x="733" y="130" text-anchor="middle" transform="rotate(1.4 733 130)">396'-9"</text>
+
+              <!-- Left Boundary Dimensions -->
+              <text x="-36" y="258" text-anchor="middle" transform="rotate(-90 -36 258)">308'-8 1/2"</text>
+              <text x="-36" y="55" text-anchor="middle" transform="rotate(-90 -36 55)">103'-9"</text>
+
+              <!-- Bottom Segment Dimensions -->
+              <text x="826.8" y="441" text-anchor="middle">218'-9 1/2"</text>
+              <text x="653.9" y="441" text-anchor="middle">127'-0 1/2"</text>
+              <text x="522.2" y="441" text-anchor="middle">136'-5 1/2"</text>
+              <text x="363" y="360" text-anchor="middle">181'-7 1/2"</text>
+              <text x="105.5" y="441" text-anchor="middle">211'-1"</text>
+            </g>
+
+            <!-- Compass Rose -->
+            <g transform="translate(865, 65)">
+              <circle cx="0" cy="0" r="22" fill="#0f172a" fill-opacity="0.85" stroke="#475569" stroke-width="1.2" />
+              <polygon points="0,-18 5,-4 0,-7 -5,-4" fill="#38bdf8" />
+              <polygon points="0,18 4,4 0,7 -4,4" fill="#64748b" />
+              <line x1="-16" y1="0" x2="16" y2="0" stroke="#475569" stroke-width="1" />
+              <text x="0" y="-23" text-anchor="middle" fill="#38bdf8" font-size="8" font-weight="700">N</text>
+              <text x="25" y="3" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-weight="700">E</text>
+              <text x="0" y="29" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-weight="700">S</text>
+              <text x="-25" y="3" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-weight="700">W</text>
+            </g>
+
+            <!-- Bottom Title Block -->
+            <g transform="translate(468, 485)">
+              <rect x="-295" y="-18" width="590" height="34" rx="5" fill="#0f172a" fill-opacity="0.95" stroke="#334155" stroke-width="1.2" />
+              <text x="0" y="-3" text-anchor="middle" fill="#f8fafc" font-size="9" font-weight="700" letter-spacing="1">
+                12M BOULEVARD MASTER PLAN — 0% SOUTH-FACING • 13.84% PARKS • 16.0% ROADS
+              </text>
+              <text x="0" y="10" text-anchor="middle" fill="#34d399" font-size="7.5" font-weight="600">
+                140 RESIDENTIAL PLOTS (74 EAST • 66 WEST • 20 NORTH • 0 SOUTH) • 29,274.03 SQM (38.45 BIGHAS)
+              </text>
+            </g>
+
+          </g>
+        </g>
+      </svg>
+    </main>
+
+    <!-- DESKTOP RIGHT SIDEBAR: CAD INSPECTOR -->
+    <aside class="hidden md:flex w-80 lg:w-96 bg-slate-900/95 border-l border-slate-800 flex-col shrink-0 z-20 overflow-y-auto">
+      <div class="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">CAD Plot Inspector</h2>
+        </div>
+        <span id="inspectorBadge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+          SELECT PLOT
+        </span>
+      </div>
+
+      <div class="p-4 flex-1 flex flex-col gap-4 text-xs font-sans">
+        <!-- Plot Details Card -->
+        <div class="bg-slate-950/80 rounded-xl p-3.5 border border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Plot / Asset No:</span>
+            <span id="inspectPlotNo" class="font-mono font-bold text-base text-white">Click any plot</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Vastu Facing:</span>
+            <span id="inspectFacing" class="font-bold text-emerald-400">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Dimensions:</span>
+            <span id="inspectDims" class="font-mono font-bold text-sky-300">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Plot Area:</span>
+            <span id="inspectArea" class="font-mono font-bold text-amber-300">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Abutting Road:</span>
+            <span id="inspectRoad" class="font-mono font-medium text-slate-200 text-right">--</span>
+          </div>
+        </div>
+
+        <!-- MDA Compliance Highlights -->
+        <div class="bg-slate-950/50 rounded-xl p-3 border border-slate-800/80 space-y-1.5 text-[11px]">
+          <h3 class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Master Plan Highlights</h3>
+          <div class="flex justify-between text-slate-400">
+            <span>Main Spine Road:</span>
+            <span class="text-emerald-300 font-bold">12.0m (40'-0")</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Internal Avenues:</span>
+            <span class="text-sky-300 font-bold">9.0m (30'-0")</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>South-Facing Plots:</span>
+            <span class="text-emerald-300 font-bold">0 (0.0%)</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Total Parks:</span>
+            <span class="text-amber-300 font-bold">13.84% (4,051 m²)</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Road Wastage:</span>
+            <span class="text-emerald-300 font-bold">16.00%</span>
+          </div>
+        </div>
+
+        <!-- Vastu Guidelines -->
+        <div class="bg-emerald-950/20 border border-emerald-600/30 rounded-xl p-3 text-[11px] space-y-1">
+          <div class="font-bold text-emerald-400 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            100% Vastu Compliant Layout
+          </div>
+          <p class="text-slate-300">
+            Zero plots face South. Every entrance gate is situated in positive Vastu padas (East/Indra, North/Kuber, West/Varun).
+          </p>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MOBILE SLIDING BOTTOM SHEET DRAWER -->
+  <div id="mobileInspectorDrawer" class="md:hidden fixed inset-x-0 bottom-0 z-40 transform translate-y-full drawer-transition bg-slate-900/98 border-t border-slate-700/80 rounded-t-2xl shadow-2xl backdrop-blur-xl max-h-[82vh] overflow-y-auto">
+    <!-- Drag Handle & Header -->
+    <div class="p-3 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/95 backdrop-blur-md z-10">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Plot Inspector</h3>
+      </div>
+      <div class="w-10 h-1 bg-slate-700 rounded-full mx-auto"></div>
+      <button id="btnCloseMobileDrawer" class="p-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content inside Drawer -->
+    <div class="p-4 space-y-3 text-xs">
+      <div class="bg-slate-950/90 rounded-xl p-3 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Plot / Asset:</span>
+          <span id="mInspectPlotNo" class="font-mono font-bold text-base text-white">Select a plot</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Facing:</span>
+          <span id="mInspectFacing" class="font-bold text-emerald-400">--</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Dimensions:</span>
+          <span id="mInspectDims" class="font-mono font-bold text-sky-300">--</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Area:</span>
+          <span id="mInspectArea" class="font-mono font-bold text-amber-300">--</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Abutting Road:</span>
+          <span id="mInspectRoad" class="font-mono text-slate-200">--</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+          <div class="text-slate-400">Main Spine:</div>
+          <div class="text-emerald-400 font-bold">12.0m (40'-0")</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+          <div class="text-slate-400">Parks Quota:</div>
+          <div class="text-amber-400 font-bold">13.84% (4,051 m²)</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+          <div class="text-slate-400">South-Facing:</div>
+          <div class="text-emerald-400 font-bold">0 Plots (0%)</div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+          <div class="text-slate-400">Road Wastage:</div>
+          <div class="text-sky-400 font-bold">16.00%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AREA & OPTIMIZATION REPORT MODAL -->
+  <div id="areaModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-5 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-white">COLONY LAND-USE &amp; VASTU REPORT (12M ROAD)</h2>
+          <p class="text-xs text-slate-400 font-mono">MDA Subdivision Rules • 29,274.03 SQM (38.45 Bighas / 35,011.44 Gaj)</p>
+        </div>
+        <button id="btnCloseAreaModal" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-6 text-xs font-sans">
+        <!-- 4 Key Metric Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-600/50">
+            <div class="text-slate-400 text-[11px]">South-Facing Plots</div>
+            <div class="text-base sm:text-lg font-bold text-emerald-300 mt-1">0 Plots (0%)</div>
+            <div class="text-[10px] text-emerald-200 mt-1">100% East, West &amp; North</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-sky-950/40 border border-sky-600/50">
+            <div class="text-slate-400 text-[11px]">Main Road Width</div>
+            <div class="text-base sm:text-lg font-bold text-sky-300 mt-1">12.0m (40'-0")</div>
+            <div class="text-[10px] text-sky-200 mt-1">Full cross-colony boulevard</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-amber-950/40 border border-amber-600/50">
+            <div class="text-slate-400 text-[11px]">Parks &amp; Green Space</div>
+            <div class="text-base sm:text-lg font-bold text-amber-300 mt-1">13.84% Locked</div>
+            <div class="text-[10px] text-amber-200 mt-1">4,051.50 SQM (Min 13% - Max 15%)</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-600/50">
+            <div class="text-slate-400 text-[11px]">Total Road Wastage</div>
+            <div class="text-base sm:text-lg font-bold text-indigo-300 mt-1">16.00% Only</div>
+            <div class="text-[10px] text-indigo-200 mt-1">Single-loaded wastage eliminated</div>
+          </div>
+        </div>
+
+        <!-- Land Use Table -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">Detailed Land-Use Statement</h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left border-collapse font-mono text-xs">
+              <thead>
+                <tr class="bg-slate-950 text-slate-300 border-b border-slate-800">
+                  <th class="py-2.5 px-3">Land Use Category</th>
+                  <th class="py-2.5 px-3 text-right">Area (SQ.M)</th>
+                  <th class="py-2.5 px-3 text-right">Area (Gaj)</th>
+                  <th class="py-2.5 px-3 text-right">Bighas</th>
+                  <th class="py-2.5 px-3 text-right">% Share</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/80 bg-slate-900/60">
+                <tr class="bg-sky-950/20">
+                  <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Net Saleable Residential Plotted Area (140 Plots)</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">19,945.99</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">23,855.19</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">26.19</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-400">68.14%</td>
+                </tr>
+                <tr class="bg-emerald-950/25">
+                  <td class="py-2.5 px-3 font-sans font-bold text-emerald-300">2. Parks &amp; Green Space (Park-1 Central + Park-2 Buffer + Park-3 West)</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,051.50</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,845.59</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">5.32</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-400">13.84%</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-sans font-medium text-slate-200">3. Roads (12.0m Main Boulevard + 9.0m Comb Roads)</td>
+                  <td class="py-2.5 px-3 text-right">4,685.20</td>
+                  <td class="py-2.5 px-3 text-right">5,603.50</td>
+                  <td class="py-2.5 px-3 text-right">6.15</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">16.00%</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 px-3 font-sans font-medium text-amber-300">4. Shopping Arcade (12 Shops) &amp; Utilities (STP/Guard)</td>
+                  <td class="py-2.5 px-3 text-right">591.34</td>
+                  <td class="py-2.5 px-3 text-right">707.16</td>
+                  <td class="py-2.5 px-3 text-right">0.78</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-amber-300">2.02%</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="bg-slate-950 font-bold text-white border-t-2 border-slate-700">
+                  <td class="py-2.5 px-3 font-sans">TOTAL COLONY SITE AREA</td>
+                  <td class="py-2.5 px-3 text-right text-sky-300">29,274.03</td>
+                  <td class="py-2.5 px-3 text-right text-amber-300">35,011.44</td>
+                  <td class="py-2.5 px-3 text-right text-emerald-300">38.45</td>
+                  <td class="py-2.5 px-3 text-right text-emerald-400">100.00%</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    /***************************************************************************
+     * 1. ARCHITECTURAL DATA MODEL: 140 PLOTS (0 SOUTH-FACING)
+     ***************************************************************************/
+    const plotsData = [];
+
+    function createPlotRange({
+      startNo, count, category, facingCode, facingLabel, blockName,
+      xStart, yStart, totalWidth, totalHeight, direction = 'vertical',
+      nominalSizeFt, nominalSizeM, areaGaj, areaSqFt, areaSqM, roadWidth
+    }) {
+      const stepX = totalWidth / (direction === 'horizontal' ? count : 1);
+      const stepY = totalHeight / (direction === 'vertical' ? count : 1);
+
+      for (let i = 0; i < count; i++) {
+        const plotNo = startNo + i;
+        const x = direction === 'horizontal' ? xStart + i * stepX : xStart;
+        const y = direction === 'vertical' ? yStart + i * stepY : yStart;
+        const w = direction === 'horizontal' ? stepX : totalWidth;
+        const h = direction === 'vertical' ? stepY : totalHeight;
+        const isCorner = (i === 0 || i === count - 1);
+
+        plotsData.push({
+          id: `PLOT-${plotNo}`,
+          plotNo,
+          category,
+          facingCode,
+          facingLabel,
+          blockName,
+          x: Number(x.toFixed(2)),
+          y: Number(y.toFixed(2)),
+          w: Number(w.toFixed(2)),
+          h: Number(h.toFixed(2)),
+          nominalSizeFt,
+          nominalSizeM,
+          areaGaj,
+          areaSqFt,
+          areaSqM,
+          roadWidth,
+          facing: facingLabel,
+          isCorner
+        });
+      }
+    }
+
+    // --- 1. WEST WING PLOTS (Re-engineered: Disadvantaged strip replaced with Park-3) ---
+    // West Avenue West Col: Plots 1 to 12 (12 Plots, WEST-FACING onto West Avenue & Park-3)
+    createPlotRange({
+      startNo: 1, count: 12, category: 'B', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← West Avenue & Park-3)',
+      blockName: 'West Wing Col-W1 (West Facing)',
+      xStart: 47, yStart: 8, totalWidth: 44, totalHeight: 250, direction: 'vertical',
+      nominalSizeFt: "21'-0\" × 44'-0\"", nominalSizeM: "6.40m × 13.41m",
+      areaGaj: 103, areaSqFt: 924, areaSqM: 85.84,
+      roadWidth: "30'-0\" (9.0m) West Avenue"
+    });
+
+    // West Avenue East Col: Plots 13 to 24 (12 Plots, EAST-FACING onto Park-1)
+    createPlotRange({
+      startNo: 13, count: 12, category: 'B', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ Park-1 View)',
+      blockName: 'West Wing Col-W2 (East Facing)',
+      xStart: 91, yStart: 8, totalWidth: 44, totalHeight: 250, direction: 'vertical',
+      nominalSizeFt: "21'-0\" × 44'-0\"", nominalSizeM: "6.40m × 13.41m",
+      areaGaj: 103, areaSqFt: 924, areaSqM: 85.84,
+      roadWidth: "30'-0\" (9.0m) West Avenue"
+    });
+
+    // West Wing South Plots: Plots 25 to 32 (8 Plots, NORTH-FACING on South Connector)
+    createPlotRange({
+      startNo: 25, count: 8, category: 'C', facingCode: 'N',
+      facingLabel: 'NORTH-FACING (↑ 30\' Connector Road)',
+      blockName: 'West Wing South Row (North Facing)',
+      xStart: 10, yStart: 368, totalWidth: 185, totalHeight: 42, direction: 'horizontal',
+      nominalSizeFt: "23'-1\" × 42'-0\"", nominalSizeM: "7.04m × 12.80m",
+      areaGaj: 108, areaSqFt: 970, areaSqM: 90.11,
+      roadWidth: "30'-0\" (9.0m) West Connector Road"
+    });
+
+    // --- 2. 12.0M MAIN BOULEVARD PRIME ROW (Plots 33 to 44 — 12 Plots, NORTH-FACING) ---
+    createPlotRange({
+      startNo: 33, count: 12, category: 'A', facingCode: 'N',
+      facingLabel: 'NORTH-FACING (↑ 12.0m Main Boulevard & Park View)',
+      blockName: 'Central Boulevard Row (North & Park Facing)',
+      xStart: 212, yStart: 298, totalWidth: 241, totalHeight: 35, direction: 'horizontal',
+      nominalSizeFt: "30'-0\" × 54'-0\"", nominalSizeM: "9.14m × 16.46m",
+      areaGaj: 180, areaSqFt: 1620, areaSqM: 150.50,
+      roadWidth: "40'-0\" (12.0m) Main Spine Boulevard"
+    });
+
+    // --- 3. EAST COMB BLOCKS (Plots 45 to 140 — STRICTLY EAST & WEST FACING) ---
+    // Block-E1 North (Plots 45–52): 8 EAST-FACING (y=154..258)
+    createPlotRange({
+      startNo: 45, count: 8, category: 'A', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-1)',
+      blockName: 'Block-E1 North (East Facing)',
+      xStart: 476, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
+      nominalSizeFt: "26'-0\" × 62'-0\"", nominalSizeM: "7.92m × 18.90m",
+      areaGaj: 179, areaSqFt: 1612, areaSqM: 149.75,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
+    });
+
+    // Block-E1 South (Plots 53–60): 8 EAST-FACING (y=298..410)
+    createPlotRange({
+      startNo: 53, count: 8, category: 'A', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-1)',
+      blockName: 'Block-E1 South (East Facing)',
+      xStart: 476, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
+      nominalSizeFt: "28'-0\" × 62'-0\"", nominalSizeM: "8.53m × 18.90m",
+      areaGaj: 193, areaSqFt: 1736, areaSqM: 161.27,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
+    });
+
+    // Block-E2 West Col North (Plots 61–68): 8 WEST-FACING
+    createPlotRange({
+      startNo: 61, count: 8, category: 'B', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-1)',
+      blockName: 'Block-E2 West Col (West Facing)',
+      xStart: 568, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
+    });
+
+    // Block-E2 West Col South (Plots 69–76): 8 WEST-FACING
+    createPlotRange({
+      startNo: 69, count: 8, category: 'B', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-1)',
+      blockName: 'Block-E2 West Col (West Facing)',
+      xStart: 568, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-1"
+    });
+
+    // Block-E2 East Col North (Plots 77–84): 8 EAST-FACING
+    createPlotRange({
+      startNo: 77, count: 8, category: 'B', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-2)',
+      blockName: 'Block-E2 East Col (East Facing)',
+      xStart: 630, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
+    });
+
+    // Block-E2 East Col South (Plots 85–92): 8 EAST-FACING
+    createPlotRange({
+      startNo: 85, count: 8, category: 'B', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-2)',
+      blockName: 'Block-E2 East Col (East Facing)',
+      xStart: 630, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
+    });
+
+    // Block-E3 West Col North (Plots 93–100): 8 WEST-FACING
+    createPlotRange({
+      startNo: 93, count: 8, category: 'B', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-2)',
+      blockName: 'Block-E3 West Col (West Facing)',
+      xStart: 722, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
+    });
+
+    // Block-E3 West Col South (Plots 101–108): 8 WEST-FACING
+    createPlotRange({
+      startNo: 101, count: 8, category: 'B', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-2)',
+      blockName: 'Block-E3 West Col (West Facing)',
+      xStart: 722, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-2"
+    });
+
+    // Block-E3 East Col North (Plots 109–116): 8 EAST-FACING
+    createPlotRange({
+      startNo: 109, count: 8, category: 'B', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-3)',
+      blockName: 'Block-E3 East Col (East Facing)',
+      xStart: 784, yStart: 154, totalWidth: 62, totalHeight: 104, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
+    });
+
+    // Block-E3 East Col South (Plots 117–124): 8 EAST-FACING
+    createPlotRange({
+      startNo: 117, count: 8, category: 'B', facingCode: 'E',
+      facingLabel: 'EAST-FACING (→ 30\' Comb Ave-3)',
+      blockName: 'Block-E3 East Col (East Facing)',
+      xStart: 784, yStart: 298, totalWidth: 62, totalHeight: 112, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 62'-0\"", nominalSizeM: "7.32m × 18.90m",
+      areaGaj: 165, areaSqFt: 1488, areaSqM: 138.24,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
+    });
+
+    // Block-E4 East Edge North (Plots 125–132): 8 WEST-FACING
+    createPlotRange({
+      startNo: 125, count: 8, category: 'C', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
+      blockName: 'Block-E4 East Edge (West Facing)',
+      xStart: 876, yStart: 166, totalWidth: 49, totalHeight: 92, direction: 'vertical',
+      nominalSizeFt: "24'-0\" × 49'-0\"", nominalSizeM: "7.32m × 14.94m",
+      areaGaj: 130, areaSqFt: 1176, areaSqM: 109.25,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
+    });
+
+    // Block-E4 East Edge South (Plots 133–140): 8 WEST-FACING
+    createPlotRange({
+      startNo: 133, count: 8, category: 'C', facingCode: 'W',
+      facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
+      blockName: 'Block-E4 East Edge (West Facing)',
+      xStart: 876, yStart: 303, totalWidth: 49, totalHeight: 107, direction: 'vertical',
+      nominalSizeFt: "25'-0\" × 49'-0\"", nominalSizeM: "7.62m × 14.94m",
+      areaGaj: 136, areaSqFt: 1225, areaSqM: 113.81,
+      roadWidth: "30'-0\" (9.0m) Comb Avenue-3"
+    });
+
+    // Colors
+    const vastuColors = {
+      E: { fill: '#065f46', stroke: '#34d399', text: '#ecfdf5', arrow: '#34d399' }, // East (Green)
+      W: { fill: '#312e81', stroke: '#818cf8', text: '#eef2ff', arrow: '#a5b4fc' }, // West (Indigo)
+      N: { fill: '#164e63', stroke: '#22d3ee', text: '#ecfeff', arrow: '#fde047' }  // North (Cyan)
+    };
+
+    /***************************************************************************
+     * 2. RENDER PLOTS & VASTU ENTRY ARROWS
+     ***************************************************************************/
+    const svgLayerPlots = document.getElementById('svgLayerPlots');
+    const svgLayerArrows = document.getElementById('svgLayerArrows');
+    const svgTreeCanopies = document.getElementById('svgTreeCanopies');
+
+    function renderPlots() {
+      let plotsHtml = '';
+      let arrowsHtml = '';
+
+      plotsData.forEach((p) => {
+        const style = vastuColors[p.facingCode];
+        const cx = (p.x + p.w / 2).toFixed(1);
+        const cy = (p.y + p.h / 2).toFixed(1);
+
+        plotsHtml += `
+          <g data-type="PLOT" data-id="${p.id}" data-facing="${p.facingCode}" class="cad-interactive">
+            <rect
+              id="rect-${p.id}"
+              x="${p.x}"
+              y="${p.y}"
+              width="${p.w}"
+              height="${p.h}"
+              fill="${style.fill}"
+              stroke="${style.stroke}"
+              stroke-width="1.1"
+              stroke-opacity="0.85"
+            />
+            <text
+              x="${cx}"
+              y="${Number(cy) + 2}"
+              text-anchor="middle"
+              fill="${style.text}"
+              font-family="JetBrains Mono"
+              font-weight="700"
+              font-size="${p.h > 24 ? 5.8 : 4.8}"
+              pointer-events="none"
+            >
+              ${p.plotNo}${p.facingCode}
+            </text>
+            ${p.h > 18 ? `
+              <text
+                x="${cx}"
+                y="${Number(cy) + 7}"
+                text-anchor="middle"
+                fill="${style.stroke}"
+                font-family="JetBrains Mono"
+                font-size="3.8"
+                opacity="0.9"
+                pointer-events="none"
+              >
+                ${p.areaGaj}G
+              </text>
+            ` : ''}
+          </g>
+        `;
+
+        // Vastu entry arrow
+        let arrowX = cx, arrowY = cy, arrowDx = 0, arrowDy = 0;
+        if (p.facingCode === 'E') { arrowX = p.x + p.w - 3; arrowY = cy; arrowDx = 4; }
+        else if (p.facingCode === 'W') { arrowX = p.x + 3; arrowY = cy; arrowDx = -4; }
+        else if (p.facingCode === 'N') { arrowX = cx; arrowY = p.y + 3; arrowDy = -4; }
+
+        arrowsHtml += `
+          <line
+            x1="${arrowX}" y1="${arrowY}"
+            x2="${Number(arrowX) + arrowDx}" y2="${Number(arrowY) + arrowDy}"
+            stroke="${style.arrow}" stroke-width="1.3" marker-end="url(#roadArrow)"
+          />
+        `;
+      });
+
+      svgLayerPlots.innerHTML = plotsHtml;
+      svgLayerArrows.innerHTML = arrowsHtml;
+    }
+
+    function renderTrees() {
+      const treeCoords = [
+        [15, 25], [15, 65], [15, 105], [15, 145], [15, 185], [15, 225],
+        [60, 4], [105, 4], [150, 4], [195, 4], [235, 108], [285, 108], [335, 108], [385, 108],
+        [215, 135], [215, 180], [215, 225], [455, 135], [455, 180], [455, 225],
+        [525, 142], [585, 148], [645, 148], [715, 149], [775, 150], [835, 150]
+      ];
+      let html = '';
+      treeCoords.forEach(([x, y]) => {
+        html += `
+          <circle cx="${x}" cy="${y}" r="4.2" fill="#047857" fill-opacity="0.7" stroke="#34d399" stroke-width="0.8" />
+          <circle cx="${x}" cy="${y}" r="2" fill="#10b981" fill-opacity="0.9" />
+        `;
+      });
+      svgTreeCanopies.innerHTML = html;
+    }
+
+    renderPlots();
+    renderTrees();
+
+    /***************************************************************************
+     * 3. SELECTION & INSPECTOR POPULATION
+     ***************************************************************************/
+    let selectedElementNode = null;
+
+    function selectPlot(plotNo) {
+      const plot = plotsData.find(p => p.plotNo === plotNo);
+      if (!plot) return;
+
+      if (selectedElementNode) {
+        selectedElementNode.classList.remove('cad-selected');
+      }
+      const node = document.querySelector(`[data-id="${plot.id}"] rect`);
+      if (node) {
+        node.classList.add('cad-selected');
+        selectedElementNode = node;
+      }
+
+      // Update Desktop Inspector
+      document.getElementById('inspectPlotNo').textContent = `Plot #${plot.plotNo}`;
+      document.getElementById('inspectFacing').textContent = plot.facingLabel;
+      document.getElementById('inspectDims').textContent = `${plot.nominalSizeFt} (${plot.nominalSizeM})`;
+      document.getElementById('inspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft / ${plot.areaSqM} m²)`;
+      document.getElementById('inspectRoad').textContent = plot.roadWidth;
+      document.getElementById('inspectorBadge').textContent = `${plot.facingCode}-FACING`;
+
+      // Update Mobile Drawer
+      document.getElementById('mInspectPlotNo').textContent = `Plot #${plot.plotNo}`;
+      document.getElementById('mInspectFacing').textContent = plot.facingLabel;
+      document.getElementById('mInspectDims').textContent = `${plot.nominalSizeFt}`;
+      document.getElementById('mInspectArea').textContent = `${plot.areaGaj} Gaj (${plot.areaSqFt} Sq.Ft)`;
+      document.getElementById('mInspectRoad').textContent = plot.roadWidth;
+      document.getElementById('mobilePillLabel').textContent = `Plot #${plot.plotNo} (${plot.areaGaj}G)`;
+
+      // Auto-open mobile drawer if on mobile
+      if (window.innerWidth < 768) {
+        openMobileDrawer();
+      }
+    }
+
+    svgLayerPlots.addEventListener('click', (e) => {
+      const group = e.target.closest('[data-type="PLOT"]');
+      if (!group) return;
+      const id = group.getAttribute('data-id');
+      const plotNo = parseInt(id.replace('PLOT-', ''), 10);
+      selectPlot(plotNo);
+    });
+
+    /***************************************************************************
+     * 4. TOUCH-FRIENDLY PAN & PINCH ZOOM ENGINE
+     ***************************************************************************/
+    const masterSvg = document.getElementById('masterPlanSvg');
+    const cadContainer = document.getElementById('cadCanvasContainer');
+    const zoomReadout = document.getElementById('zoomLevelReadout');
+    const coordReadout = document.getElementById('cursorCoordReadout');
+    const cadOrientationGroup = document.getElementById('cadOrientationGroup');
+
+    const defaultViewBox = { x: -115, y: -95, w: 1210, h: 645 };
+    let vb = { ...defaultViewBox };
+    let isFlipped180 = false;
+
+    function updateSvgViewBox() {
+      masterSvg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+      const zoomPct = Math.round((defaultViewBox.w / vb.w) * 100);
+      zoomReadout.textContent = `${zoomPct}%`;
+    }
+
+    // Mouse Panning & Zoom
+    let isPanning = false;
+    let panStart = { x: 0, y: 0 };
+
+    cadContainer.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isPanning = true;
+      panStart = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = masterSvg.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const relX = (e.clientX - rect.left) / rect.width;
+        const relY = (e.clientY - rect.top) / rect.height;
+        const cadX = Math.max(0, Math.min(936.25, vb.x + relX * vb.w));
+        const cadY = Math.max(0, Math.min(412.46, vb.y + relY * vb.h));
+        coordReadout.textContent = `X: ${Math.floor(cadX)}'-${Math.round((cadX % 1) * 12)}" , Y: ${Math.floor(cadY)}'-${Math.round((cadY % 1) * 12)}"`;
+      }
+      if (!isPanning) return;
+      const dx = (e.clientX - panStart.x) * (vb.w / rect.width);
+      const dy = (e.clientY - panStart.y) * (vb.h / rect.height);
+      vb.x -= dx;
+      vb.y -= dy;
+      panStart = { x: e.clientX, y: e.clientY };
+      updateSvgViewBox();
+    });
+
+    window.addEventListener('mouseup', () => { isPanning = false; });
+
+    cadContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 0.88 : 1.14;
+      const newW = Math.max(220, Math.min(2600, vb.w * zoomFactor));
+      const newH = Math.max(120, Math.min(1400, vb.h * zoomFactor));
+      const rect = masterSvg.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) / rect.width;
+      const my = (e.clientY - rect.top) / rect.height;
+      vb.x += (vb.w - newW) * mx;
+      vb.y += (vb.h - newH) * my;
+      vb.w = newW;
+      vb.h = newH;
+      updateSvgViewBox();
+    }, { passive: false });
+
+    // Touch Handling (Pinch-to-Zoom & Pan for Mobile Phones)
+    let touchStartDist = 0;
+    let touchStartVb = { ...vb };
+    let touchStartMid = { x: 0, y: 0 };
+
+    cadContainer.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isPanning = true;
+        panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else if (e.touches.length === 2) {
+        isPanning = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchStartDist = Math.hypot(dx, dy);
+        touchStartVb = { ...vb };
+        touchStartMid = {
+          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+        };
+      }
+    }, { passive: true });
+
+    cadContainer.addEventListener('touchmove', (e) => {
+      const rect = masterSvg.getBoundingClientRect();
+      if (e.touches.length === 1 && isPanning) {
+        const dx = (e.touches[0].clientX - panStart.x) * (vb.w / rect.width);
+        const dy = (e.touches[0].clientY - panStart.y) * (vb.h / rect.height);
+        vb.x -= dx;
+        vb.y -= dy;
+        panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        updateSvgViewBox();
+      } else if (e.touches.length === 2 && touchStartDist > 0) {
+        e.preventDefault(); // Prevent native mobile page zoom
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const currentDist = Math.hypot(dx, dy);
+        const factor = touchStartDist / currentDist;
+
+        const newW = Math.max(200, Math.min(2600, touchStartVb.w * factor));
+        const newH = Math.max(110, Math.min(1400, touchStartVb.h * factor));
+
+        const mx = (touchStartMid.x - rect.left) / rect.width;
+        const my = (touchStartMid.y - rect.top) / rect.height;
+
+        vb.x = touchStartVb.x + (touchStartVb.w - newW) * mx;
+        vb.y = touchStartVb.y + (touchStartVb.h - newH) * my;
+        vb.w = newW;
+        vb.h = newH;
+        updateSvgViewBox();
+      }
+    }, { passive: false });
+
+    cadContainer.addEventListener('touchend', (e) => {
+      if (e.touches.length === 0) {
+        isPanning = false;
+        touchStartDist = 0;
+      } else if (e.touches.length === 1) {
+        panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        isPanning = true;
+      }
+    }, { passive: true });
+
+    // Zoom Buttons
+    document.getElementById('btnZoomIn').addEventListener('click', () => {
+      vb.x += vb.w * 0.1; vb.y += vb.h * 0.1;
+      vb.w *= 0.8; vb.h *= 0.8;
+      updateSvgViewBox();
+    });
+    document.getElementById('btnZoomOut').addEventListener('click', () => {
+      vb.x -= vb.w * 0.125; vb.y -= vb.h * 0.125;
+      vb.w *= 1.25; vb.h *= 1.25;
+      updateSvgViewBox();
+    });
+    document.getElementById('btnResetView').addEventListener('click', () => {
+      vb = { ...defaultViewBox };
+      updateSvgViewBox();
+    });
+
+    // 180° Orientation Flip
+    document.getElementById('btnFlipOrientation').addEventListener('click', () => {
+      isFlipped180 = !isFlipped180;
+      const label = document.getElementById('flipBtnLabel');
+      if (isFlipped180) {
+        cadOrientationGroup.setAttribute('transform', 'rotate(180 468 206)');
+        label.textContent = 'Upright View';
+      } else {
+        cadOrientationGroup.removeAttribute('transform');
+        label.textContent = 'Flip 180°';
+      }
+    });
+
+    /***************************************************************************
+     * 5. MOBILE DRAWER CONTROLS
+     ***************************************************************************/
+    const mobileDrawer = document.getElementById('mobileInspectorDrawer');
+    function openMobileDrawer() {
+      mobileDrawer.classList.remove('translate-y-full');
+    }
+    function closeMobileDrawer() {
+      mobileDrawer.classList.add('translate-y-full');
+    }
+    document.getElementById('btnOpenMobileDrawer').addEventListener('click', openMobileDrawer);
+    document.getElementById('btnCloseMobileDrawer').addEventListener('click', closeMobileDrawer);
+
+    /***************************************************************************
+     * 6. FILTERING & SEARCH
+     ***************************************************************************/
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.className = 'filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] transition';
+        });
+        btn.className = 'filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-bold text-[11px] transition';
+
+        const filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('[data-type="PLOT"]').forEach(el => {
+          const facing = el.getAttribute('data-facing');
+          if (filter === 'ALL' || filter === `FACE-${facing}`) {
+            el.classList.remove('plot-dimmed');
+          } else {
+            el.classList.add('plot-dimmed');
+          }
+        });
+      });
+    });
+
+    function jumpToPlot() {
+      const val = parseInt(document.getElementById('plotSearchInput').value, 10);
+      if (isNaN(val) || val < 1 || val > 140) return;
+      const plot = plotsData.find(p => p.plotNo === val);
+      if (!plot) return;
+
+      selectPlot(val);
+      vb.w = 340;
+      vb.h = 180;
+      vb.x = plot.x - 140;
+      vb.y = plot.y - 70;
+      updateSvgViewBox();
+    }
+    document.getElementById('btnPlotSearch').addEventListener('click', jumpToPlot);
+    document.getElementById('plotSearchInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') jumpToPlot();
+    });
+
+    /***************************************************************************
+     * 7. LAYER VISIBILITY & THEME
+     ***************************************************************************/
+    const layerMappings = [
+      { id: 'layerArrows', target: 'svgLayerArrows' },
+      { id: 'layerDims', target: 'svgLayerDims' },
+      { id: 'layerParks', target: 'svgLayerParks' },
+      { id: 'layerRoads', target: 'svgLayerRoads' }
+    ];
+    layerMappings.forEach(({ id, target }) => {
+      const cb = document.getElementById(id);
+      if (cb) {
+        cb.addEventListener('change', (e) => {
+          const el = document.getElementById(target);
+          if (el) el.style.display = e.target.checked ? '' : 'none';
+        });
+      }
+    });
+
+    let isDark = true;
+    document.getElementById('btnToggleTheme').addEventListener('click', () => {
+      isDark = !isDark;
+      const label = document.getElementById('themeBtnLabel');
+      const baseRoad = document.getElementById('baseRoadSurface');
+      if (isDark) {
+        cadContainer.classList.remove('cad-viewport-light');
+        cadContainer.classList.add('cad-viewport-dark');
+        baseRoad.setAttribute('fill', '#1e293b');
+        label.textContent = 'Print Mode';
+      } else {
+        cadContainer.classList.remove('cad-viewport-dark');
+        cadContainer.classList.add('cad-viewport-light');
+        baseRoad.setAttribute('fill', '#334155');
+        label.textContent = 'Dark CAD';
+      }
+    });
+
+    // Area Statement Modal
+    const areaModal = document.getElementById('areaModal');
+    document.getElementById('btnOpenAreaModal').addEventListener('click', () => {
+      areaModal.classList.remove('hidden');
+      areaModal.classList.add('flex');
+    });
+    document.getElementById('btnCloseAreaModal').addEventListener('click', () => {
+      areaModal.classList.add('hidden');
+      areaModal.classList.remove('flex');
+    });
+    areaModal.addEventListener('click', (e) => {
+      if (e.target === areaModal) {
+        areaModal.classList.add('hidden');
+        areaModal.classList.remove('flex');
+      }
+    });
+
+    // Select Plot 33 (12m Boulevard North-Facing) by default
+    setTimeout(() => { selectPlot(33); }, 200);
+  </script>
+</body>
+</html>
