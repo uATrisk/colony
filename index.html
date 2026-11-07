@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-  <title>NANDI — 12.0m Main Boulevard Vastu Master Plan (110 Plots | ~120 Gaj | 22'–25' Front | 0% South)</title>
+  <title>NANDI — 12.0m Main Boulevard Vastu Master Plan (140 Plots | 57.6% Plotted Area | ~120 Gaj | 0% South)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,13 +108,14 @@
       <div class="truncate">
         <div class="flex items-center gap-1.5 sm:gap-2">
           <span class="text-xs sm:text-sm font-black tracking-wide text-white font-mono">NANDI</span>
-          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">110 PLOTS</span>
-          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">~120 GAJ (22'–25' FRONT)</span>
-          <span class="hidden md:inline text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">14.15% PARKS</span>
+          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">140 PLOTS</span>
+          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/25 text-emerald-200 border border-emerald-400/40">57.6% PLOTTED (18,090 GAJ)</span>
+          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">~120 GAJ (≥ 22' FRONT)</span>
+          <span class="hidden md:inline text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">13.50% PARKS</span>
           <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">0% SOUTH</span>
         </div>
         <p class="text-[10px] text-slate-400 font-mono truncate hidden sm:block">
-          26,274 m² (38.45 Bighas / 31,412 Gaj) • 110 Verified Plots • Frontage ≥ 22'-6" • 12m Boulevard • 360° Loop
+          26,274 m² (38.45 Bighas / 31,412 Gaj) • 57.6% High-Efficiency Plotted Area • 140 Verified Plots (~120 Gaj • Frontage ≥ 22') • 12m Boulevard
         </p>
       </div>
     </div>
@@ -125,11 +126,11 @@
         <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <span>Area Statement</span>
+        <span>Area Statement (57.6%)</span>
       </button>
 
       <div class="relative flex items-center">
-        <input id="plotSearchInput" type="number" min="1" max="110" placeholder="Plot #" class="w-20 sm:w-28 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
+        <input id="plotSearchInput" type="number" min="1" max="140" placeholder="Plot #" class="w-20 sm:w-28 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
         <button id="btnPlotSearch" class="absolute right-1 text-slate-400 hover:text-sky-400 p-0.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -142,13 +143,13 @@
   <!-- SUBHEADER / HORIZONTAL FILTER BAR (MOBILE TOUCH SCROLLABLE) -->
   <div class="h-10 bg-slate-900/80 border-b border-slate-800/80 px-3 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs font-mono">
     <span class="text-[10px] text-slate-500 uppercase tracking-wider font-sans font-semibold shrink-0 pr-1">Filter:</span>
-    <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] shrink-0 transition">All Plots (110)</button>
-    <button data-filter="COM" class="filter-btn px-2.5 py-1 rounded-md text-amber-300 hover:bg-slate-800 font-bold text-[11px] shrink-0 border border-amber-500/40 bg-amber-500/10 transition">⭐ Commercial Frontage (9)</button>
-    <button data-filter="E" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">East-Facing (59)</button>
-    <button data-filter="W" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">West-Facing (41)</button>
-    <button data-filter="N" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">North-Facing (10)</button>
-    <button data-filter="PARK" class="filter-btn px-2.5 py-1 rounded-md text-emerald-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">Parks (14.15%)</button>
-    <button data-filter="ROAD" class="filter-btn px-2.5 py-1 rounded-md text-sky-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">360° Roads</button>
+    <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] shrink-0 transition">All Plots (140)</button>
+    <button data-filter="COM" class="filter-btn px-2.5 py-1 rounded-md text-amber-300 hover:bg-slate-800 font-bold text-[11px] shrink-0 border border-amber-500/40 bg-amber-500/10 transition">⭐ Commercial Frontage (10)</button>
+    <button data-filter="E" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">East-Facing (73)</button>
+    <button data-filter="W" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">West-Facing (55)</button>
+    <button data-filter="N" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">North-Facing (12)</button>
+    <button data-filter="PARK" class="filter-btn px-2.5 py-1 rounded-md text-emerald-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">Parks (13.50%)</button>
+    <button data-filter="ROAD" class="filter-btn px-2.5 py-1 rounded-md text-sky-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">360° Roads (26.7%)</button>
   </div>
 
   <!-- MAIN CANVAS & SIDEBAR CONTAINER -->
@@ -172,10 +173,10 @@
 
       <!-- Floating Legend Pill (Top-Right on Canvas) -->
       <div class="absolute top-3 right-3 z-10 hidden sm:flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-lg px-2.5 py-1 text-[10px] font-mono text-slate-300">
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 border border-amber-300"></span> Commercial (9)</span>
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 border border-emerald-400"></span> East (59)</span>
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-600 border border-indigo-400"></span> West (41)</span>
-        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-sky-600 border border-sky-400"></span> North (10)</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 border border-amber-300"></span> Commercial (10)</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 border border-emerald-400"></span> East (73)</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-600 border border-indigo-400"></span> West (55)</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-sky-600 border border-sky-400"></span> North (12)</span>
         <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-600"></span> South (0)</span>
       </div>
 
@@ -346,29 +347,36 @@
               30'-0" (9.0M) WEST AVENUE-2
             </text>
 
-            <!-- EAST AVENUE-1 (30'-0" / 9.0m, x=514 to 544) -->
-            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-1" class="cad-interactive" x="514.0" y="154.0" width="30.0" height="258.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
-            <line x1="529" y1="154" x2="529" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
-            <text x="529" y="200" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 529 200)" pointer-events="none">
+            <!-- EAST AVENUE-1 (30'-0" / 9.0m, x=508 to 538) -->
+            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-1" class="cad-interactive" x="508.0" y="144.0" width="30.0" height="268.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
+            <line x1="523" y1="144" x2="523" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
+            <text x="523" y="200" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 523 200)" pointer-events="none">
               30'-0" (9.0M) EAST AVENUE-1
             </text>
 
-            <!-- EAST AVENUE-2 (30'-0" / 9.0m, x=640 to 670) -->
-            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-2" class="cad-interactive" x="640.0" y="154.0" width="30.0" height="258.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
-            <line x1="655" y1="154" x2="655" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
-            <text x="655" y="200" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 655 200)" pointer-events="none">
+            <!-- EAST AVENUE-2 (30'-0" / 9.0m, x=622 to 652) -->
+            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-2" class="cad-interactive" x="622.0" y="144.0" width="30.0" height="268.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
+            <line x1="637" y1="144" x2="637" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
+            <text x="637" y="200" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 637 200)" pointer-events="none">
               30'-0" (9.0M) EAST AVENUE-2
             </text>
 
-            <!-- EAST AVENUE-3 / COMMERCIAL ACCESS AVENUE (30'-0" / 9.0m, x=766 to 796) -->
-            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-3" class="cad-interactive" x="766.0" y="154.0" width="30.0" height="258.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
-            <line x1="781" y1="154" x2="781" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
-            <text x="781" y="200" text-anchor="middle" fill="#fde047" font-size="6.5" font-family="JetBrains Mono" font-weight="800" transform="rotate(-90 781 200)" pointer-events="none">
-              30'-0" (9.0M) COMMERCIAL ACCESS AVENUE-3
+            <!-- EAST AVENUE-3 (30'-0" / 9.0m, x=736 to 766) -->
+            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-3" class="cad-interactive" x="736.0" y="144.0" width="30.0" height="268.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
+            <line x1="751" y1="144" x2="751" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
+            <text x="751" y="200" text-anchor="middle" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono" font-weight="700" transform="rotate(-90 751 200)" pointer-events="none">
+              30'-0" (9.0M) EAST AVENUE-3
+            </text>
+
+            <!-- EAST AVENUE-4 / COMMERCIAL ACCESS AVENUE (30'-0" / 9.0m, x=850 to 880) -->
+            <rect data-type="ROAD" data-id="ROAD-EAST-AVE-4" class="cad-interactive" x="850.0" y="144.0" width="30.0" height="268.46" fill="#0f172a" stroke="#0284c7" stroke-width="1" />
+            <line x1="865" y1="144" x2="865" y2="412" stroke="#38bdf8" stroke-width="1" stroke-dasharray="8,6" class="road-flow-line" pointer-events="none" />
+            <text x="865" y="200" text-anchor="middle" fill="#fde047" font-size="6.5" font-family="JetBrains Mono" font-weight="800" transform="rotate(-90 865 200)" pointer-events="none">
+              30'-0" (9.0M) COMMERCIAL ACCESS AVENUE-4
             </text>
           </g>
 
-          <!-- 3. PLOTS LAYER (110 VERIFIED PLOTS — ~120 GAJ • FRONTAGE ≥ 22'-6" • 0% SOUTH) -->
+          <!-- 3. PLOTS LAYER (140 VASTU PLOTS — 57.6% HIGH-EFFICIENCY PLOTTING • ~120 GAJ • 0% SOUTH) -->
           <g id="svgLayerPlots">
             <!-- Dynamically injected via createPlotRange() in script -->
           </g>
@@ -482,10 +490,10 @@
         <!-- Plan Title & Statistics Badge -->
         <g transform="translate(10, 475)" pointer-events="none">
           <text x="0" y="0" fill="#f8fafc" font-size="14" font-weight="800" font-family="Inter, sans-serif">
-            NANDI — 12M BOULEVARD VASTU PLAN — 110 PLOTS • ~120 GAJ • FRONT ≥ 22'-6" • 0% SOUTH
+            NANDI — 12M BOULEVARD VASTU PLAN — 140 PLOTS • 57.6% PLOTTED (18,090 GAJ) • ~120 GAJ • 0% SOUTH
           </text>
           <text x="0" y="16" fill="#94a3b8" font-size="8.5" font-family="JetBrains Mono">
-            SITE: 26,274.03 SQM (38.45 BIGHAS / 31,412 GAJ) • PARKS: 14.15% (3,718 SQM) • MEERUT DEV AUTHORITY
+            SITE: 26,274.03 SQM (38.45 BIGHAS / 31,412 GAJ) • PLOTTED: 57.59% (18,090 GAJ) • PARKS: 13.50% (4,241 GAJ) • ROADS: 26.71%
           </text>
         </g>
       </svg>
@@ -731,47 +739,55 @@
             </thead>
             <tbody class="divide-y divide-slate-800/80 bg-slate-900/60">
               <tr class="bg-sky-950/20">
-                <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Residential Plotted Area (101 Plots, ~120 Gaj)</td>
-                <td class="py-2.5 px-3 text-right font-bold text-sky-300">10,840.30</td>
-                <td class="py-2.5 px-3 text-right font-bold text-sky-300">12,964.20</td>
-                <td class="py-2.5 px-3 text-right font-bold text-sky-300">116,683.2</td>
-                <td class="py-2.5 px-3 text-right font-bold text-sky-300">15.86</td>
-                <td class="py-2.5 px-3 text-right font-bold text-sky-400">41.26%</td>
+                <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Net Saleable Residential Plots (130 Plots, ~120 Gaj)</td>
+                <td class="py-2.5 px-3 text-right font-bold text-sky-300">13,946.40</td>
+                <td class="py-2.5 px-3 text-right font-bold text-sky-300">16,680.00</td>
+                <td class="py-2.5 px-3 text-right font-bold text-sky-300">150,120.0</td>
+                <td class="py-2.5 px-3 text-right font-bold text-sky-300">20.42</td>
+                <td class="py-2.5 px-3 text-right font-bold text-sky-400">53.10%</td>
               </tr>
               <tr class="bg-amber-950/25">
-                <td class="py-2.5 px-3 font-sans font-bold text-amber-300">2. Commercial Frontage Plots (9 Plots: COM 1–9)</td>
-                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1,014.70</td>
-                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1,214.30</td>
-                <td class="py-2.5 px-3 text-right font-bold text-amber-300">10,928.7</td>
-                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1.48</td>
-                <td class="py-2.5 px-3 text-right font-bold text-amber-400">3.86%</td>
+                <td class="py-2.5 px-3 font-sans font-bold text-amber-300">2. Prime Commercial Frontage (10 Plots: COM 1–10)</td>
+                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1,178.90</td>
+                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1,410.00</td>
+                <td class="py-2.5 px-3 text-right font-bold text-amber-300">12,690.0</td>
+                <td class="py-2.5 px-3 text-right font-bold text-amber-300">1.72</td>
+                <td class="py-2.5 px-3 text-right font-bold text-amber-400">4.49%</td>
               </tr>
-              <tr class="bg-emerald-950/25">
-                <td class="py-2.5 px-3 font-sans font-bold text-emerald-300">3. Parks &amp; Green Spaces (Park-1 Central + Park-2 Buffer + Park-3 Front)</td>
-                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">3,717.80</td>
-                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,446.40</td>
-                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">40,017.6</td>
-                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">5.44</td>
-                <td class="py-2.5 px-3 text-right font-bold text-emerald-400">14.15%</td>
+              <tr class="bg-emerald-950/40 border-y border-emerald-500/40">
+                <td class="py-2.5 px-3 font-sans font-black text-emerald-200">★ TOTAL HIGH-EFFICIENCY PLOTTED AREA (140 PLOTS)</td>
+                <td class="py-2.5 px-3 text-right font-black text-emerald-300">15,125.30</td>
+                <td class="py-2.5 px-3 text-right font-black text-emerald-300">18,090.00</td>
+                <td class="py-2.5 px-3 text-right font-black text-emerald-300">162,810.0</td>
+                <td class="py-2.5 px-3 text-right font-black text-emerald-300">22.14</td>
+                <td class="py-2.5 px-3 text-right font-black text-emerald-400">57.59%</td>
+              </tr>
+              <tr class="bg-emerald-950/20">
+                <td class="py-2.5 px-3 font-sans font-bold text-emerald-300">3. Parks &amp; Green Spaces (Central + Buffer + Front Gardens)</td>
+                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">3,546.99</td>
+                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,240.63</td>
+                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">38,165.6</td>
+                <td class="py-2.5 px-3 text-right font-bold text-emerald-300">5.19</td>
+                <td class="py-2.5 px-3 text-right font-bold text-emerald-400">13.50%</td>
               </tr>
               <tr>
-                <td class="py-2.5 px-3 font-sans font-medium text-slate-200">4. Roads (12m Spine + 9m Comb Roads + 7.6m North Loop)</td>
-                <td class="py-2.5 px-3 text-right">10,051.23</td>
-                <td class="py-2.5 px-3 text-right font-bold text-indigo-300">12,021.16</td>
-                <td class="py-2.5 px-3 text-right">108,190.5</td>
-                <td class="py-2.5 px-3 text-right">14.71</td>
-                <td class="py-2.5 px-3 text-right font-bold text-indigo-300">38.25%</td>
+                <td class="py-2.5 px-3 font-sans font-medium text-slate-200">4. Engineered Roads (12m Spine + 9m Comb Roads + 7.6m Loop)</td>
+                <td class="py-2.5 px-3 text-right">7,023.71</td>
+                <td class="py-2.5 px-3 text-right font-bold text-indigo-300">8,390.36</td>
+                <td class="py-2.5 px-3 text-right">75,513.3</td>
+                <td class="py-2.5 px-3 text-right">10.27</td>
+                <td class="py-2.5 px-3 text-right font-bold text-indigo-300">26.71%</td>
               </tr>
               <tr>
                 <td class="py-2.5 px-3 font-sans font-medium text-slate-300">5. Public Utilities &amp; Services (STP + Security Gate)</td>
-                <td class="py-2.5 px-3 text-right">650.00</td>
-                <td class="py-2.5 px-3 text-right">766.00</td>
-                <td class="py-2.5 px-3 text-right">6,894.0</td>
-                <td class="py-2.5 px-3 text-right">0.96</td>
-                <td class="py-2.5 px-3 text-right">2.47%</td>
+                <td class="py-2.5 px-3 text-right">578.03</td>
+                <td class="py-2.5 px-3 text-right">691.07</td>
+                <td class="py-2.5 px-3 text-right">6,219.6</td>
+                <td class="py-2.5 px-3 text-right">0.85</td>
+                <td class="py-2.5 px-3 text-right">2.20%</td>
               </tr>
               <tr class="bg-slate-800/90 text-white font-bold border-t-2 border-slate-700">
-                <td class="py-3 px-3 font-sans">TOTAL NANDI COLONY SITE AREA</td>
+                <td class="py-3 px-3 font-sans">TOTAL NANDI TOWNSHIP SITE AREA</td>
                 <td class="py-3 px-3 text-right text-emerald-400">26,274.03</td>
                 <td class="py-3 px-3 text-right text-emerald-400">31,412.06</td>
                 <td class="py-3 px-3 text-right text-emerald-400">282,708.5</td>
@@ -786,18 +802,18 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
           <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
             <div class="text-slate-400">East-Facing</div>
-            <div class="text-emerald-400 text-base font-bold">59 Plots</div>
-            <div class="text-[10px] text-slate-500">53.6% of Total</div>
+            <div class="text-emerald-400 text-base font-bold">73 Plots</div>
+            <div class="text-[10px] text-slate-500">52.1% of Total</div>
           </div>
           <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
             <div class="text-slate-400">West-Facing</div>
-            <div class="text-indigo-400 text-base font-bold">41 Plots</div>
-            <div class="text-[10px] text-slate-500">37.3% of Total</div>
+            <div class="text-indigo-400 text-base font-bold">55 Plots</div>
+            <div class="text-[10px] text-slate-500">39.3% of Total</div>
           </div>
           <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
             <div class="text-slate-400">North-Facing</div>
-            <div class="text-sky-400 text-base font-bold">10 Plots</div>
-            <div class="text-[10px] text-slate-500">9.1% of Total</div>
+            <div class="text-sky-400 text-base font-bold">12 Plots</div>
+            <div class="text-[10px] text-slate-500">8.6% of Total</div>
           </div>
           <div class="p-3 rounded-xl bg-rose-950/30 border border-rose-800/40">
             <div class="text-rose-300 font-bold">South-Facing</div>
@@ -847,7 +863,7 @@
       }
     }
 
-    // --- WEST WING PLOTS (~120 GAJ • FRONTAGE ≥ 22'-6") ---
+    // --- WEST WING PLOTS (~120 GAJ • FRONTAGE ≥ 22'-1") ---
     // 1E to 18E: Full unbroken column along the west wall (y = 8.0 to 412.46)
     // 404.46' / 18 = 22'-6" Frontage • Depth = 44'-0"
     createPlotRange({
@@ -860,22 +876,22 @@
       roadWidth: "30'-0\" (9.0m) West Avenue-1"
     });
 
-    // Col-W2 North (Plots 19–27): 9 WEST-FACING plots
-    // 221' / 9 = 24'-6" Frontage • Depth = 44'-0" (120 GAJ EXACT)
+    // Col-W2 North (Plots 19–28): 10 WEST-FACING plots
+    // 221' / 10 = 22'-1" Frontage • Depth = 44'-0"
     createPlotRange({
-      startNo: 19, count: 9, category: 'A', facingCode: 'W',
+      startNo: 19, count: 10, category: 'A', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' West Ave-1)",
       blockName: 'West Wing Col-W2 North (West Facing)',
       xStart: 78, yStart: 33, totalWidth: 44, totalHeight: 221, direction: 'vertical',
-      nominalSizeFt: "24'-6\" Front × 44'-0\" Depth", nominalSizeM: "7.48m × 13.41m",
-      areaGaj: 120, areaSqFt: 1080, areaSqM: 100.3,
+      nominalSizeFt: "22'-1\" Front × 44'-0\" Depth", nominalSizeM: "6.74m × 13.41m",
+      areaGaj: 110, areaSqFt: 972, areaSqM: 90.3,
       roadWidth: "30'-0\" (9.0m) West Avenue-1"
     });
 
-    // Col-W2 South (Plots 28–32): 5 WEST-FACING plots
+    // Col-W2 South (Plots 29–33): 5 WEST-FACING plots
     // 118.46' / 5 = 23'-8" Frontage • Depth = 44'-0"
     createPlotRange({
-      startNo: 28, count: 5, category: 'A', facingCode: 'W',
+      startNo: 29, count: 5, category: 'A', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' West Ave-1)",
       blockName: 'West Wing Col-W2 South (West Facing)',
       xStart: 78, yStart: 294, totalWidth: 44, totalHeight: 118.46, direction: 'vertical',
@@ -884,22 +900,22 @@
       roadWidth: "30'-0\" (9.0m) West Avenue-1"
     });
 
-    // Col-W3 North (Plots 33–41): 9 EAST-FACING plots
-    // 221' / 9 = 24'-6" Frontage • Depth = 44'-0" (120 GAJ EXACT)
+    // Col-W3 North (Plots 34–43): 10 EAST-FACING plots
+    // 221' / 10 = 22'-1" Frontage • Depth = 44'-0"
     createPlotRange({
-      startNo: 33, count: 9, category: 'A', facingCode: 'E',
+      startNo: 34, count: 10, category: 'A', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' West Ave-2)",
       blockName: 'West Wing Col-W3 North (East Facing)',
       xStart: 122, yStart: 33, totalWidth: 44, totalHeight: 221, direction: 'vertical',
-      nominalSizeFt: "24'-6\" Front × 44'-0\" Depth", nominalSizeM: "7.48m × 13.41m",
-      areaGaj: 120, areaSqFt: 1080, areaSqM: 100.3,
+      nominalSizeFt: "22'-1\" Front × 44'-0\" Depth", nominalSizeM: "6.74m × 13.41m",
+      areaGaj: 110, areaSqFt: 972, areaSqM: 90.3,
       roadWidth: "30'-0\" (9.0m) West Avenue-2"
     });
 
-    // Col-W3 South (Plots 42–46): 5 EAST-FACING plots
+    // Col-W3 South (Plots 44–48): 5 EAST-FACING plots
     // 118.46' / 5 = 23'-8" Frontage • Depth = 44'-0"
     createPlotRange({
-      startNo: 42, count: 5, category: 'A', facingCode: 'E',
+      startNo: 44, count: 5, category: 'A', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' West Ave-2)",
       blockName: 'West Wing Col-W3 South (East Facing)',
       xStart: 122, yStart: 294, totalWidth: 44, totalHeight: 118.46, direction: 'vertical',
@@ -908,152 +924,196 @@
       roadWidth: "30'-0\" (9.0m) West Avenue-2"
     });
 
-    // --- CENTRAL BOULEVARD ROW (Plots 47–56): 10 NORTH-FACING plots ---
-    // 262' / 10 = 26'-2" Frontage • Depth = 44'-0" (128 GAJ)
+    // --- CENTRAL BOULEVARD ROW (Plots 49–60): 12 NORTH-FACING plots ---
+    // 262' / 12 = 21'-10" Frontage • Depth = 48'-0" (116 GAJ)
     createPlotRange({
-      startNo: 47, count: 10, category: 'B', facingCode: 'N',
+      startNo: 49, count: 12, category: 'B', facingCode: 'N',
       facingLabel: 'NORTH-FACING (↑ 12.0m Main Boulevard & Park-1 Facing)',
       blockName: 'Central Boulevard Row (North & Park Facing)',
-      xStart: 204, yStart: 294, totalWidth: 262, totalHeight: 44, direction: 'horizontal',
-      nominalSizeFt: "26'-2\" Front × 44'-0\" Depth", nominalSizeM: "7.98m × 13.41m",
-      areaGaj: 128, areaSqFt: 1151, areaSqM: 106.9,
+      xStart: 204, yStart: 294, totalWidth: 262, totalHeight: 48, direction: 'horizontal',
+      nominalSizeFt: "21'-10\" Front × 48'-0\" Depth", nominalSizeM: "6.65m × 14.63m",
+      areaGaj: 116, areaSqFt: 1048, areaSqM: 97.4,
       roadWidth: "40'-0\" (12.0m) Main Boulevard"
     });
 
-    // --- EAST INTERIOR RESIDENTIAL BLOCKS (~120 GAJ • FRONTAGE 23'-8" TO 25'-0") ---
-    // Block-E1 North (Plots 57–60): 4 EAST-FACING (Front: 25'-0", Depth: 48'-0")
-    createPlotRange({
-      startNo: 57, count: 4, category: 'B', facingCode: 'E',
-      facingLabel: "EAST-FACING (→ 30' East Ave-1)",
-      blockName: 'Block-E1 North (East Facing)',
-      xStart: 466, yStart: 154, totalWidth: 48, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 48'-0\" Depth", nominalSizeM: "7.62m × 14.63m",
-      areaGaj: 133, areaSqFt: 1200, areaSqM: 111.5,
-      roadWidth: "30'-0\" (9.0m) East Avenue-1"
-    });
-
-    // Block-E1 South (Plots 61–65): 5 EAST-FACING (Front: 23'-8", Depth: 48'-0")
+    // --- EAST INTERIOR RESIDENTIAL BLOCKS (~115–120 GAJ • FRONTAGE 22'-0" TO 23'-8") ---
+    // Block-E1 North (Plots 61–65): 5 EAST-FACING (Front: 22'-0", Depth: 42'-0")
     createPlotRange({
       startNo: 61, count: 5, category: 'B', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' East Ave-1)",
-      blockName: 'Block-E1 South (East Facing)',
-      xStart: 466, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
-      areaGaj: 126, areaSqFt: 1137, areaSqM: 105.6,
+      blockName: 'Block-E1 North (East Facing)',
+      xStart: 466, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
       roadWidth: "30'-0\" (9.0m) East Avenue-1"
     });
 
-    // Block-E2 West Col North (Plots 66–69): 4 WEST-FACING (Front: 25'-0", Depth: 48'-0")
+    // Block-E1 South (Plots 66–70): 5 EAST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 66, count: 4, category: 'B', facingCode: 'W',
+      startNo: 66, count: 5, category: 'B', facingCode: 'E',
+      facingLabel: "EAST-FACING (→ 30' East Ave-1)",
+      blockName: 'Block-E1 South (East Facing)',
+      xStart: 466, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
+      roadWidth: "30'-0\" (9.0m) East Avenue-1"
+    });
+
+    // Block-E2 West Col North (Plots 71–75): 5 WEST-FACING (Front: 22'-0", Depth: 42'-0")
+    createPlotRange({
+      startNo: 71, count: 5, category: 'B', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' East Ave-1)",
       blockName: 'Block-E2 West Col North (West Facing)',
-      xStart: 544, yStart: 154, totalWidth: 48, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 48'-0\" Depth", nominalSizeM: "7.62m × 14.63m",
-      areaGaj: 133, areaSqFt: 1200, areaSqM: 111.5,
+      xStart: 538, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
       roadWidth: "30'-0\" (9.0m) East Avenue-1"
     });
 
-    // Block-E2 West Col South (Plots 70–74): 5 WEST-FACING (Front: 23'-8", Depth: 48'-0")
+    // Block-E2 West Col South (Plots 76–80): 5 WEST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 70, count: 5, category: 'B', facingCode: 'W',
+      startNo: 76, count: 5, category: 'B', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' East Ave-1)",
       blockName: 'Block-E2 West Col South (West Facing)',
-      xStart: 544, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
-      areaGaj: 126, areaSqFt: 1137, areaSqM: 105.6,
+      xStart: 538, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
       roadWidth: "30'-0\" (9.0m) East Avenue-1"
     });
 
-    // Block-E2 East Col North (Plots 75–78): 4 EAST-FACING (Front: 25'-0", Depth: 48'-0")
+    // Block-E2 East Col North (Plots 81–85): 5 EAST-FACING (Front: 22'-0", Depth: 42'-0")
     createPlotRange({
-      startNo: 75, count: 4, category: 'B', facingCode: 'E',
+      startNo: 81, count: 5, category: 'B', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' East Ave-2)",
       blockName: 'Block-E2 East Col North (East Facing)',
-      xStart: 592, yStart: 154, totalWidth: 48, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 48'-0\" Depth", nominalSizeM: "7.62m × 14.63m",
-      areaGaj: 133, areaSqFt: 1200, areaSqM: 111.5,
+      xStart: 580, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
       roadWidth: "30'-0\" (9.0m) East Avenue-2"
     });
 
-    // Block-E2 East Col South (Plots 79–83): 5 EAST-FACING (Front: 23'-8", Depth: 48'-0")
+    // Block-E2 East Col South (Plots 86–90): 5 EAST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 79, count: 5, category: 'B', facingCode: 'E',
+      startNo: 86, count: 5, category: 'B', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' East Ave-2)",
       blockName: 'Block-E2 East Col South (East Facing)',
-      xStart: 592, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
-      areaGaj: 126, areaSqFt: 1137, areaSqM: 105.6,
+      xStart: 580, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
       roadWidth: "30'-0\" (9.0m) East Avenue-2"
     });
 
-    // Block-E3 West Col North (Plots 84–87): 4 WEST-FACING (Front: 25'-0", Depth: 48'-0")
+    // Block-E3 West Col North (Plots 91–95): 5 WEST-FACING (Front: 22'-0", Depth: 42'-0")
     createPlotRange({
-      startNo: 84, count: 4, category: 'B', facingCode: 'W',
+      startNo: 91, count: 5, category: 'B', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' East Ave-2)",
       blockName: 'Block-E3 West Col North (West Facing)',
-      xStart: 670, yStart: 154, totalWidth: 48, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 48'-0\" Depth", nominalSizeM: "7.62m × 14.63m",
-      areaGaj: 133, areaSqFt: 1200, areaSqM: 111.5,
+      xStart: 652, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
       roadWidth: "30'-0\" (9.0m) East Avenue-2"
     });
 
-    // Block-E3 West Col South (Plots 88–92): 5 WEST-FACING (Front: 23'-8", Depth: 48'-0")
+    // Block-E3 West Col South (Plots 96–100): 5 WEST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 88, count: 5, category: 'B', facingCode: 'W',
+      startNo: 96, count: 5, category: 'B', facingCode: 'W',
       facingLabel: "WEST-FACING (← 30' East Ave-2)",
       blockName: 'Block-E3 West Col South (West Facing)',
-      xStart: 670, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
-      areaGaj: 126, areaSqFt: 1137, areaSqM: 105.6,
+      xStart: 652, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
       roadWidth: "30'-0\" (9.0m) East Avenue-2"
     });
 
-    // Block-E3 East Col North (Plots 93–96): 4 EAST-FACING (Front: 25'-0", Depth: 48'-0")
+    // Block-E3 East Col North (Plots 101–105): 5 EAST-FACING (Front: 22'-0", Depth: 42'-0")
     createPlotRange({
-      startNo: 93, count: 4, category: 'B', facingCode: 'E',
+      startNo: 101, count: 5, category: 'B', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' East Ave-3)",
       blockName: 'Block-E3 East Col North (East Facing)',
-      xStart: 718, yStart: 154, totalWidth: 48, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 48'-0\" Depth", nominalSizeM: "7.62m × 14.63m",
-      areaGaj: 133, areaSqFt: 1200, areaSqM: 111.5,
+      xStart: 694, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
       roadWidth: "30'-0\" (9.0m) East Avenue-3"
     });
 
-    // Block-E3 East Col South (Plots 97–101): 5 EAST-FACING (Front: 23'-8", Depth: 48'-0")
+    // Block-E3 East Col South (Plots 106–110): 5 EAST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 97, count: 5, category: 'B', facingCode: 'E',
+      startNo: 106, count: 5, category: 'B', facingCode: 'E',
       facingLabel: "EAST-FACING (→ 30' East Ave-3)",
       blockName: 'Block-E3 East Col South (East Facing)',
-      xStart: 718, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
-      areaGaj: 126, areaSqFt: 1137, areaSqM: 105.6,
+      xStart: 694, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
       roadWidth: "30'-0\" (9.0m) East Avenue-3"
     });
 
-    // --- FRONT COMMERCIAL FRONTAGE PLOTS (PLOTS 102 TO 110 / COM-1 TO COM-9: FULL 50'-0" DEPTH • FRONTAGE 23'-8" TO 25'-0") ---
-    // Plots 102–105 (North Commercial Wing): 4 Plots (Front: 25'-0", Depth: 50'-0")
+    // Block-E4 West Col North (Plots 111–115): 5 WEST-FACING (Front: 22'-0", Depth: 42'-0")
     createPlotRange({
-      startNo: 102, count: 4, category: 'COM', facingCode: 'W',
-      isCommercial: true,
-      facingLabel: "WEST-FACING COMMERCIAL (← 30' Commercial Avenue • Dual Garden Frontage)",
-      blockName: 'Front Commercial Block North (Plots 102–105 / COM 1–4)',
-      xStart: 796, yStart: 154, totalWidth: 50, totalHeight: 100, direction: 'vertical',
-      nominalSizeFt: "25'-0\" Front × 50'-0\" Depth", nominalSizeM: "7.62m × 15.24m",
-      areaGaj: 139, areaSqFt: 1250, areaSqM: 116.1,
-      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-3"
+      startNo: 111, count: 5, category: 'B', facingCode: 'W',
+      facingLabel: "WEST-FACING (← 30' East Ave-3)",
+      blockName: 'Block-E4 West Col North (West Facing)',
+      xStart: 766, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
+      roadWidth: "30'-0\" (9.0m) East Avenue-3"
     });
 
-    // Plots 106–110 (South Commercial Wing): 5 Plots (Front: 23'-8", Depth: 50'-0")
+    // Block-E4 West Col South (Plots 116–120): 5 WEST-FACING (Front: 23'-8", Depth: 42'-0")
     createPlotRange({
-      startNo: 106, count: 5, category: 'COM', facingCode: 'W',
+      startNo: 116, count: 5, category: 'B', facingCode: 'W',
+      facingLabel: "WEST-FACING (← 30' East Ave-3)",
+      blockName: 'Block-E4 West Col South (West Facing)',
+      xStart: 766, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
+      roadWidth: "30'-0\" (9.0m) East Avenue-3"
+    });
+
+    // Block-E4 East Col North (Plots 121–125): 5 EAST-FACING (Front: 22'-0", Depth: 42'-0")
+    createPlotRange({
+      startNo: 121, count: 5, category: 'B', facingCode: 'E',
+      facingLabel: "EAST-FACING (→ 30' East Ave-4)",
+      blockName: 'Block-E4 East Col North (East Facing)',
+      xStart: 808, yStart: 144, totalWidth: 42, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 42'-0\" Depth", nominalSizeM: "6.71m × 12.80m",
+      areaGaj: 115, areaSqFt: 924, areaSqM: 85.8,
+      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-4"
+    });
+
+    // Block-E4 East Col South (Plots 126–130): 5 EAST-FACING (Front: 23'-8", Depth: 42'-0")
+    createPlotRange({
+      startNo: 126, count: 5, category: 'B', facingCode: 'E',
+      facingLabel: "EAST-FACING (→ 30' East Ave-4)",
+      blockName: 'Block-E4 East Col South (East Facing)',
+      xStart: 808, yStart: 294, totalWidth: 42, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 42'-0\" Depth", nominalSizeM: "7.22m × 12.80m",
+      areaGaj: 120, areaSqFt: 995, areaSqM: 92.4,
+      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-4"
+    });
+
+    // --- FRONT COMMERCIAL SHOWROOM PLOTS (PLOTS 131 TO 140 / COM-1 TO COM-10: FULL 48'-0" DEPTH • FRONTAGE 22'-0" TO 23'-8") ---
+    // Plots 131–135 (North Commercial Wing): 5 Plots (Front: 22'-0", Depth: 48'-0")
+    createPlotRange({
+      startNo: 131, count: 5, category: 'COM', facingCode: 'W',
       isCommercial: true,
-      facingLabel: "WEST-FACING COMMERCIAL (← 30' Commercial Avenue • Dual Garden Frontage)",
-      blockName: 'Front Commercial Block South (Plots 106–110 / COM 5–9)',
-      xStart: 796, yStart: 294, totalWidth: 50, totalHeight: 118.46, direction: 'vertical',
-      nominalSizeFt: "23'-8\" Front × 50'-0\" Depth", nominalSizeM: "7.22m × 15.24m",
-      areaGaj: 131, areaSqFt: 1185, areaSqM: 110.1,
-      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-3"
+      facingLabel: "WEST-FACING COMMERCIAL (← 30' Commercial Avenue • Dual Approach Facing)",
+      blockName: 'Front Commercial Block North (Plots 131–135 / COM 1–5)',
+      xStart: 880, yStart: 144, totalWidth: 48, totalHeight: 110, direction: 'vertical',
+      nominalSizeFt: "22'-0\" Front × 48'-0\" Depth", nominalSizeM: "6.71m × 14.63m",
+      areaGaj: 126, areaSqFt: 1056, areaSqM: 98.1,
+      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-4"
+    });
+
+    // Plots 136–140 (South Commercial Wing): 5 Plots (Front: 23'-8", Depth: 48'-0")
+    createPlotRange({
+      startNo: 136, count: 5, category: 'COM', facingCode: 'W',
+      isCommercial: true,
+      facingLabel: "WEST-FACING COMMERCIAL (← 30' Commercial Avenue • Dual Approach Facing)",
+      blockName: 'Front Commercial Block South (Plots 136–140 / COM 6–10)',
+      xStart: 880, yStart: 294, totalWidth: 48, totalHeight: 118.46, direction: 'vertical',
+      nominalSizeFt: "23'-8\" Front × 48'-0\" Depth", nominalSizeM: "7.22m × 14.63m",
+      areaGaj: 135, areaSqFt: 1137, areaSqM: 105.6,
+      roadWidth: "30'-0\" (9.0m) Commercial Access Avenue-4"
     });
 
     // Asset Catalogs (Roads, Parks, Utilities) with Exact Dimensions
@@ -1089,23 +1149,30 @@
       'ROAD-EAST-AVE-1': {
         title: "30'-0\" (9.0M) EAST COMB AVENUE-1",
         facing: 'North-South Double-Loaded Avenue',
-        dims: "258'-6\" Long × 30'-0\" Wide (78.8m × 9.00m)",
-        area: "7,755 Sq.Ft | 861.7 Gaj (720.5 SQM)",
-        role: "Serves Block-E1 (Plots 57–65) on West & Block-E2 (Plots 66–74) on East"
+        dims: "268'-6\" Long × 30'-0\" Wide (81.8m × 9.00m)",
+        area: "8,055 Sq.Ft | 895.0 Gaj (748.3 SQM)",
+        role: "Serves Block-E1 (Plots 61–70) on West & Block-E2 West Col (Plots 71–80) on East"
       },
       'ROAD-EAST-AVE-2': {
         title: "30'-0\" (9.0M) EAST COMB AVENUE-2",
         facing: 'North-South Double-Loaded Avenue',
-        dims: "258'-6\" Long × 30'-0\" Wide (78.8m × 9.00m)",
-        area: "7,755 Sq.Ft | 861.7 Gaj (720.5 SQM)",
-        role: "Serves Block-E2 (Plots 75–83) on West & Block-E3 (Plots 84–92) on East"
+        dims: "268'-6\" Long × 30'-0\" Wide (81.8m × 9.00m)",
+        area: "8,055 Sq.Ft | 895.0 Gaj (748.3 SQM)",
+        role: "Serves Block-E2 East Col (Plots 81–90) on West & Block-E3 West Col (Plots 91–100) on East"
       },
       'ROAD-EAST-AVE-3': {
-        title: "30'-0\" (9.0M) COMMERCIAL ACCESS AVENUE-3",
+        title: "30'-0\" (9.0M) EAST COMB AVENUE-3",
+        facing: 'North-South Double-Loaded Avenue',
+        dims: "268'-6\" Long × 30'-0\" Wide (81.8m × 9.00m)",
+        area: "8,055 Sq.Ft | 895.0 Gaj (748.3 SQM)",
+        role: "Serves Block-E3 East Col (Plots 101–110) on West & Block-E4 West Col (Plots 111–120) on East"
+      },
+      'ROAD-EAST-AVE-4': {
+        title: "30'-0\" (9.0M) COMMERCIAL ACCESS AVENUE-4",
         facing: 'North-South Commercial Access Corridor',
-        dims: "258'-6\" Long × 30'-0\" Wide (78.8m × 9.00m)",
-        area: "7,755 Sq.Ft | 861.7 Gaj (720.5 SQM)",
-        role: "Provides Direct Access to Block-E3 (Plots 93–101) & 9 Front Commercial Plots (COM 1–9)"
+        dims: "268'-6\" Long × 30'-0\" Wide (81.8m × 9.00m)",
+        area: "8,055 Sq.Ft | 895.0 Gaj (748.3 SQM)",
+        role: "Serves Block-E4 East Col (Plots 121–130) on West & 10 Prime Commercial Showroom Plots (COM 1–10 / Plots 131–140) on East"
       },
       'PARK-1': {
         title: 'PARK-1: CENTRAL VASTU COMMUNITY PARK',
@@ -1124,8 +1191,10 @@
       'PARK-3': {
         title: 'PARK-3: GRAND FRONT ENTRANCE GARDENS & WELCOME PROMENADE',
         facing: 'East Colony Entrance Flanking 12m Gateway',
-        dims: "North Flank: 100'×84' • South Flank: 118'×88' (Grand Arrival Gardens)",
-        area: "9,592 Sq.Ft | 1,065.8 Gaj (891.1 SQM • 3.39%)",
+        dims: "North Flank: 100'×38' • South Flank: 118'×40' (Arrival Gardens & Plaza)",
+        area: "7,739 Sq.Ft | 859.9 Gaj (720.3 SQM • 2.75%)",
+        role: "Grand Entrance Promenade with Fountains, Flowerbeds, Palms & Pedestrian Welcome Plaza"
+      },
         role: "Grand Entrance Promenade with Fountains, Flowerbeds, Palms & Pedestrian Welcome Plaza"
       },
       'UTIL-GATE': {
@@ -1578,7 +1647,7 @@
     function searchAndSelectPlot(plotNo) {
       const plot = plotsData.find(p => p.plotNo === plotNo);
       if (!plot) {
-        alert(`Plot #${plotNo} not found (Valid: 1 to 110)`);
+        alert(`Plot #${plotNo} not found (Valid: 1 to 140)`);
         return;
       }
       const el = document.querySelector(`[data-id="PLOT-${plotNo}"]`);
@@ -1618,10 +1687,10 @@
       if (e.target === modal) modal.classList.add('hidden');
     });
 
-    // Select Plot #102 (First Commercial Plot) on initial load to demonstrate the verified commercial features
+    // Select Plot #131 (First Prime Commercial Showroom Plot COM-1) on initial load
     setTimeout(() => {
-      const sampleCom = document.querySelector('[data-id="PLOT-102"]');
-      if (sampleCom) selectEntity('PLOT', 'PLOT-102', sampleCom);
+      const sampleCom = document.querySelector('[data-id="PLOT-131"]');
+      if (sampleCom) selectEntity('PLOT', 'PLOT-131', sampleCom);
     }, 400);
   </script>
 </body>
