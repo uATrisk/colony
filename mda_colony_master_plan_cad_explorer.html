@@ -122,7 +122,7 @@
         <span>Main Road: <b>12.0m (40') Entry to End</b></span>
       </div>
       <div class="px-2 py-1 rounded bg-amber-950/70 border border-amber-600/50 text-amber-300 flex items-center gap-1.5">
-        <span>Parks: <b>13.00% (3,805 m²)</b></span>
+        <span>Parks: <b>14.06% (3,695 m² • 3 Parks)</b></span>
       </div>
     </div>
 
@@ -241,7 +241,7 @@
             <!-- Base Asphalt -->
             <rect x="-20" y="-20" width="1000" height="460" fill="#1e293b" id="baseRoadSurface" />
 
-            <!-- 1. PARKS (EXACT 13.00% = 3,805.62 SQM) -->
+            <!-- 1. PARKS (EXACT 13.00% = 3,695.38 SQM) -->
             <g id="svgLayerParks">
               <!-- PARK-2: NORTH CHAKROAD ECO-BUFFER (650 m² • 2.22%) -->
               <polygon
@@ -258,22 +258,38 @@
                 PARK-2: NORTH CHAKROAD GREEN BUFFER (650 m² • 2.22%)
               </text>
 
-              <!-- PARK-1: CENTRAL VASTU COMMUNITY PARK (3,155.62 m² • 10.78%) -->
+              <!-- PARK-1: CENTRAL VASTU COMMUNITY PARK (2,700 SQM • 10.28%) -->
               <!-- Sits directly NORTH of the 12.0m Main Road so ZERO plots face South -->
               <g data-type="PARK" data-id="PARK-1" class="cad-interactive">
-                <rect x="195.0" y="98.0" width="281.0" height="160.0" rx="6" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="2.2" />
-                <rect x="205.0" y="108.0" width="261.0" height="140.0" rx="14" fill="none" stroke="#fde68a" stroke-width="3" stroke-opacity="0.55" pointer-events="none" />
-                <rect x="205.0" y="108.0" width="261.0" height="140.0" rx="14" fill="none" stroke="#10b981" stroke-width="0.9" stroke-dasharray="4,3" pointer-events="none" />
-                <circle cx="335.5" cy="178" r="16" fill="#047857" stroke="#34d399" stroke-width="1.5" pointer-events="none" />
-                <circle cx="335.5" cy="178" r="9" fill="#f59e0b" fill-opacity="0.9" stroke="#fef3c7" stroke-width="1" pointer-events="none" />
-                <text x="335.5" y="210" text-anchor="middle" fill="#ecfdf5" font-size="9.5" font-family="JetBrains Mono" font-weight="700" pointer-events="none">
+                <rect x="195.0" y="136.0" width="240.0" height="122.0" rx="6" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="2.2" />
+                <rect x="203.0" y="144.0" width="224.0" height="106.0" rx="12" fill="none" stroke="#fde68a" stroke-width="2.5" stroke-opacity="0.55" pointer-events="none" />
+                <rect x="203.0" y="144.0" width="224.0" height="106.0" rx="12" fill="none" stroke="#10b981" stroke-width="0.9" stroke-dasharray="4,3" pointer-events="none" />
+                <circle cx="315" cy="197" r="14" fill="#047857" stroke="#34d399" stroke-width="1.5" pointer-events="none" />
+                <circle cx="315" cy="197" r="8" fill="#f59e0b" fill-opacity="0.9" stroke="#fef3c7" stroke-width="1" pointer-events="none" />
+                <text x="315" y="220" text-anchor="middle" fill="#ecfdf5" font-size="8.5" font-family="JetBrains Mono" font-weight="700" pointer-events="none">
                   PARK-1: CENTRAL VASTU COMMUNITY PARK
                 </text>
-                <text x="335.5" y="223" text-anchor="middle" fill="#6ee7b7" font-size="7.5" font-family="JetBrains Mono" font-weight="700" pointer-events="none">
-                  3,155.62 SQM (33,967 SQFT | 3,774 GAJ • 10.78% OF SITE)
+                <text x="315" y="232" text-anchor="middle" fill="#6ee7b7" font-size="7" font-family="JetBrains Mono" font-weight="700" pointer-events="none">
+                  2,700.00 SQM (29,062 SQFT | 3,229 GAJ • 10.28% OF SITE)
                 </text>
-                <text x="335.5" y="235" text-anchor="middle" fill="#fde68a" font-size="6.5" font-family="JetBrains Mono" font-weight="600" pointer-events="none">
-                  ★ PLACED NORTH OF 12M MAIN SPINE ROAD SO ZERO PLOTS FACE SOUTH ★
+              </g>
+
+              <!-- PARK-3: GRAND FRONT ENTRANCE GARDENS (445.38 SQM • 1.70%) -->
+              <!-- Placed in FRONT along the 22'-6" Main Approach Road flanking East Gate -->
+              <g data-type="PARK" data-id="PARK-3" class="cad-interactive">
+                <!-- North Flank (y = 154 to 253, x = 910 to 932) -->
+                <rect x="910" y="154" width="22" height="99" rx="3" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="1.4" />
+                <rect x="913" y="157" width="16" height="93" rx="2" fill="none" stroke="#fde68a" stroke-width="1" stroke-dasharray="3,2" pointer-events="none" />
+                
+                <!-- South Flank (y = 303 to 412, x = 910 to 935) -->
+                <rect x="910" y="303" width="24" height="109" rx="3" fill="url(#parkGrassPattern)" stroke="#10b981" stroke-width="1.4" />
+                <rect x="913" y="306" width="18" height="103" rx="2" fill="none" stroke="#fde68a" stroke-width="1" stroke-dasharray="3,2" pointer-events="none" />
+
+                <text x="921" y="205" text-anchor="middle" fill="#ecfdf5" font-size="5" font-family="JetBrains Mono" font-weight="700" transform="rotate(89 921 205)" pointer-events="none">
+                  PARK-3: FRONT ENTRANCE GARDEN (NORTH)
+                </text>
+                <text x="922" y="360" text-anchor="middle" fill="#ecfdf5" font-size="5" font-family="JetBrains Mono" font-weight="700" transform="rotate(89 922 360)" pointer-events="none">
+                  PARK-3: FRONT ENTRANCE GARDEN (SOUTH)
                 </text>
               </g>
 
@@ -506,7 +522,7 @@
           </div>
           <div class="flex justify-between text-slate-400">
             <span>Total Parks:</span>
-            <span class="text-amber-300 font-bold">13.00% (3,805.62 m²)</span>
+            <span class="text-amber-300 font-bold">13.00% (3,695.38 m²)</span>
           </div>
         </div>
 
@@ -613,8 +629,8 @@
           </div>
           <div class="p-3.5 rounded-xl bg-amber-950/40 border border-amber-600/50">
             <div class="text-slate-400 text-[11px]">Parks &amp; Green Space</div>
-            <div class="text-base sm:text-lg font-bold text-amber-300 mt-1">14.48% (13-15% Quota)</div>
-            <div class="text-[10px] text-amber-200 mt-1">3,805.62 SQM (4,551.5 Gaj • 14.48%)</div>
+            <div class="text-base sm:text-lg font-bold text-amber-300 mt-1">14.06% (13-15% Quota)</div>
+            <div class="text-[10px] text-amber-200 mt-1">3,695.38 SQM (4,551.5 Gaj • 14.06%)</div>
           </div>
           <div class="p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-600/50">
             <div class="text-slate-400 text-[11px]">Roads & Circulatory Loop</div>
@@ -640,19 +656,19 @@
               <tbody class="divide-y divide-slate-800/80 bg-slate-900/60">
                 <tr class="bg-sky-950/20">
                   <td class="py-2.5 px-3 font-sans font-bold text-sky-300">1. Residential Plotted Area (158 Vastu Plots)</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">16,859.50</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">20,152.37</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">181,371.3</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">16,969.74</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">20,284.22</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-300">182,557.9</td>
                   <td class="py-2.5 px-3 text-right font-bold text-sky-300">24.66</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-sky-400">64.17%</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-sky-400">64.60%</td>
                 </tr>
                 <tr class="bg-emerald-950/25">
-                  <td class="py-2.5 px-3 font-sans font-bold text-emerald-300">2. Parks &amp; Green Spaces (Park-1 Central + Park-2 Buffer)</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">3,805.62</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,551.49</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">40,963.4</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">5.57</td>
-                  <td class="py-2.5 px-3 text-right font-bold text-emerald-400">14.48%</td>
+                  <td class="py-2.5 px-3 font-sans font-bold text-emerald-300">2. Parks &amp; Green Spaces (Park-1 Central + Park-2 Buffer + Park-3 Front)</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">3,695.38</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">4,419.64</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">39,776.8</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-300">5.41</td>
+                  <td class="py-2.5 px-3 text-right font-bold text-emerald-400">14.06%</td>
                 </tr>
                 <tr>
                   <td class="py-2.5 px-3 font-sans font-medium text-slate-200">3. Roads (12m Spine + 9m Comb Roads + 7.6m North Loop)</td>
@@ -917,30 +933,37 @@
       roadWidth: `30'-0" (9.0m) Comb Avenue-3`
     });
 
-    // Block-E4 East Edge North (Plots 144–151): 8 WEST-FACING
+    // Block-E4 East Edge North (Plots 143–150): 8 WEST-FACING (Length reduced to 34' to fit Front Park-3)
     createPlotRange({
       startNo: 143, count: 8, category: 'C', facingCode: 'W',
-      facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
-      blockName: 'Block-E4 East Edge (West Facing)',
-      xStart: 876, yStart: 166, totalWidth: 49, totalHeight: 92, direction: 'vertical',
-      nominalSizeFt: `24'-0" × 49'-0`, nominalSizeM: "7.32m × 14.94m",
-      areaGaj: 130, areaSqFt: 1176, areaSqM: 109.25,
+      facingLabel: `WEST-FACING (← 30' Comb Ave-3 • Backing onto Front Park-3)`,
+      blockName: 'Block-E4 East Edge North (Front Park Backing)',
+      xStart: 876, yStart: 166, totalWidth: 34, totalHeight: 92, direction: 'vertical',
+      nominalSizeFt: `24'-0" × 34'-0"`, nominalSizeM: `7.32m × 10.36m`,
+      areaGaj: 91, areaSqFt: 816, areaSqM: 75.81,
       roadWidth: `30'-0" (9.0m) Comb Avenue-3`
     });
 
-    // Block-E4 East Edge South (Plots 152–159): 8 WEST-FACING
+    // Block-E4 East Edge South (Plots 151–158): 8 WEST-FACING (Length reduced to 34' to fit Front Park-3)
     createPlotRange({
       startNo: 151, count: 8, category: 'C', facingCode: 'W',
-      facingLabel: 'WEST-FACING (← 30\' Comb Ave-3)',
-      blockName: 'Block-E4 East Edge (West Facing)',
-      xStart: 876, yStart: 303, totalWidth: 49, totalHeight: 107, direction: 'vertical',
-      nominalSizeFt: `25'-0" × 49'-0`, nominalSizeM: "7.62m × 14.94m",
-      areaGaj: 136, areaSqFt: 1225, areaSqM: 113.81,
+      facingLabel: `WEST-FACING (← 30' Comb Ave-3 • Backing onto Front Park-3)`,
+      blockName: 'Block-E4 East Edge South (Front Park Backing)',
+      xStart: 876, yStart: 303, totalWidth: 34, totalHeight: 107, direction: 'vertical',
+      nominalSizeFt: `25'-0" × 34'-0"`, nominalSizeM: `7.62m × 10.36m`,
+      areaGaj: 94, areaSqFt: 850, areaSqM: 78.97,
       roadWidth: `30'-0" (9.0m) Comb Avenue-3`
     });
 
     // Asset Catalogs (Roads, Parks, Utilities) with Exact Dimensions
     const assetsCatalog = {
+            'PARK-3': {
+        title: 'PARK-3: GRAND FRONT ENTRANCE GARDENS & WELCOME PROMENADE',
+        facing: 'Flanking East Main Entrance along 22\'-6" Approach Road',
+        dims: "208'-0\" Total Frontage × 22'-0\" to 24'-0\" Depth",
+        area: "4,794 Sq.Ft | 532.7 Gaj (445.38 SQM • 1.70% of site)",
+        role: "Grand Arrival Landscaping, Fountains & Green Buffer Flanking Both Sides of Main Gateway"
+      },
       'ROAD-MAIN': {
         title: '40\'-0" (12.0M) MAIN CENTRAL SPINE BOULEVARD',
         facing: 'East-West Primary Arterial Road (Entry to End)',
@@ -1000,7 +1023,7 @@
       'PARK-1': {
         title: 'PARK-1: CENTRAL VASTU COMMUNITY PARK',
         facing: 'North of 12m Spine (Absorbs South Frontage)',
-        dims: "281'-0\" × 160'-0\" (85.65m × 48.77m)",
+        dims: "240'-0\" × 122'-0\" (73.15m × 37.19m)",
         area: "33,967 Sq.Ft | 3,774.1 Gaj (3,155.62 SQM • 10.78%)",
         role: "Central Community Park with Jogging Track, Gazebo, Kids Turf & Senior Deck"
       },
