@@ -507,10 +507,12 @@ function outline(pts,y,color,op=1){const v=[];pts.forEach(p=>{const w=W(p);v.pus
 function label(lines,{w,color="#E6ECF7",align=null,y=1,sizes=null}){
   const cw=512, chh=lines.length>1?256:160, cv=document.createElement("canvas"); cv.width=cw; cv.height=chh;
   const g=cv.getContext("2d"); g.textAlign="center"; g.textBaseline="middle";
-  const sz=sizes||(lines.length>1?[120,84]:[120]);
+  const sz=sizes||(lines.length>1?[110,80]:[110]);
   lines.forEach((t,i)=>{let s=sz[i];const f=x=>`700 ${x}px "JetBrains Mono",ui-monospace,Menlo,monospace`; g.font=f(s);
-    while(g.measureText(t).width>cw-24&&s>20){s-=6;g.font=f(s);}
-    g.fillStyle=Array.isArray(color)?color[i]:color; g.fillText(t,cw/2,lines.length>1?(i===0?chh*0.34:chh*0.76):chh/2);});
+    while(g.measureText(t).width>cw-28&&s>20){s-=4;g.font=f(s);}
+    g.lineWidth=12; g.strokeStyle="rgba(7,12,24,0.92)";
+    g.strokeText(t,cw/2,lines.length>1?(i===0?chh*0.35:chh*0.75):chh/2);
+    g.fillStyle=Array.isArray(color)?color[i]:color; g.fillText(t,cw/2,lines.length>1?(i===0?chh*0.35:chh*0.75):chh/2);});
   const tex=new THREE.CanvasTexture(cv); tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
   const m=new THREE.Mesh(new THREE.PlaneGeometry(w,w*chh/cw),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
   m.rotation.order="YXZ"; m.rotation.x=-Math.PI/2; m.position.y=y; m.renderOrder=5; m.userData.align=align; LABELS.push(m); return m;}
@@ -603,26 +605,19 @@ LAY.roads.forEach(r=>r.polys.forEach(p=>{
 }));
 scene.add(dashes(LAY.mainLine,0.9,10,8,0xF2C14E,0.2));
 LAY.subLines.forEach(l=>scene.add(dashes(l,0.6,6,7,0xC9D3E8,0.2)));
-LAY.roads.forEach(r=>{
-  const p=r.polys[0];
-  const c=cen(p);
-  const w=W(c);
-  let maxL=0, bestEdge=[p[0],p[1]];
-  for(let j=0;j<p.length;j++){
-    const pA=p[j], pB=p[(j+1)%p.length];
-    const L=Math.hypot(pB[0]-pA[0],pB[1]-pA[1]);
-    if(L>maxL){ maxL=L; bestEdge=[pA,pB]; }
-  }
-  const align=dirAngle(bestEdge[0],bestEdge[1]);
-  const labelText = r.kind==="main" ? "12 M MAIN ROAD (40 FT)" :
-                    r.kind==="loop" ? "7.5 M LOOP ROAD (25 FT)" :
-                    r.kind==="bc"   ? "9 M ROAD (30 FT)" :
-                    r.w===12        ? "12 M (40 FT) ROAD" : "9 M (30 FT) ROAD";
-  const col = (r.kind==="main"||r.kind==="loop") ? "#F2C14E" : "#9FB0D0";
-  const labelW = r.kind==="main" ? 120 : (r.kind==="loop" ? 95 : 55);
-  const L = label([labelText], { w: labelW, color: col, align, y: 0.65 });
-  L.position.set(w[0], 0.65, w[1]);
-  scene.add(L);
+{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)],w=W(m);
+  const L=label(["12 M MAIN ROAD","(40 FT WIDE)"],{w:70,color:"#F2C14E",align:dirAngle(a,b),y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+{ const m=[840.1,136.3],w=W(m);
+  const L=label(["9 M ROAD","(30 FT)"],{w:30,color:"#F2C14E",align:0,y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+{ const m=[821.5,394.1],w=W(m);
+  const L=label(["7.5 M LOOP ROAD","(25 FT)"],{w:36,color:"#F2C14E",align:0,y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+LAY.subLines.forEach(l=>{
+  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2],w=W(m);
+  const L=label(["9 M ROAD","(30 FT)"],{w:28,color:"#FFFFFF",align:dirAngle(l[0],l[1]),y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L);
 });
 
 const parkInfo={kind:"park",polys:LAY.park}, fparkInfo={kind:"fpark",polys:LAY.fpark};
@@ -1177,24 +1172,12 @@ PLOTS.forEach((p,i)=>{
   plotSvgItems[i].txtG = tG;
 });
 
-LAY.roads.forEach(r=>{
-  const p=r.polys[0];
-  const c=cen(p);
-  const w=W(c);
-  let maxL=0, bestEdge=[p[0],p[1]];
-  for(let j=0;j<p.length;j++){
-    const pA=p[j], pB=p[(j+1)%p.length];
-    const L=Math.hypot(pB[0]-pA[0],pB[1]-pA[1]);
-    if(L>maxL){ maxL=L; bestEdge=[pA,pB]; }
-  }
-  const ang=deg(dirAngle(bestEdge[0],bestEdge[1]));
-  const labelText = r.kind==="main" ? "12 M MAIN ROAD (40 FT)" :
-                    r.kind==="loop" ? "7.5 M LOOP ROAD (25 FT)" :
-                    r.kind==="bc"   ? "9 M ROAD (30 FT)" :
-                    r.w===12        ? "12 M (40 FT) ROAD" : "9 M (30 FT) ROAD";
-  const col = (r.kind==="main"||r.kind==="loop") ? "#F2C14E" : "#9FB0D0";
-  const fs = r.kind==="main" ? 9 : 7;
-  txt2(labelText, w, fs, col, ang);
+{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)]; txt2("12 M MAIN ROAD (40 FT)",W(m),8.5,"#F2C14E",deg(dirAngle(a,b))); }
+{ const m=[840.1,136.3]; txt2("9 M ROAD (30 FT)",W(m),7,"#9FB0D0",0); }
+{ const m=[821.5,394.1]; txt2("7.5 M LOOP ROAD (25 FT)",W(m),7,"#F2C14E",0); }
+LAY.subLines.forEach(l=>{
+  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
+  txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])));
 });
 LAY.park.forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W(cen(p)),11,"#BDF5D3",null);});
 LAY.fpark.forEach(p=>{if(areaOf(p)>1500)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])));});
@@ -1534,6 +1517,9 @@ window.NANDI = {
   PLOTS,
   LAY,
   controls,
+  camera,
+  scene,
+  renderer,
   rotate2,
   animateRotate2,
   setDragMode3d,
