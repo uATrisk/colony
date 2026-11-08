@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <title>NANDI Township — Civil CAD Master Plan &amp; Vastu Subdivision</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans h-full w-full flex flex-col select-none overflow-hidden">
+
+  <!-- TOP HEADER -->
+  <header class="h-14 bg-slate-900/95 border-b border-slate-800 px-3 sm:px-4 flex items-center justify-between gap-2 shrink-0 z-30 backdrop-blur-md">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+        </svg>
+      </div>
+      <div class="truncate">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span class="text-xs sm:text-sm font-black tracking-wide text-white font-mono">NANDI TOWNSHIP</span>
+          <span id="badgePlotCount" class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">-- PLOTS</span>
+          <span id="badgePlottedPct" class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/25 text-emerald-200 border border-emerald-400/40">--% PLOTTED</span>
+          <span id="badgeStandardSize" class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">120 GAJ (≥ 22' FRONT)</span>
+          <span id="badgeParksPct" class="hidden md:inline text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">--% PARKS</span>
+          <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">0% SOUTH</span>
+        </div>
+        <p id="headerSubtitle" class="text-[10px] text-slate-400 font-mono truncate hidden sm:block">
+          Loading CAD geometry from survey...
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <button id="btnOptionsModal" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-sky-300 border border-slate-700 text-xs font-medium flex items-center gap-1.5 shadow transition">
+        <span>Options A–D</span>
+      </button>
+
+      <button id="btnOpenAreaModal" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-medium flex items-center gap-1.5 shadow transition">
+        <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <span class="hidden sm:inline">Area Statement</span>
+      </button>
+
+      <div class="relative flex items-center">
+        <input id="plotSearchInput" type="text" placeholder="Plot #" class="w-20 sm:w-28 pl-2 pr-6 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 font-mono text-xs focus:outline-none focus:border-sky-500" />
+        <button id="btnPlotSearch" class="absolute right-1 text-slate-400 hover:text-sky-400 p-0.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SUBHEADER / HORIZONTAL FILTER BAR -->
+  <div class="h-10 bg-slate-900/80 border-b border-slate-800/80 px-3 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs font-mono">
+    <span class="text-[10px] text-slate-500 uppercase tracking-wider font-sans font-semibold shrink-0 pr-1">Filter:</span>
+    <button data-filter="ALL" class="filter-btn px-2.5 py-1 rounded-md bg-slate-700 text-white font-medium text-[11px] shrink-0 transition">All Plots</button>
+    <button data-filter="COM" class="filter-btn px-2.5 py-1 rounded-md text-amber-300 hover:bg-slate-800 font-bold text-[11px] shrink-0 border border-amber-500/40 bg-amber-500/10 transition">⭐ Commercial (10)</button>
+    <button data-filter="E" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">East-Facing</button>
+    <button data-filter="W" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">West-Facing</button>
+    <button data-filter="N" class="filter-btn px-2.5 py-1 rounded-md text-slate-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">North-Facing</button>
+    <button data-filter="PREMIUM" class="filter-btn px-2.5 py-1 rounded-md text-purple-300 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">Premium</button>
+    <button data-filter="PARK" class="filter-btn px-2.5 py-1 rounded-md text-emerald-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">Parks</button>
+    <button data-filter="ROAD" class="filter-btn px-2.5 py-1 rounded-md text-sky-400 hover:bg-slate-800 font-medium text-[11px] shrink-0 transition">Roads</button>
+  </div>
+
+  <!-- MAIN CANVAS & SIDEBAR CONTAINER -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- CAD CANVAS VIEWPORT -->
+    <main id="cadCanvasContainer" class="flex-1 relative overflow-hidden cad-viewport-dark cursor-grab active:cursor-grabbing select-none" style="touch-action: none;">
+
+      <!-- Floating Bottom Zoom & Pan Controls -->
+      <div class="absolute bottom-4 left-3 sm:left-4 z-20 flex items-center gap-1 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-xl p-1 shadow-2xl">
+        <button id="btnZoomIn" title="Zoom In (+)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center font-mono text-base font-bold transition">+</button>
+        <button id="btnZoomOut" title="Zoom Out (-)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center font-mono text-base font-bold transition">−</button>
+        <button id="btnResetView" title="Fit Master Plan" class="px-2.5 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center gap-1 text-xs font-medium transition">
+          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+          <span class="hidden sm:inline">Fit Plan</span>
+        </button>
+        <div class="px-2 text-[10px] sm:text-[11px] font-mono text-slate-400 border-l border-slate-700" id="zoomLevelReadout">100%</div>
+      </div>
+
+      <!-- Floating Legend Pill -->
+      <div class="absolute top-3 right-3 z-10 hidden sm:flex items-center gap-3 bg-slate-900/85 backdrop-blur-md border border-slate-800 rounded-lg px-2.5 py-1 text-[10px] font-mono text-slate-300">
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 border border-amber-300"></span> Commercial (10)</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-purple-500 border border-purple-300"></span> Premium</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-600 border border-emerald-400"></span> East</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-600 border border-indigo-400"></span> West</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-sky-600 border border-sky-400"></span> North</span>
+        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-600"></span> South (0)</span>
+      </div>
+
+      <!-- SVG MASTER PLAN CANVAS -->
+      <svg id="masterPlanSvg" class="w-full h-full block" viewBox="-115 -95 1210 645" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="dimArrowStart" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 10 1 L 1 5 L 10 9 z" fill="#fbbf24" />
+          </marker>
+          <marker id="dimArrowEnd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+          </marker>
+
+          <pattern id="parkGrassPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+            <rect width="24" height="24" fill="#064e3b" fill-opacity="0.75" />
+            <circle cx="6" cy="6" r="1.5" fill="#10b981" fill-opacity="0.45" />
+            <circle cx="18" cy="18" r="1.5" fill="#10b981" fill-opacity="0.45" />
+            <path d="M 12 4 L 14 8 L 10 8 Z" fill="#34d399" fill-opacity="0.35" />
+            <path d="M 4 16 L 6 20 L 2 20 Z" fill="#34d399" fill-opacity="0.35" />
+          </pattern>
+
+          <pattern id="chakroadHatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#f43f5e" stroke-width="1.5" stroke-opacity="0.4" />
+          </pattern>
+        </defs>
+
+        <!-- Dynamic SVG Groups Rendered by main.ts -->
+        <g id="svgGroupTransform">
+          <g id="svgGroupRoads"></g>
+          <g id="svgGroupParks"></g>
+          <g id="svgGroupUtilities"></g>
+          <g id="svgGroupPlots"></g>
+          <g id="svgGroupLabels"></g>
+          <g id="svgGroupDimensions"></g>
+          <g id="svgGroupBoundary"></g>
+        </g>
+      </svg>
+
+    </main>
+
+    <!-- RIGHT DESKTOP INSPECTOR SIDEBAR -->
+    <aside class="w-80 bg-slate-900/90 border-l border-slate-800 flex flex-col shrink-0 overflow-y-auto hidden md:flex">
+      <div class="p-3 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <h2 class="text-xs font-bold text-slate-200 uppercase tracking-wider">CAD Inspector</h2>
+        </div>
+        <span id="inspectorBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-sky-400 border border-slate-700">CLICK TO SELECT</span>
+      </div>
+
+      <div class="p-4 space-y-4 text-xs">
+        <div class="bg-slate-950/80 rounded-xl p-3.5 border border-slate-800 space-y-2.5 shadow-inner">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Selected Item:</span>
+            <span id="inspectPlotNo" class="font-mono font-bold text-base text-white">Click any entity</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Zoning / Use:</span>
+            <span id="inspectUse" class="font-bold text-amber-300">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Facing / Vastu:</span>
+            <span id="inspectFacing" class="font-bold text-emerald-400">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Front × Depth:</span>
+            <span id="inspectDims" class="font-mono font-bold text-sky-300">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Calculated Area:</span>
+            <span id="inspectArea" class="font-mono font-bold text-amber-300">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Abutting Road:</span>
+            <span id="inspectRoad" class="font-mono text-slate-200">--</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Premium Reason:</span>
+            <span id="inspectPremium" class="font-sans text-purple-300 text-right truncate max-w-[150px]">--</span>
+          </div>
+        </div>
+
+        <!-- Live Township Master Stats -->
+        <div class="bg-slate-950/60 rounded-xl p-3.5 border border-slate-800 space-y-2 text-[11px] font-mono">
+          <div class="font-bold text-slate-300 uppercase tracking-wider text-[10px] pb-1 border-b border-slate-800">
+            Township Computed Statistics
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Total Plots:</span>
+            <span id="statTotalPlots" class="text-white font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Residential:</span>
+            <span id="statResPlots" class="text-emerald-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Commercial:</span>
+            <span id="statComPlots" class="text-amber-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Average Area:</span>
+            <span id="statAvgGaj" class="text-emerald-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Frontage Range:</span>
+            <span id="statFrontRange" class="text-amber-300 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">East-Facing:</span>
+            <span id="statEastFacing" class="text-emerald-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">West-Facing:</span>
+            <span id="statWestFacing" class="text-indigo-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">North-Facing:</span>
+            <span id="statNorthFacing" class="text-sky-400 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">South-Facing:</span>
+            <span class="text-rose-400 font-bold">0 Plots (0%)</span>
+          </div>
+          <div class="flex justify-between pt-1 border-t border-slate-800/80">
+            <span class="text-slate-400">Parks (13–15%):</span>
+            <span id="statParksPct" class="text-emerald-300 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Roads Share:</span>
+            <span id="statRoadsPct" class="text-sky-300 font-bold">--</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Utilities Share:</span>
+            <span id="statUtilsPct" class="text-indigo-300 font-bold">--</span>
+          </div>
+        </div>
+
+        <div class="bg-emerald-950/20 border border-emerald-600/30 rounded-xl p-3 text-[11px] space-y-1">
+          <div class="font-bold text-emerald-400 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            100% Vastu &amp; MDA Subdivision Bylaws
+          </div>
+          <p class="text-slate-300">
+            Zero plots face South. Every plot provides minimum 22'-0" frontage and standard 120 Gaj area, strictly conforming to MDA norms.
+          </p>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="space-y-2 pt-2 border-t border-slate-800">
+          <a id="btnDownloadDxf" href="./nandi_township_master_plan.dxf" download="nandi_township_master_plan.dxf" class="w-full py-2 px-3 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs flex items-center justify-center gap-2 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            <span>Download AutoCAD DXF</span>
+          </a>
+          <a id="btnDownloadCsv" href="./plot_schedule.csv" download="plot_schedule.csv" class="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs flex items-center justify-center gap-2 border border-slate-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            <span>Download Plot Schedule (CSV)</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- AREA STATEMENT MODAL DIALOG -->
+  <div id="areaStatementModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md hidden">
+    <div class="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-white">NANDI TOWNSHIP — LAND-USE BALANCE SHEET</h2>
+          <p class="text-xs text-slate-400 font-mono">MDA Subdivision Rules • Exact Geometry Computed via Shoelace Formula</p>
+        </div>
+        <button id="btnCloseAreaModal" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs font-mono">
+        <div class="overflow-x-auto border border-slate-800 rounded-xl">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-800/90 text-slate-300 text-[11px] uppercase tracking-wider border-b border-slate-700">
+                <th class="py-2.5 px-3">Land Use Category</th>
+                <th class="py-2.5 px-3 text-right">Area (SQ.M)</th>
+                <th class="py-2.5 px-3 text-right">Area (Gaj)</th>
+                <th class="py-2.5 px-3 text-right">Area (Sq.Ft)</th>
+                <th class="py-2.5 px-3 text-right">Bighas</th>
+                <th class="py-2.5 px-3 text-right">% of Site</th>
+              </tr>
+            </thead>
+            <tbody id="areaTableBody" class="divide-y divide-slate-800/80 bg-slate-900/60">
+              <!-- Populated dynamically by main.ts -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTIONS COMPARISON MODAL DIALOG -->
+  <div id="optionsModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md hidden">
+    <div class="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-white">PLOT-DEPTH &amp; SUBDIVISION OPTIONS COMPARISON</h2>
+          <p class="text-xs text-slate-400 font-mono">Options A, B, C, D Evaluated under Identical MDA Subdivision Norms</p>
+        </div>
+        <button id="btnCloseOptionsModal" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs font-mono">
+        <div id="optionsComparisonGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated dynamically by main.ts -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

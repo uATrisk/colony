@@ -4,10 +4,10 @@
   "description": "NANDI Township - MDA Subdivision CAD Explorer and Vastu Master Plan",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.js",
     "generate": "tsx scripts/generate.ts",
     "test": "vitest run",
-    "build": "vite build",
+    "build": "node scripts/build.js",
     "preview": "vite preview"
   },
   "repository": {
