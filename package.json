@@ -1,0 +1,26 @@
+{
+  "name": "colony",
+  "version": "1.0.0",
+  "description": "NANDI Township - MDA Subdivision CAD Explorer and Vastu Master Plan",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "generate": "tsx scripts/generate.ts",
+    "test": "vitest run",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uATrisk/colony.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "polygon-clipping": "^0.15.7",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}
