@@ -345,16 +345,23 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
       <button id="v3d" aria-pressed="true">3D</button>
       <button id="vTop" aria-pressed="false">Top</button>
     </div>
+    <div class="seg only3d" role="group" aria-label="3D Drag Action">
+      <button id="modeOrbit" aria-pressed="true" title="Orbit / Rotate camera">Orbit 🔄</button>
+      <button id="modePan" aria-pressed="false" title="Drag / Pan map across ground">Pan ✋</button>
+    </div>
     <div class="seg" role="group" aria-label="Zoom controls">
       <button id="zOut" aria-label="Zoom out">−</button>
       <button id="zIn" aria-label="Zoom in">+</button>
       <button id="zFit">Fit</button>
     </div>
-    <button id="tNorth" class="only2d" aria-pressed="false">North Up</button>
+    <div class="seg only2d" role="group" aria-label="2D Rotation">
+      <button id="tRotate2d" title="Rotate view 90° clockwise">Rotate ↺</button>
+      <button id="tNorth" aria-pressed="false">North Up</button>
+    </div>
     <button id="tHouse" class="only3d" aria-pressed="false">Houses</button>
     <button id="tSun" class="only3d" aria-label="Lighting simulation">Sun: Morning</button>
     <button id="tLab" aria-pressed="true">Labels</button>
-    <button id="tSpin" class="only3d" aria-pressed="false">Rotate</button>
+    <button id="tSpin" class="only3d" aria-pressed="false">Spin</button>
   </div>
 
   <button class="sum-bar" id="sum" aria-label="Site summary"></button>
@@ -451,8 +458,9 @@ scene.background=new THREE.Color(currentTheme==="light"?0xEDF2F7:0x070C18);
 scene.fog=new THREE.Fog(currentTheme==="light"?0xEDF2F7:0x070C18,2200,4200);
 const camera=new THREE.PerspectiveCamera(38,1,1,9000);
 const controls=new THREE.OrbitControls(camera,canvas);
-controls.enableDamping=true; controls.dampingFactor=0.08; controls.maxPolarAngle=1.40; controls.screenSpacePanning=false;
-controls.enableZoom=false; controls.rotateSpeed=0.6; controls.panSpeed=0.9;
+controls.enableDamping=true; controls.dampingFactor=0.08; controls.maxPolarAngle=1.40; controls.screenSpacePanning=true;
+controls.enableZoom=true; controls.zoomSpeed=1.2; controls.rotateSpeed=0.8; controls.panSpeed=1.3;
+controls.minDistance=35; controls.maxDistance=3000;
 const MIN_D=35, MAX_D=3000;
 
 const hemiLight=new THREE.HemisphereLight(currentTheme==="light"?0xFFFFFF:0xC4D8FF,currentTheme==="light"?0x94A3B8:0x091122,0.9);
@@ -595,10 +603,27 @@ LAY.roads.forEach(r=>r.polys.forEach(p=>{
 }));
 scene.add(dashes(LAY.mainLine,0.9,10,8,0xF2C14E,0.2));
 LAY.subLines.forEach(l=>scene.add(dashes(l,0.6,6,7,0xC9D3E8,0.2)));
-{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)],w=W(m);
-  const L=label(["12 M MAIN ROAD"],{w:70,color:"#F2C14E",align:dirAngle(a,b),y:0.6});L.position.set(w[0],0.6,w[1]);scene.add(L); }
-LAY.subLines.forEach(l=>{const len=Math.hypot(l[1][0]-l[0][0],l[1][1]-l[0][1]);if(len<90)return;const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2],w=W(m);
-  const L=label(["9 M ROAD"],{w:34,color:"#9FB0D0",align:dirAngle(l[0],l[1]),y:0.6});L.position.set(w[0],0.6,w[1]);scene.add(L);});
+LAY.roads.forEach(r=>{
+  const p=r.polys[0];
+  const c=cen(p);
+  const w=W(c);
+  let maxL=0, bestEdge=[p[0],p[1]];
+  for(let j=0;j<p.length;j++){
+    const pA=p[j], pB=p[(j+1)%p.length];
+    const L=Math.hypot(pB[0]-pA[0],pB[1]-pA[1]);
+    if(L>maxL){ maxL=L; bestEdge=[pA,pB]; }
+  }
+  const align=dirAngle(bestEdge[0],bestEdge[1]);
+  const labelText = r.kind==="main" ? "12 M MAIN ROAD (40 FT)" :
+                    r.kind==="loop" ? "7.5 M LOOP ROAD (25 FT)" :
+                    r.kind==="bc"   ? "9 M ROAD (30 FT)" :
+                    r.w===12        ? "12 M (40 FT) ROAD" : "9 M (30 FT) ROAD";
+  const col = (r.kind==="main"||r.kind==="loop") ? "#F2C14E" : "#9FB0D0";
+  const labelW = r.kind==="main" ? 120 : (r.kind==="loop" ? 95 : 55);
+  const L = label([labelText], { w: labelW, color: col, align, y: 0.65 });
+  L.position.set(w[0], 0.65, w[1]);
+  scene.add(L);
+});
 
 const parkInfo={kind:"park",polys:LAY.park}, fparkInfo={kind:"fpark",polys:LAY.fpark};
 LAY.park.forEach(p=>{scene.add(pick(flat(p,0.3,0x184B2E),parkInfo));scene.add(outline(p,0.45,0x4AC782,.85));});
@@ -794,12 +819,19 @@ function select(info){
       }
     };
 
+    let plotNote = "100% Vastu aligned orientation with zero south-facing exposure.";
+    if(p.n==="74"||p.n==="75"||p.n==="76"){
+      plotNote = "Equal Area Note: Plots 74, 75 & 76 each have exactly 127.6 Gaj (1,148 sq ft). As depth decreases along the curved boundary (46.4' on 74, 31.1' on 75, 27.5' on 76), the road frontage was widened (24.7' on 74, 36.9' on 75, 41.8' on 76) so every owner receives the exact same land area.";
+    } else if(irr){
+      plotNote = "This plot follows the colony boundary curve; perimeter and area are mathematically exact.";
+    }
+
     show(
       p.com?"Commercial Plot":"Residential Plot",
       plotName(p),
       tags,
       [...areaRows(p.sqft),["Facing",`${FACE[p.face]} (${p.bear.toFixed(0)}° from north)`],["Front Road",p.road],...(p.corner?[["Corner Road",p.corner]]:[])],
-      irr?"This plot follows the colony boundary curve; perimeter and area are mathematically exact.":"100% Vastu aligned orientation with zero south-facing exposure.",
+      plotNote,
       [["Zoom to Plot",()=>flyTo(p.cw,140),"btn-accent"],["Share Link",shareAction]],
       dims,
       stepper
@@ -990,12 +1022,39 @@ function setView(m,animate=true){
   const T=new THREE.Vector3(portrait?60:0,0,portrait?0:30), P=new THREE.Vector3();
   if(m==="top"){ if(portrait) P.set(T.x+0.01,dist,T.z); else P.set(T.x,dist,T.z+0.01); }
   else { const el=0.92; if(portrait) P.set(T.x+dist*Math.cos(el),dist*Math.sin(el),T.z); else P.set(T.x,dist*Math.sin(el),T.z+dist*Math.cos(el)); }
-  controls.enableRotate=(m!=="top");
-  controls.touches={ONE:m==="top"?THREE.TOUCH.PAN:THREE.TOUCH.ROTATE,TWO:THREE.TOUCH.DOLLY_PAN};
-  controls.mouseButtons={LEFT:m==="top"?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:m==="top"?THREE.MOUSE.ROTATE:THREE.MOUSE.PAN};
+  applyControlsMode();
   tween(P,T,animate?650:0);
   document.getElementById("v3d").setAttribute("aria-pressed",m==="3d"); document.getElementById("vTop").setAttribute("aria-pressed",m==="top");
 }
+
+let dragMode3d = "orbit"; // "orbit" or "pan"
+function applyControlsMode(){
+  if(mode==="top"){
+    controls.enableRotate=false;
+    controls.touches={ONE:THREE.TOUCH.PAN,TWO:THREE.TOUCH.DOLLY_PAN};
+    controls.mouseButtons={LEFT:THREE.MOUSE.PAN,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.ROTATE};
+  } else if(dragMode3d==="pan"){
+    controls.enableRotate=true;
+    controls.touches={ONE:THREE.TOUCH.PAN,TWO:THREE.TOUCH.DOLLY_ROTATE};
+    controls.mouseButtons={LEFT:THREE.MOUSE.PAN,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.ROTATE};
+  } else {
+    controls.enableRotate=true;
+    controls.touches={ONE:THREE.TOUCH.ROTATE,TWO:THREE.TOUCH.DOLLY_PAN};
+    controls.mouseButtons={LEFT:THREE.MOUSE.ROTATE,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.PAN};
+  }
+}
+
+function setDragMode3d(m){
+  dragMode3d=m;
+  const btnO=document.getElementById("modeOrbit");
+  const btnP=document.getElementById("modePan");
+  if(btnO) btnO.setAttribute("aria-pressed",m==="orbit");
+  if(btnP) btnP.setAttribute("aria-pressed",m==="pan");
+  applyControlsMode();
+}
+const btnModeOrbit=document.getElementById("modeOrbit"); if(btnModeOrbit) btnModeOrbit.onclick=()=>setDragMode3d("orbit");
+const btnModePan=document.getElementById("modePan"); if(btnModePan) btnModePan.onclick=()=>setDragMode3d("pan");
+
 function tween(P,T,ms){
   if(!ms){camera.position.copy(P);controls.target.copy(T);controls.update();tw=null;return;}
   tw={p0:camera.position.clone(),t0:controls.target.clone(),p1:P.clone(),t1:T.clone(),s:performance.now(),ms};
@@ -1007,33 +1066,45 @@ function flyTo(cw,dist){ if(view==="2d"){fly2d(cw);return;} const T=new THREE.Ve
 const plane=new THREE.Plane(new THREE.Vector3(0,1,0),0), ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
 function groundAt(cx,cy){ const r=canvas.getBoundingClientRect(); ndc.set((cx-r.left)/r.width*2-1,-((cy-r.top)/r.height)*2+1); ray.setFromCamera(ndc,camera);
   const p=new THREE.Vector3(); return ray.ray.intersectPlane(plane,p)?p:null; }
-function zoomAt(cx,cy,f){
-  tw=null; const d=camera.position.distanceTo(controls.target), nd=Math.min(MAX_D,Math.max(MIN_D,d*f)); f=nd/d; if(Math.abs(f-1)<1e-4)return;
-  let P=groundAt(cx,cy); if(!P) P=controls.target.clone();
-  camera.position.sub(P).multiplyScalar(f).add(P); controls.target.sub(P).multiplyScalar(f).add(P); controls.target.y=0; }
 
-canvas.addEventListener("wheel",e=>{e.preventDefault();zoomAt(e.clientX,e.clientY,Math.exp(e.deltaY*(e.ctrlKey?0.01:0.0015)));},{passive:false});
-const ptr=new Map(); let pinchD=0;
-canvas.addEventListener("pointerdown",e=>{ptr.set(e.pointerId,[e.clientX,e.clientY]); if(ptr.size===2){const [a,b]=[...ptr.values()];pinchD=Math.hypot(a[0]-b[0],a[1]-b[1]);}});
-canvas.addEventListener("pointermove",e=>{ if(!ptr.has(e.pointerId))return; ptr.set(e.pointerId,[e.clientX,e.clientY]);
-  if(ptr.size===2){const [a,b]=[...ptr.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]); if(pinchD>0&&d>0) zoomAt((a[0]+b[0])/2,(a[1]+b[1])/2,pinchD/d); pinchD=d;}});
-const ptrEnd=e=>{ptr.delete(e.pointerId); if(ptr.size<2)pinchD=0;};
-canvas.addEventListener("pointerup",ptrEnd); canvas.addEventListener("pointercancel",ptrEnd);
+let down3d=null, lastTap3d=0;
+canvas.addEventListener("pointerdown",e=>{
+  down3d=[e.clientX,e.clientY,performance.now()];
+});
+canvas.addEventListener("pointerup",e=>{
+  if(!down3d) return;
+  const moved=Math.hypot(e.clientX-down3d[0],e.clientY-down3d[1]);
+  const dt=performance.now()-down3d[2];
+  down3d=null;
+  if(moved>8||dt>400) return; // user dragged/panned/orbited, do not select
 
-let down=null, lastTap=0, lastXY=[0,0], multi=false;
-canvas.addEventListener("pointerdown",e=>{ if(ptr.size>1)multi=true; else {multi=false;down=[e.clientX,e.clientY,performance.now()];} });
-canvas.addEventListener("pointerup",e=>{ if(!down||multi){ if(ptr.size===0)multi=false; return;}
-  const moved=Math.hypot(e.clientX-down[0],e.clientY-down[1]), dt=performance.now()-down[2]; down=null;
-  if(moved>8||dt>500)return;
   const now=performance.now();
-  if(now-lastTap<320&&Math.hypot(e.clientX-lastXY[0],e.clientY-lastXY[1])<30){ zoomAt(e.clientX,e.clientY,0.5); lastTap=0; return; }
-  lastTap=now; lastXY=[e.clientX,e.clientY];
-  const r=canvas.getBoundingClientRect(); ndc.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1); ray.setFromCamera(ndc,camera);
-  const hits=ray.intersectObjects(PICK.filter(o=>o.visible&&(!o.parent||o.parent.visible)),false);
-  const h=hits.find(x=>x.object.userData.pick); if(h) select(h.object.userData.pick); else closeCard(); });
+  if(now-lastTap3d<300){
+    camera.position.sub(controls.target).multiplyScalar(0.7).add(controls.target);
+    controls.update();
+    lastTap3d=0;
+    return;
+  }
+  lastTap3d=now;
 
-document.getElementById("zIn").onclick=()=>view==="2d"?zoom2(innerWidth/2,innerHeight/2,1.6,true):zoomAt(innerWidth/2,innerHeight/2,0.6);
-document.getElementById("zOut").onclick=()=>view==="2d"?zoom2(innerWidth/2,innerHeight/2,1/1.6,true):zoomAt(innerWidth/2,innerHeight/2,1/0.6);
+  const r=canvas.getBoundingClientRect();
+  ndc.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const hits=ray.intersectObjects(PICK.filter(o=>o.visible&&(!o.parent||o.parent.visible)),false);
+  const h=hits.find(x=>x.object.userData.pick);
+  if(h) select(h.object.userData.pick);
+  else closeCard();
+});
+canvas.addEventListener("dblclick",e=>e.preventDefault());
+
+document.getElementById("zIn").onclick=()=>{
+  if(view==="2d") zoom2(innerWidth/2,innerHeight/2,1.6,true);
+  else { camera.position.sub(controls.target).multiplyScalar(0.7).add(controls.target); controls.update(); }
+};
+document.getElementById("zOut").onclick=()=>{
+  if(view==="2d") zoom2(innerWidth/2,innerHeight/2,1/1.6,true);
+  else { camera.position.sub(controls.target).multiplyScalar(1/0.7).add(controls.target); controls.update(); }
+};
 document.getElementById("zFit").onclick=()=>view==="2d"?fit2d(true):setView(mode);
 document.getElementById("v3d").onclick=()=>setView("3d");
 document.getElementById("vTop").onclick=()=>setView("top");
@@ -1053,7 +1124,7 @@ const svg2=document.getElementById("map2d"), NS2="http://www.w3.org/2000/svg";
 const el2=(t,a,par)=>{const e=document.createElementNS(NS2,t);for(const k in a)e.setAttribute(k,a[k]);(par||svg2).appendChild(e);return e;};
 function dpath(pts,closed=true){return "M"+pts.map(p=>{const w=W(p);return w[0].toFixed(2)+" "+w[1].toFixed(2);}).join("L")+(closed?"Z":"");}
 const P2=[]; const pk2=(e,info)=>{e.setAttribute("data-k",P2.length);e.classList.add("hit");P2.push(info);return e;};
-const world2=el2("g",{id:"world2"}), base2=el2("g",{},world2), labs2=el2("g",{},world2), top2=el2("g",{},world2), dimsOverlay=el2("g",{id:"plotDims2"},world2);
+const world2=el2("g",{id:"world2"}), base2=el2("g",{id:"base2"},world2), labs2=el2("g",{id:"labs2"},world2), top2=el2("g",{id:"top2"},world2), dimsOverlay=el2("g",{id:"plotDims2"},world2);
 const NSS="non-scaling-stroke";
 
 const sitePath2 = pk2(el2("path",{d:dpath(POLY),fill:currentTheme==="light"?"#FFFFFF":"#111C33"},base2),{kind:"site"});
@@ -1106,8 +1177,25 @@ PLOTS.forEach((p,i)=>{
   plotSvgItems[i].txtG = tG;
 });
 
-const mainRoadLabel2 = (() => { const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)]; return txt2("12 M MAIN ROAD",W(m),9,"#F2C14E",deg(dirAngle(a,b))); })();
-LAY.subLines.forEach(l=>{const len=Math.hypot(l[1][0]-l[0][0],l[1][1]-l[0][1]);if(len<90)return;txt2("9 M ROAD",W([(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2]),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])));});
+LAY.roads.forEach(r=>{
+  const p=r.polys[0];
+  const c=cen(p);
+  const w=W(c);
+  let maxL=0, bestEdge=[p[0],p[1]];
+  for(let j=0;j<p.length;j++){
+    const pA=p[j], pB=p[(j+1)%p.length];
+    const L=Math.hypot(pB[0]-pA[0],pB[1]-pA[1]);
+    if(L>maxL){ maxL=L; bestEdge=[pA,pB]; }
+  }
+  const ang=deg(dirAngle(bestEdge[0],bestEdge[1]));
+  const labelText = r.kind==="main" ? "12 M MAIN ROAD (40 FT)" :
+                    r.kind==="loop" ? "7.5 M LOOP ROAD (25 FT)" :
+                    r.kind==="bc"   ? "9 M ROAD (30 FT)" :
+                    r.w===12        ? "12 M (40 FT) ROAD" : "9 M (30 FT) ROAD";
+  const col = (r.kind==="main"||r.kind==="loop") ? "#F2C14E" : "#9FB0D0";
+  const fs = r.kind==="main" ? 9 : 7;
+  txt2(labelText, w, fs, col, ang);
+});
 LAY.park.forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W(cen(p)),11,"#BDF5D3",null);});
 LAY.fpark.forEach(p=>{if(areaOf(p)>1500)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])));});
 { const r=B.eastRoad,m=[(r[0][0]+r[1][0]+r[2][0]+r[3][0])/4,(r[0][1]+r[1][1]+r[2][1]+r[3][1])/4]; txt2("22'-6\" ROAD · ENTRY / EXIT",W(m),7,"#F2C14E",deg(dirAngle(r[0],r[1]))); }
@@ -1236,6 +1324,45 @@ function animate2(ns,ntx,nty,ms){ if(!ms){s2=ns;tx2=ntx;ty2=nty;an2=null;apply2(
   const step=()=>{if(an2!==st)return;let k=(performance.now()-st.t)/ms;if(k>1)k=1;const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
     s2=st.s+(ns-st.s)*e; tx2=st.x+(ntx-st.x)*e; ty2=st.y+(nty-st.y)*e; apply2(); if(k<1)requestAnimationFrame(step); else an2=null;}; step(); }
 
+function rotate2(cx, cy, dTh){
+  if(Math.abs(dTh) < 1e-6) return;
+  const oldTh = th2;
+  const newTh = oldTh + dTh;
+  const c = Math.cos(oldTh)*s2, sn = Math.sin(oldTh)*s2;
+  const invS2 = 1 / (s2 * s2);
+  const dx = cx - tx2, dy = cy - ty2;
+  const wx = invS2 * (c * dx + sn * dy);
+  const wy = invS2 * (-sn * dx + c * dy);
+  
+  th2 = newTh;
+  const cN = Math.cos(newTh)*s2, snN = Math.sin(newTh)*s2;
+  tx2 = cx - (cN * wx - snN * wy);
+  ty2 = cy - (snN * wx + cN * wy);
+  apply2();
+}
+
+let anRot2 = null;
+function animateRotate2(targetTh, ms = 260){
+  const cx = innerWidth / 2, cy = innerHeight / 2;
+  const startTh = th2;
+  let diff = (targetTh - startTh) % (Math.PI * 2);
+  if(diff > Math.PI) diff -= Math.PI * 2;
+  if(diff < -Math.PI) diff += Math.PI * 2;
+  const st = { sTh: startTh, diff, t: performance.now(), ms };
+  anRot2 = st;
+  const step = () => {
+    if(anRot2 !== st) return;
+    let k = (performance.now() - st.t) / st.ms;
+    if(k > 1) k = 1;
+    const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    const curTh = st.sTh + st.diff * e;
+    rotate2(cx, cy, curTh - th2);
+    if(k < 1) requestAnimationFrame(step);
+    else anRot2 = null;
+  };
+  step();
+}
+
 function zoom2(cx,cy,f,anim){ const ns=Math.min(40,Math.max(0.15,s2*f)); f=ns/s2;
   const ntx=cx-(cx-tx2)*f, nty=cy-(cy-ty2)*f; if(anim) animate2(ns,ntx,nty,220); else {an2=null;s2=ns;tx2=ntx;ty2=nty;apply2();} }
 
@@ -1243,27 +1370,119 @@ function fly2d(cw){ const ns=Math.max(s2,2.4), X=cw[0]*Math.cos(th2)-cw[1]*Math.
   const sy=innerWidth<=720?innerHeight*0.3:innerHeight*0.5, sx=innerWidth<=720?innerWidth/2:(innerWidth-370)/2;
   animate2(ns,sx-X*ns,sy-Y*ns,450); }
 
-const ptr2=new Map(); let pd2=null, mid2=null, down2=null, multi2=false, lastTap2=0, lastXY2=[0,0];
-svg2.addEventListener("pointerdown",e=>{svg2.setPointerCapture(e.pointerId);ptr2.set(e.pointerId,[e.clientX,e.clientY]);an2=null;
-  if(ptr2.size===1){down2=[e.clientX,e.clientY,performance.now()];multi2=false;svg2.classList.add("drag");}
-  else{multi2=true;const [a,b]=[...ptr2.values()];pd2=Math.hypot(a[0]-b[0],a[1]-b[1]);mid2=[(a[0]+b[0])/2,(a[1]+b[1])/2];}});
-svg2.addEventListener("pointermove",e=>{ if(!ptr2.has(e.pointerId))return; const prev=ptr2.get(e.pointerId); ptr2.set(e.pointerId,[e.clientX,e.clientY]);
-  if(ptr2.size===1&&!multi2){ if(down2&&Math.hypot(e.clientX-down2[0],e.clientY-down2[1])<4)return; tx2+=e.clientX-prev[0];ty2+=e.clientY-prev[1];apply2(); }
-  else if(ptr2.size===2){const [a,b]=[...ptr2.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]),m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
-    if(pd2){tx2+=m[0]-mid2[0];ty2+=m[1]-mid2[1];zoom2(m[0],m[1],d/pd2,false);} pd2=d;mid2=m;} });
-const end2=e=>{ ptr2.delete(e.pointerId); if(ptr2.size<2){pd2=null;} if(ptr2.size===0){svg2.classList.remove("drag");}
-  if(e.type!=="pointerup"||!down2||multi2){ if(ptr2.size===0){multi2=false;down2=null;} return; }
-  const moved=Math.hypot(e.clientX-down2[0],e.clientY-down2[1]),dt=performance.now()-down2[2]; down2=null; if(moved>8||dt>500)return;
+const ptr2=new Map();
+let pd2=null, mid2=null, down2=null, multi2=false, lastTap2=0, lastXY2=[0,0];
+let pAng2=null;
+let isRotateDrag2=false;
+
+svg2.addEventListener("pointerdown",e=>{
+  try{svg2.setPointerCapture(e.pointerId);}catch(err){}
+  ptr2.set(e.pointerId,[e.clientX,e.clientY]);
+  an2=null;
+  anRot2=null;
+  if(ptr2.size===1){
+    down2=[e.clientX,e.clientY,performance.now()];
+    multi2=false;
+    isRotateDrag2=(e.button===2||e.shiftKey||e.altKey);
+    svg2.classList.add("drag");
+  } else if(ptr2.size===2){
+    multi2=true;
+    isRotateDrag2=false;
+    const [a,b]=[...ptr2.values()];
+    pd2=Math.hypot(a[0]-b[0],a[1]-b[1]);
+    mid2=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    pAng2=Math.atan2(b[1]-a[1],b[0]-a[0]);
+  }
+});
+
+svg2.addEventListener("pointermove",e=>{
+  if(!ptr2.has(e.pointerId))return;
+  const prev=ptr2.get(e.pointerId);
+  ptr2.set(e.pointerId,[e.clientX,e.clientY]);
+
+  if(ptr2.size===1&&!multi2){
+    if(isRotateDrag2){
+      const dTh=(e.clientX-prev[0])*0.007;
+      rotate2(innerWidth/2,innerHeight/2,dTh);
+    } else {
+      tx2+=e.clientX-prev[0];
+      ty2+=e.clientY-prev[1];
+      apply2();
+    }
+  } else if(ptr2.size===2){
+    const [a,b]=[...ptr2.values()];
+    const d=Math.hypot(a[0]-b[0],a[1]-b[1]);
+    const m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
+
+    if(mid2){
+      tx2+=m[0]-mid2[0];
+      ty2+=m[1]-mid2[1];
+    }
+    if(pd2&&pd2>0&&d>0){
+      zoom2(m[0],m[1],d/pd2,false);
+    }
+    if(pAng2!==null){
+      let dAng=ang-pAng2;
+      while(dAng>Math.PI) dAng-=2*Math.PI;
+      while(dAng<-Math.PI) dAng+=2*Math.PI;
+      if(Math.abs(dAng)>0.004){
+        rotate2(m[0],m[1],dAng);
+      }
+    }
+    pd2=d;
+    mid2=m;
+    pAng2=ang;
+  }
+});
+
+const end2=e=>{
+  ptr2.delete(e.pointerId);
+  try{svg2.releasePointerCapture(e.pointerId);}catch(err){}
+  if(ptr2.size<2){pd2=null;pAng2=null;}
+  if(ptr2.size===0){
+    svg2.classList.remove("drag");
+    isRotateDrag2=false;
+  }
+  if(e.type!=="pointerup"||!down2||multi2){
+    if(ptr2.size===0){multi2=false;down2=null;}
+    return;
+  }
+  const moved=Math.hypot(e.clientX-down2[0],e.clientY-down2[1]);
+  const dt=performance.now()-down2[2];
+  down2=null;
+  if(moved>8||dt>500)return;
+
   const now=performance.now();
-  if(now-lastTap2<320&&Math.hypot(e.clientX-lastXY2[0],e.clientY-lastXY2[1])<30){zoom2(e.clientX,e.clientY,2,true);lastTap2=0;return;}
-  lastTap2=now;lastXY2=[e.clientX,e.clientY];
-  const t=document.elementFromPoint(e.clientX,e.clientY), h=t&&t.closest?t.closest("[data-k]"):null;
-  if(h) select(P2[+h.getAttribute("data-k")]); else closeCard(); };
-svg2.addEventListener("pointerup",end2); svg2.addEventListener("pointercancel",end2);
+  if(now-lastTap2<320&&Math.hypot(e.clientX-lastXY2[0],e.clientY-lastXY2[1])<30){
+    zoom2(e.clientX,e.clientY,1.8,true);
+    lastTap2=0;
+    return;
+  }
+  lastTap2=now;
+  lastXY2=[e.clientX,e.clientY];
+
+  const t=document.elementFromPoint(e.clientX,e.clientY);
+  const h=t&&t.closest?t.closest("[data-k]"):null;
+  if(h) select(P2[+h.getAttribute("data-k")]);
+  else closeCard();
+};
+
+svg2.addEventListener("pointerup",end2);
+svg2.addEventListener("pointercancel",end2);
+svg2.addEventListener("contextmenu",e=>e.preventDefault());
 svg2.addEventListener("wheel",e=>{e.preventDefault();zoom2(e.clientX,e.clientY,Math.exp(-e.deltaY*(e.ctrlKey?0.01:0.0018)),false);},{passive:false});
 svg2.addEventListener("dblclick",e=>e.preventDefault());
 
-document.getElementById("tNorth").onclick=e=>{north2=e.currentTarget.getAttribute("aria-pressed")!=="true";e.currentTarget.setAttribute("aria-pressed",north2);fit2d(false);};
+const btnRot2=document.getElementById("tRotate2d");
+if(btnRot2) btnRot2.onclick=()=>animateRotate2(th2+Math.PI/2,280);
+
+const btnNorth2=document.getElementById("tNorth");
+if(btnNorth2) btnNorth2.onclick=e=>{
+  north2=!north2;
+  e.currentTarget.setAttribute("aria-pressed",north2);
+  animateRotate2(baseTh(),320);
+};
 
 function setTab(t){
   view=t; document.body.classList.toggle("m2d",t==="2d"); document.body.classList.toggle("m3d",t==="3d");
@@ -1314,6 +1533,12 @@ window.NANDI = {
   applyTheme,
   PLOTS,
   LAY,
+  controls,
+  rotate2,
+  animateRotate2,
+  setDragMode3d,
+  getDragMode3d: () => dragMode3d,
+  getTh2: () => th2,
   getTheme: () => currentTheme,
   getView: () => view
 };
