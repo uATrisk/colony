@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5.0">
+<title>NANDI Township — 2D & 3D Interactive Master Plan</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, :root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#070C18;
+  --bg-subtle:#0B1325;
+  --panel:rgba(12,20,38,.93);
+  --panel-solid:#0E1730;
+  --panel-border:rgba(255,255,255,.09);
+  --rule:#1E2D4A;
+  --ink:#E6ECF7;
+  --ink-secondary:#A4B3D0;
+  --muted:#7486A8;
+  --accent:#F2C14E;
+  --accent-glow:rgba(242,193,78,.35);
+  --sel:#59D7FF;
+  --sel-glow:rgba(89,215,255,.3);
+  --east:#3FE0B8;
+  --west:#8C95FF;
+  --north:#6FD3FF;
+  --prem:#F2C14E;
+  --com:#FF8A3D;
+  --park:#3FAF6E;
+  --ui:"Barlow",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --shadow-lg:0 12px 36px -4px rgba(0,0,0,.6),0 4px 12px rgba(0,0,0,.4);
+  --shadow-sm:0 2px 8px rgba(0,0,0,.35);
+  --map-grid-dot:#16264A;
+  --top-gradient:linear-gradient(180deg,rgba(7,12,24,.97) 0%,rgba(7,12,24,.85) 65%,rgba(7,12,24,0) 100%);
+  --dock-gradient:linear-gradient(180deg,rgba(7,12,24,0) 0%,rgba(7,12,24,.85) 30%,rgba(7,12,24,.98) 75%);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+}
+
+:root[data-theme="light"]{
+  color-scheme: light;
+  --bg:#F4F6FB;
+  --bg-subtle:#E9EEF7;
+  --panel:rgba(255,255,255,.94);
+  --panel-solid:#FFFFFF;
+  --panel-border:rgba(15,23,42,.12);
+  --rule:#CBD5E1;
+  --ink:#0F172A;
+  --ink-secondary:#334155;
+  --muted:#64748B;
+  --accent:#B45309;
+  --accent-glow:rgba(180,83,9,.22);
+  --sel:#0284C7;
+  --sel-glow:rgba(2,132,199,.25);
+  --east:#0D9488;
+  --west:#4F46E5;
+  --north:#0284C7;
+  --prem:#B45309;
+  --com:#C2410C;
+  --park:#15803D;
+  --shadow-lg:0 12px 36px -4px rgba(15,23,42,.16),0 4px 12px rgba(15,23,42,.08);
+  --shadow-sm:0 2px 8px rgba(15,23,42,.08);
+  --map-grid-dot:#CBD5E1;
+  --top-gradient:linear-gradient(180deg,rgba(244,246,251,.97) 0%,rgba(244,246,251,.85) 65%,rgba(244,246,251,0) 100%);
+  --dock-gradient:linear-gradient(180deg,rgba(244,246,251,0) 0%,rgba(244,246,251,.85) 30%,rgba(244,246,251,.98) 75%);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+::selection{background:var(--sel);color:#FFFFFF}
+html,body{height:100%;height:100dvh;margin:0;padding:0;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14.5px;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+
+/* Canvases */
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#map2d{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;
+  background-color:var(--bg);background-image:radial-gradient(var(--map-grid-dot) 1.2px,transparent 1.3px);background-size:26px 26px}
+#map2d.drag{cursor:grabbing}
+#map2d text{font-family:var(--mono);font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+#map2d .hit{cursor:pointer;transition:opacity .2s ease}
+body.m2d #c{display:none}
+body.m3d #map2d{display:none}
+body.m2d .only3d{display:none!important}
+body.m3d .only2d{display:none!important}
+
+/* Common UI */
+button,input{font:inherit;color:var(--ink)}
+button{background:var(--panel-solid);border:1px solid var(--rule);border-radius:9px;padding:0 13px;min-height:40px;min-width:40px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:600;white-space:nowrap;transition:all .15s ease}
+button:hover{background:var(--bg-subtle);border-color:var(--sel)}
+button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--sel);outline-offset:1px}
+button[aria-pressed="true"]{background:var(--accent);color:#FFFFFF;border-color:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
+:root[data-theme="dark"] button[aria-pressed="true"]{color:#0E0C06}
+button[aria-pressed="true"]:hover{opacity:.95}
+.seg{display:inline-flex;flex:none;background:var(--panel-solid);border:1px solid var(--rule);border-radius:10px;padding:2px;gap:2px}
+.seg button{border:0;border-radius:8px;min-height:36px;padding:0 12px;background:transparent}
+.seg button:hover{background:rgba(128,128,128,.12)}
+.seg button[aria-pressed="true"]{background:var(--accent);box-shadow:none}
+
+/* Top App Bar */
+.top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(var(--safe-top) + 10px) calc(var(--safe-right) + 14px) 14px calc(var(--safe-left) + 14px);
+  background:var(--top-gradient);pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.top>*{pointer-events:auto}
+.top-row-1, .top-row-2{display:contents}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;cursor:pointer}
+.brand-badge{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#D9981E);display:grid;place-items:center;
+  color:#FFFFFF;font-family:var(--mono);font-weight:800;font-size:17px;box-shadow:0 0 16px var(--accent-glow)}
+:root[data-theme="dark"] .brand-badge{color:#0E0C06}
+.brand-text h1{margin:0;font:700 18px/1.1 var(--mono);letter-spacing:.02em;white-space:nowrap}
+.brand-text h1 span{color:var(--accent)}
+.brand-meta{font:500 11px var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+
+.top-center{display:flex;align-items:center;gap:8px}
+.tabs button{font-size:13px;font-family:var(--mono);padding:0 10px}
+@media (max-width:720px){
+  .tabs button{font-size:11.5px;padding:0 7px;min-height:32px}
+  .chips-bar{gap:5px}
+  .chip{font-size:11.5px;padding:4px 8px}
+}
+
+/* Theme toggle button */
+.theme-toggle{min-width:38px;min-height:38px;padding:0;border-radius:9px}
+.theme-toggle svg{width:18px;height:18px}
+:root[data-theme="dark"] .icon-moon{display:none}
+:root[data-theme="dark"] .icon-sun{display:block;color:var(--accent)}
+:root[data-theme="light"] .icon-sun{display:none}
+:root[data-theme="light"] .icon-moon{display:block;color:var(--ink)}
+
+/* Search & Autocomplete */
+.design-wrap{position:relative;flex:0 0 auto;min-width:0}
+.design-select{height:40px;background:var(--panel-solid);border:1px solid var(--rule);border-radius:10px;padding:0 30px 0 12px;font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9D3E8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .15s ease,box-shadow .15s ease}
+:root[data-theme="light"] .design-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")}
+.design-select:hover{border-color:var(--accent)}
+.design-select:focus-visible{border-color:var(--sel);box-shadow:0 0 12px var(--sel-glow)}
+.design-select option{background:var(--panel-solid);color:var(--ink)}
+.find-wrap{position:relative;flex:0 1 240px;min-width:0}
+.find{display:flex;align-items:center;background:var(--panel-solid);border:1px solid var(--rule);border-radius:10px;padding:0 4px 0 10px;min-height:40px}
+.find:focus-within{border-color:var(--sel);box-shadow:0 0 12px var(--sel-glow)}
+.find svg{width:16px;height:16px;color:var(--muted);flex:none}
+.find input{flex:1;min-width:0;background:transparent;border:0;padding:0 8px;font-size:15px;color:var(--ink);outline:none}
+.find input::placeholder{color:var(--muted);font-size:13.5px}
+.find .clear-btn{border:0;background:transparent;min-height:30px;min-width:30px;padding:0;color:var(--muted);border-radius:50%;display:none}
+.find .clear-btn.show{display:flex}
+.find .clear-btn:hover{color:var(--ink);background:rgba(128,128,128,.12)}
+.find .go-btn{border-radius:7px;min-height:32px;min-width:36px;padding:0 10px;background:var(--bg-subtle);color:var(--ink);font-size:12.5px;font-family:var(--mono);border:1px solid var(--rule)}
+
+.ac-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:280px;overflow-y:auto;background:var(--panel);
+  border:1px solid var(--rule);border-radius:12px;padding:6px;box-shadow:var(--shadow-lg);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  z-index:30;display:none}
+.ac-dropdown.open{display:block}
+.ac-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;cursor:pointer;font-family:var(--mono);font-size:13px;transition:background .12s}
+.ac-item:hover,.ac-item.active{background:var(--bg-subtle)}
+.ac-item b{color:var(--accent)}
+.ac-item span{color:var(--ink-secondary);font-size:12px}
+.ac-tag{font-size:10.5px;padding:2px 6px;border-radius:4px;font-weight:700}
+
+/* Filter Toast Pill */
+#filterPill{position:fixed;top:calc(var(--safe-top) + 68px);left:50%;transform:translateX(-50%);z-index:18;background:var(--panel);
+  border:1px solid var(--sel);border-radius:24px;padding:6px 14px 6px 16px;display:none;align-items:center;gap:10px;font:600 13px var(--ui);
+  box-shadow:0 8px 24px var(--sel-glow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+#filterPill.show{display:flex}
+#filterPill button{border:0;background:rgba(128,128,128,.15);border-radius:14px;min-height:24px;min-width:24px;padding:0 8px;font-size:11px}
+
+/* Toast Message */
+#toast{position:fixed;top:calc(var(--safe-top) + 68px);left:50%;transform:translateX(-50%) translateY(-10px);z-index:50;background:var(--accent);
+  color:#FFFFFF;border-radius:24px;padding:8px 18px;font:700 13.5px var(--mono);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:var(--shadow-lg)}
+:root[data-theme="dark"] #toast{color:#0E0C06}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Dynamic Scale Bar in 2D */
+#scaleBar{position:fixed;left:calc(var(--safe-left) + 16px);bottom:calc(var(--safe-bottom) + 94px);z-index:15;display:none;pointer-events:none;
+  font:600 11.5px var(--mono);color:var(--muted);text-shadow:0 1px 3px rgba(0,0,0,.25)}
+body.m2d #scaleBar{display:block}
+.scale-line{height:5px;border-left:2px solid var(--muted);border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);margin-bottom:3px}
+
+/* Bottom Dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 10px) calc(var(--safe-left) + 12px);
+  background:var(--dock-gradient);pointer-events:none;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.dock>*{pointer-events:auto}
+.dock-row{display:flex;align-items:center;gap:7px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.dock-row::-webkit-scrollbar{display:none}
+
+.sum-bar{display:flex;align-items:center;justify-content:space-between;width:100%;margin:4px 0 0;padding:8px 12px;background:var(--panel-solid);
+  border:1px solid var(--rule);border-radius:10px;cursor:pointer;text-align:left;transition:all .15s ease}
+.sum-bar:hover{background:var(--bg-subtle);border-color:var(--sel)}
+.sum-left{font:700 13px var(--mono);line-height:1.3}
+.sum-left b{color:var(--accent)}
+.sum-left small{display:block;font:500 11.5px var(--mono);color:var(--muted);margin-top:1px}
+.sum-right{display:flex;align-items:center;gap:6px;font:600 12px var(--ui);color:var(--sel)}
+
+/* Interactive Chips */
+.chips-bar{display:flex;gap:7px;overflow-x:auto;padding-top:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips-bar::-webkit-scrollbar{display:none}
+.chip{background:var(--panel-solid);border:1px solid var(--rule);border-radius:18px;padding:0 11px;min-height:30px;min-width:auto;
+  font:600 12px var(--ui);color:var(--ink-secondary);transition:all .15s ease}
+.chip:hover{border-color:var(--sel);color:var(--ink)}
+.chip.active{background:rgba(2,132,199,.12);border-color:var(--sel);color:var(--sel);box-shadow:0 0 10px var(--sel-glow)}
+:root[data-theme="dark"] .chip.active{background:rgba(89,215,255,.16)}
+.chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+
+/* Info Card & Bottom Sheet */
+#card{position:fixed;z-index:30;right:calc(var(--safe-right) + 16px);top:calc(var(--safe-top) + 68px);width:370px;max-height:calc(100dvh - 180px);
+  overflow-y:auto;background:var(--panel);border:1px solid var(--panel-border);border-radius:16px;padding:16px 18px;display:none;
+  box-shadow:var(--shadow-lg);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:transform .25s ease,opacity .25s ease}
+#card.on{display:block;animation:cardIn .25s cubic-bezier(.16,1,.3,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card-handle{display:none;width:44px;height:5px;border-radius:3px;background:var(--rule);margin:-6px auto 12px;cursor:grab}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
+.card-kind{font:700 11px var(--mono);color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+.card-title{margin:2px 0 6px;font:700 22px var(--mono);color:var(--ink);letter-spacing:-.01em}
+.card-close{border:0;background:rgba(128,128,128,.1);border-radius:50%;min-height:32px;min-width:32px;padding:0;color:var(--muted);font-size:20px}
+.card-close:hover{background:rgba(128,128,128,.2);color:var(--ink)}
+
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font:600 11.5px var(--ui);padding:3px 9px;border-radius:6px;background:var(--bg-subtle);border:1px solid var(--rule);color:var(--ink)}
+
+/* Dimensions Grid Box */
+.dim-box{background:var(--bg-subtle);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;margin:12px 0}
+.dim-box-title{font:700 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font:500 13px var(--mono)}
+.dim-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--rule);padding-bottom:3px}
+.dim-grid span{color:var(--muted)}
+.dim-grid b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+dt{color:var(--muted);font-size:13.5px}
+dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.note{color:var(--ink-secondary);font-size:13px;line-height:1.45;margin:12px 0 0;padding:8px 10px;background:var(--bg-subtle);border-radius:8px;border-left:3px solid var(--accent)}
+
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+.stepper button{flex:1;min-height:36px;font-size:12.5px;font-family:var(--mono)}
+
+.acts{display:flex;gap:8px;margin-top:10px}
+.acts button{flex:1;min-height:38px;font-size:13px}
+.btn-accent{background:var(--accent);color:#FFFFFF;border-color:var(--accent)}
+:root[data-theme="dark"] .btn-accent{color:#0E0C06}
+.btn-accent:hover{opacity:.92}
+
+/* Site Summary Modal */
+#sumModal{position:fixed;inset:0;z-index:40;background:rgba(3,6,14,.65);display:none;place-items:center;padding:16px;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+#sumModal.open{display:grid}
+.modal-box{background:var(--panel-solid);border:1px solid var(--rule);border-radius:18px;max-width:540px;width:100%;max-height:90dvh;
+  overflow-y:auto;padding:22px;box-shadow:var(--shadow-lg)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.modal-head h2{margin:0;font:700 22px var(--mono);color:var(--ink)}
+
+/* Hint pill */
+#hint{position:fixed;z-index:15;left:50%;transform:translateX(-50%);top:calc(var(--safe-top) + 68px);background:var(--panel);
+  border:1px solid var(--rule);border-radius:20px;padding:6px 16px;font:600 12.5px var(--ui);color:var(--muted);
+  box-shadow:var(--shadow-sm);pointer-events:none;white-space:nowrap;transition:opacity .4s ease}
+#load{position:fixed;inset:0;display:grid;place-items:center;font:600 16px var(--mono);color:var(--muted);z-index:99;background:var(--bg)}
+
+/* Responsive mobile adjustments */
+@media (max-width:720px){
+  .top{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding:calc(var(--safe-top) + 8px) 12px 10px 12px;
+  }
+  .top-row-1{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    gap:8px;
+  }
+  .top-row-2{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    width:100%;
+  }
+  .brand-text h1 .full{display:none}
+  .brand-meta{display:none}
+  .brand-text h1{font-size:16px}
+  .brand-badge{width:28px;height:28px;font-size:15px}
+
+  .design-wrap{
+    flex:1 1 56%;
+    min-width:0;
+  }
+  .design-select{
+    width:100%;
+    height:38px;
+    font-size:12px;
+    font-weight:600;
+    padding:0 24px 0 8px;
+    border-radius:9px;
+  }
+  .find-wrap{
+    flex:1 1 44%;
+    min-width:0;
+  }
+  .find{
+    min-height:38px;
+    height:38px;
+    padding:0 4px 0 8px;
+    border-radius:9px;
+  }
+  .find input{
+    font-size:13.5px;
+    padding:0 4px;
+  }
+  .find input::placeholder{
+    font-size:12px;
+  }
+  .find .go-btn{
+    min-height:28px;
+    padding:0 8px;
+    font-size:11.5px;
+  }
+
+  #hint{top:calc(var(--safe-top) + 104px);bottom:auto;font-size:11px;padding:4px 12px}
+  #scaleBar{bottom:calc(var(--safe-bottom) + 155px)}
+
+  #card{left:0;right:0;top:auto;bottom:0;width:auto;max-height:72dvh;border-radius:20px 20px 0 0;
+    padding:12px 18px calc(var(--safe-bottom) + 16px);transform:translateY(100%);display:block;pointer-events:none;transition:transform .25s ease}
+  #card.on{transform:translateY(0);pointer-events:auto}
+  .card-handle{display:block}
+}
+</style>
+</head>
+<body class="m2d">
+<canvas id="c" aria-label="3D Interactive CAD Master Plan"></canvas>
+<svg id="map2d" role="img" aria-label="2D Interactive Master Plan"></svg>
+<div id="load">Loading NANDI Master Plan…</div>
+
+<div class="top">
+  <div class="top-row-1">
+    <div class="brand" id="brandBtn">
+      <div class="brand-badge">N</div>
+      <div class="brand-text">
+        <h1>NANDI<span class="full"> Township</span></h1>
+        <div class="brand-meta" id="brandMeta">MDA Master Plan · 130 Plots (New Grid)</div>
+      </div>
+    </div>
+
+    <div class="top-center">
+      <div class="seg tabs" role="group" aria-label="Map mode">
+        <button id="tabNew2" aria-pressed="true">New 2D</button>
+        <button id="tab2" aria-pressed="false">2D</button>
+        <button id="tab3" aria-pressed="false">3D</button>
+      </div>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle light or dark theme" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.34 4.34l1.42 1.42M14.24 14.24l1.42 1.42M4.34 15.66l1.42-1.42M14.24 5.76l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.29 13.27A8 8 0 016.73 2.71 8.001 8.001 0 1017.29 13.27z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="top-row-2">
+    <div class="design-wrap">
+      <select id="designSelect" class="design-select" aria-label="Layout design">
+        <option value="1">1 · Current — 55.7% plotted</option>
+        <option value="2">2 · Optimized Grid — 52.7% plotted</option>
+        <option value="3">3 · Pocket Parks — 54.7% plotted</option>
+        <option value="4">4 · Ring Road — 49.4% plotted</option>
+        <option value="5">5 · Long Blocks — 55.5% plotted</option>
+      </select>
+    </div>
+
+    <div class="find-wrap">
+      <form class="find" id="find" role="search">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+        <input id="q" placeholder="Search plot (e.g. 25, C1)..." aria-label="Find plot" autocomplete="off" enterkeyhint="search">
+        <button type="button" class="clear-btn" id="qClear" aria-label="Clear">×</button>
+        <button class="go-btn" aria-label="Search">Go</button>
+      </form>
+      <div class="ac-dropdown" id="acDrop"></div>
+    </div>
+  </div>
+</div>
+
+<div id="hint">Tap any plot, road, park or boundary · Pinch to zoom</div>
+<div id="filterPill"><span></span><button id="clearFilterBtn">Clear ×</button></div>
+<div id="toast"></div>
+
+<div id="scaleBar">
+  <div class="scale-line" id="scaleLine"></div>
+  <div id="scaleLabel">100 ft (30.5 m)</div>
+</div>
+
+<div id="card" role="dialog" aria-live="polite" aria-label="Feature Details">
+  <div class="card-handle" id="cardHandle"></div>
+  <div class="card-head">
+    <div>
+      <div class="card-kind" id="cK"></div>
+      <h2 class="card-title" id="cT"></h2>
+    </div>
+    <button class="card-close" id="cx" aria-label="Close">×</button>
+  </div>
+  <div class="tags" id="cTags"></div>
+  <div class="dim-box" id="cDimBox" style="display:none">
+    <div class="dim-box-title">Boundary Dimensions (CAD Measured)</div>
+    <div class="dim-grid" id="cDimGrid"></div>
+  </div>
+  <dl id="cB"></dl>
+  <p class="note" id="cN"></p>
+  <div class="stepper" id="cStepper" style="display:none">
+    <button id="cPrev">← Prev Plot</button>
+    <button id="cNext">Next Plot →</button>
+  </div>
+  <div class="acts" id="cA"></div>
+</div>
+
+<div id="sumModal" role="dialog" aria-label="Site Summary">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>NANDI Township Summary</h2>
+      <button class="card-close" id="sumModalX">×</button>
+    </div>
+    <div id="sumModalBody"></div>
+  </div>
+</div>
+
+<div class="dock">
+  <div class="dock-row">
+    <div class="seg only3d" role="group" aria-label="Camera perspective">
+      <button id="v3d" aria-pressed="true">3D</button>
+      <button id="vTop" aria-pressed="false">Top</button>
+    </div>
+    <div class="seg only3d" role="group" aria-label="3D Drag Action">
+      <button id="modeOrbit" aria-pressed="true" title="Orbit / Rotate camera">Orbit 🔄</button>
+      <button id="modePan" aria-pressed="false" title="Drag / Pan map across ground">Pan ✋</button>
+    </div>
+    <div class="seg" role="group" aria-label="Zoom controls">
+      <button id="zOut" aria-label="Zoom out">−</button>
+      <button id="zIn" aria-label="Zoom in">+</button>
+      <button id="zFit">Fit</button>
+    </div>
+    <div class="seg only2d" role="group" aria-label="2D Rotation">
+      <button id="tRotate2d" title="Rotate view 90° clockwise">Rotate ↺</button>
+      <button id="tNorth" aria-pressed="false">North Up</button>
+    </div>
+    <button id="tHouse" class="only3d" aria-pressed="false">Houses</button>
+    <button id="tSun" class="only3d" aria-label="Lighting simulation">Sun: Morning</button>
+    <button id="tLab" aria-pressed="true">Labels</button>
+    <button id="tSpin" class="only3d" aria-pressed="false">Spin</button>
+  </div>
+
+  <button class="sum-bar" id="sum" aria-label="Site summary"></button>
+
+  <div class="chips-bar" role="group" aria-label="Quick Category Filters">
+    <button class="chip" data-filter="E"><i style="background:var(--east)"></i>East Facing (<span id="cntE">59</span>)</button>
+    <button class="chip" data-filter="W"><i style="background:var(--west)"></i>West Facing (<span id="cntW">61</span>)</button>
+    <button class="chip" data-filter="N"><i style="background:var(--north)"></i>North Facing (<span id="cntN">9</span>)</button>
+    <button class="chip" data-filter="S"><i style="background:var(--south)"></i>South Facing (<span id="cntS">7</span>)</button>
+    <button class="chip" data-filter="P"><i style="background:var(--prem)"></i>Premium (<span id="cntP">5</span>)</button>
+    <button class="chip" data-filter="C"><i style="background:var(--com)"></i>Commercial (<span id="cntC">9</span>)</button>
+    <button class="chip" data-filter="PARK"><i style="background:var(--park)"></i>Parks & Gardens</button>
+  </div>
+</div>
+
+<script src="layout-new.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const B = {"boundary":[[0.0,1.907],[482.282,4.914],[496.01,83.431],[677.119,81.051],[737.949,73.893],[744.29,15.276],[747.495,3.712],[958.545,0.0],[941.511,412.106],[936.068,412.067],[912.816,412.262],[889.7,411.98],[866.732,411.246],[843.878,410.876],[821.129,410.508],[798.5,410.141],[775.961,409.776],[753.552,408.697],[731.285,407.626],[718.449,406.641],[718.09,395.444],[718.534,369.786],[718.781,355.579],[718.164,350.086],[716.83,344.505],[715.032,339.289],[707.425,333.601],[702.811,332.164],[688.294,330.18],[666.39,329.319],[644.588,328.46],[622.888,329.015],[601.243,329.921],[579.695,330.822],[558.231,331.719],[536.846,331.912],[515.556,331.054],[494.325,328.795],[473.161,323.732],[462.48,318.342],[452.174,312.078],[442.047,307.972],[431.877,305.554],[411.281,302.028],[390.745,299.2],[370.321,296.388],[349.947,294.611],[329.655,291.815],[309.51,289.38],[289.446,287.295],[269.439,285.215],[249.56,282.471],[229.797,280.419],[210.102,278.373],[190.502,276.337],[171.008,274.312],[151.604,272.63],[132.267,270.955],[113.048,268.957],[93.961,267.635],[74.937,266.881],[55.992,265.46],[37.464,263.74]],"northDeg":61.414665307913246,"eastRoad":[[41.71,293.44],[-4.25,-27.79],[-26.52,-24.6],[19.44,296.62]],"chakroad":[[[36.63,272.7],[55.16,274.42],[55.32,274.43],[74.26,275.86],[74.58,275.87],[93.47,276.62],[112.27,277.92],[131.34,279.91],[131.49,279.92],[150.83,281.6],[170.15,283.27],[189.57,285.29],[209.17,287.32],[228.87,289.37],[248.48,291.41],[268.21,294.13],[268.51,294.17],[288.52,296.25],[308.5,298.32],[328.5,300.74],[348.72,303.53],[349.16,303.58],[369.32,305.33],[389.52,308.12],[409.91,310.92],[430.07,314.38],[439.3,316.57],[448.12,320.15],[457.81,326.03],[458.43,326.38],[469.11,331.77],[470.07,332.18],[471.07,332.49],[492.23,337.55],[493.37,337.74],[514.6,340.0],[515.19,340.05],[536.48,340.9],[536.93,340.91],[558.31,340.72],[558.61,340.71],[580.07,339.81],[601.62,338.91],[623.19,338.01],[644.53,337.46],[666.04,338.31],[687.51,339.16],[700.85,340.98],[703.27,341.73],[707.43,344.84],[708.18,347.02],[709.28,351.64],[709.77,356.0],[709.54,369.63],[709.09,395.29],[709.09,395.73],[709.45,406.93],[709.52,407.8],[709.68,408.67],[709.92,409.51],[710.24,410.33],[710.64,411.11],[711.11,411.85],[711.65,412.54],[712.26,413.17],[712.92,413.74],[713.64,414.25],[714.4,414.68],[715.2,415.04],[716.04,415.31],[716.89,415.51],[717.76,415.61],[730.6,416.6],[730.85,416.62],[753.12,417.69],[775.53,418.77],[775.82,418.77],[798.35,419.14],[820.98,419.51],[843.73,419.87],[866.52,420.24],[889.41,420.98],[889.59,420.98],[912.71,421.26],[912.89,421.26],[936.07,421.07],[941.45,421.11],[941.51,412.11],[936.07,412.07],[912.82,412.26],[889.7,411.98],[866.73,411.25],[843.88,410.88],[821.13,410.51],[798.5,410.14],[775.96,409.78],[753.55,408.7],[731.28,407.63],[718.45,406.64],[718.09,395.44],[718.53,369.79],[718.78,355.58],[718.16,350.09],[716.83,344.5],[715.03,339.29],[707.42,333.6],[702.81,332.16],[688.29,330.18],[666.39,329.32],[644.59,328.46],[622.89,329.01],[601.24,329.92],[579.7,330.82],[558.23,331.72],[536.85,331.91],[515.56,331.05],[494.32,328.8],[473.16,323.73],[462.48,318.34],[452.17,312.08],[442.05,307.97],[431.88,305.55],[411.28,302.03],[390.75,299.2],[370.32,296.39],[349.95,294.61],[329.65,291.81],[309.51,289.38],[289.45,287.3],[269.44,285.21],[249.56,282.47],[229.8,280.42],[210.1,278.37],[190.5,276.34],[171.01,274.31],[151.6,272.63],[132.27,270.95],[113.05,268.96],[93.96,267.63],[74.94,266.88],[55.99,265.46],[37.46,263.74]]],"layout":{"plots":[{"n":"1","pts":[[172.05,4.66],[121.31,4.66],[124.31,27.74],[174.74,27.74]],"sqft":1167.5,"gaj":129.72,"front":23.38,"depth":49.94,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"2","pts":[[174.74,27.74],[124.31,27.74],[127.33,50.97],[177.45,50.97]],"sqft":1167.9,"gaj":129.77,"front":23.52,"depth":49.66,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"3","pts":[[177.45,50.97],[127.33,50.97],[130.36,74.33],[180.18,74.33]],"sqft":1167.3,"gaj":129.7,"front":23.66,"depth":49.33,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (south part)","corner":"","m2":108.4},{"n":"4","pts":[[180.18,74.33],[130.36,74.33],[133.42,97.84],[182.93,97.84]],"sqft":1167.6,"gaj":129.74,"front":23.81,"depth":49.04,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"5","pts":[[185.69,121.5],[182.93,97.84],[133.42,97.84],[136.49,121.5]],"sqft":1167.7,"gaj":129.75,"front":23.96,"depth":48.74,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (south part)","corner":"12 m main road","m2":108.5},{"n":"6","pts":[[141.61,160.87],[144.74,184.97],[193.1,184.97],[190.28,160.87]],"sqft":1169.2,"gaj":129.91,"front":24.4,"depth":47.92,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (north part)","corner":"12 m main road","m2":108.6},{"n":"7","pts":[[147.89,209.23],[195.93,209.23],[193.1,184.97],[144.74,184.97]],"sqft":1169.3,"gaj":129.93,"front":24.56,"depth":47.61,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (north part)","corner":"","m2":108.6},{"n":"8","pts":[[151.06,233.65],[198.78,233.65],[195.93,209.23],[147.89,209.23]],"sqft":1169.2,"gaj":129.91,"front":24.73,"depth":47.29,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (north part)","corner":"","m2":108.6},{"n":"9","pts":[[154.25,258.23],[201.65,258.23],[198.78,233.65],[151.06,233.65]],"sqft":1169.0,"gaj":129.89,"front":24.89,"depth":46.96,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 1 (north part)","corner":"","m2":108.6},{"n":"10","pts":[[222.77,4.48],[172.03,4.48],[174.73,27.6],[225.16,27.6]],"sqft":1169.5,"gaj":129.95,"front":23.34,"depth":50.1,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.7},{"n":"11","pts":[[225.16,27.6],[174.73,27.6],[177.44,50.86],[227.57,50.86]],"sqft":1169.5,"gaj":129.95,"front":23.48,"depth":49.8,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.7},{"n":"12","pts":[[227.57,50.86],[177.44,50.86],[180.17,74.26],[229.99,74.26]],"sqft":1169.4,"gaj":129.94,"front":23.63,"depth":49.49,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.6},{"n":"13","pts":[[229.99,74.26],[180.17,74.26],[182.92,97.8],[232.43,97.8]],"sqft":1169.1,"gaj":129.9,"front":23.77,"depth":49.18,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.6},{"n":"14","pts":[[234.89,121.5],[232.43,97.8],[182.92,97.8],[185.69,121.5]],"sqft":1169.7,"gaj":129.97,"front":23.92,"depth":48.89,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"12 m main road","m2":108.7},{"n":"15","pts":[[238.96,160.87],[190.28,160.87],[193.03,184.43],[241.4,184.43]],"sqft":1143.2,"gaj":127.03,"front":23.78,"depth":48.07,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"12 m main road","m2":106.2},{"n":"16","pts":[[241.4,184.43],[193.03,184.43],[195.8,208.14],[243.86,208.14]],"sqft":1143.2,"gaj":127.02,"front":23.94,"depth":47.76,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":106.2},{"n":"17","pts":[[243.86,208.14],[195.8,208.14],[198.59,232.0],[246.33,232.0]],"sqft":1142.9,"gaj":126.99,"front":24.09,"depth":47.44,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":106.2},{"n":"18","pts":[[246.33,232.0],[198.59,232.0],[201.39,256.02],[248.82,256.02]],"sqft":1143.0,"gaj":127.0,"front":24.25,"depth":47.13,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":106.2},{"n":"19","pts":[[203.93,277.73],[249.56,282.47],[251.59,282.75],[248.82,256.02],[201.39,256.02]],"sqft":1143.3,"gaj":127.03,"front":26.97,"depth":42.39,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":106.2},{"n":"20","pts":[[303.19,4.48],[252.45,4.48],[254.85,27.6],[305.28,27.6]],"sqft":1169.5,"gaj":129.95,"front":23.34,"depth":50.1,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.7},{"n":"21","pts":[[305.28,27.6],[254.85,27.6],[257.26,50.86],[307.38,50.86]],"sqft":1169.4,"gaj":129.93,"front":23.48,"depth":49.8,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.6},{"n":"22","pts":[[307.38,50.86],[257.26,50.86],[259.68,74.26],[309.5,74.26]],"sqft":1169.3,"gaj":129.92,"front":23.63,"depth":49.49,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.6},{"n":"23","pts":[[309.5,74.26],[259.68,74.26],[262.12,97.8],[311.63,97.8]],"sqft":1169.1,"gaj":129.9,"front":23.77,"depth":49.18,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"","m2":108.6},{"n":"24","pts":[[313.77,121.5],[311.63,97.8],[262.12,97.8],[264.57,121.5]],"sqft":1169.7,"gaj":129.97,"front":23.92,"depth":48.9,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (south part)","corner":"12 m main road","m2":108.7},{"n":"25","pts":[[268.65,160.87],[271.14,184.92],[319.5,184.92],[317.33,160.87]],"sqft":1166.9,"gaj":129.66,"front":24.28,"depth":48.06,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"12 m main road","m2":108.4},{"n":"26","pts":[[273.65,209.14],[321.69,209.14],[319.5,184.92],[271.14,184.92]],"sqft":1167.4,"gaj":129.71,"front":24.44,"depth":47.76,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":108.5},{"n":"27","pts":[[276.17,233.51],[323.89,233.51],[321.69,209.14],[273.65,209.14]],"sqft":1166.8,"gaj":129.65,"front":24.6,"depth":47.42,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":108.4},{"n":"28","pts":[[278.71,258.05],[326.11,258.05],[323.89,233.51],[276.17,233.51]],"sqft":1167.1,"gaj":129.68,"front":24.77,"depth":47.12,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":108.4},{"n":"29","pts":[[281.27,282.75],[328.34,282.75],[326.11,258.05],[278.71,258.05]],"sqft":1166.7,"gaj":129.63,"front":24.94,"depth":46.78,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 2 (north part)","corner":"","m2":108.4},{"n":"30","pts":[[353.95,4.8],[303.22,4.8],[305.3,27.85],[355.73,27.85]],"sqft":1165.9,"gaj":129.54,"front":23.22,"depth":50.2,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":108.3},{"n":"31","pts":[[355.73,27.85],[305.3,27.85],[307.4,51.05],[357.53,51.05]],"sqft":1166.5,"gaj":129.61,"front":23.37,"depth":49.92,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":108.4},{"n":"32","pts":[[357.53,51.05],[307.4,51.05],[309.51,74.39],[359.33,74.39]],"sqft":1166.4,"gaj":129.6,"front":23.51,"depth":49.62,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":108.4},{"n":"33","pts":[[359.33,74.39],[309.51,74.39],[311.63,97.87],[361.14,97.87]],"sqft":1166.1,"gaj":129.57,"front":23.65,"depth":49.3,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":108.3},{"n":"34","pts":[[362.97,121.5],[361.14,97.87],[311.63,97.87],[313.77,121.5]],"sqft":1166.3,"gaj":129.58,"front":23.8,"depth":49.0,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"12 m main road","m2":108.4},{"n":"35","pts":[[317.33,160.87],[319.5,184.92],[367.86,184.92],[366.01,160.87]],"sqft":1166.9,"gaj":129.66,"front":24.22,"depth":48.17,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"12 m main road","m2":108.4},{"n":"36","pts":[[321.69,209.13],[369.73,209.13],[367.86,184.92],[319.5,184.92]],"sqft":1166.9,"gaj":129.66,"front":24.38,"depth":47.86,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":108.4},{"n":"37","pts":[[323.89,233.5],[371.61,233.5],[369.73,209.13],[321.69,209.13]],"sqft":1166.8,"gaj":129.65,"front":24.54,"depth":47.54,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":108.4},{"n":"38","pts":[[326.11,258.04],[373.51,258.04],[371.61,233.5],[323.89,233.5]],"sqft":1167.1,"gaj":129.68,"front":24.71,"depth":47.23,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":108.4},{"n":"39","pts":[[328.34,282.74],[375.42,282.74],[373.51,258.04],[326.11,258.04]],"sqft":1166.8,"gaj":129.65,"front":24.88,"depth":46.9,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":108.4},{"n":"40","pts":[[418.34,4.52],[383.53,4.3],[385.93,35.41],[422.23,35.41]],"sqft":1101.9,"gaj":122.43,"front":31.31,"depth":35.2,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":102.4},{"n":"41","pts":[[422.23,35.41],[385.93,35.41],[388.23,65.17],[425.98,65.17]],"sqft":1101.9,"gaj":122.43,"front":29.95,"depth":36.79,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":102.4},{"n":"42","pts":[[425.98,65.17],[388.23,65.17],[390.44,93.83],[429.59,93.83]],"sqft":1102.0,"gaj":122.44,"front":28.84,"depth":38.2,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"","m2":102.4},{"n":"43","pts":[[433.08,121.5],[429.59,93.83],[390.44,93.83],[392.58,121.5]],"sqft":1102.0,"gaj":122.44,"front":27.85,"depth":39.57,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (south part)","corner":"12 m main road","m2":102.4},{"n":"44","pts":[[444.3,160.87],[395.62,160.87],[397.41,184.04],[445.78,184.04]],"sqft":1124.3,"gaj":124.92,"front":23.34,"depth":48.17,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"12 m main road","m2":104.5},{"n":"45","pts":[[445.78,184.04],[397.41,184.04],[399.21,207.36],[447.28,207.36]],"sqft":1124.5,"gaj":124.94,"front":23.49,"depth":47.87,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":104.5},{"n":"46","pts":[[447.28,207.36],[399.21,207.36],[401.02,230.83],[448.78,230.83]],"sqft":1124.6,"gaj":124.95,"front":23.64,"depth":47.57,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":104.5},{"n":"47","pts":[[448.78,230.83],[401.02,230.83],[402.85,254.45],[450.29,254.45]],"sqft":1124.3,"gaj":124.92,"front":23.79,"depth":47.25,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":104.5},{"n":"48","pts":[[450.29,254.45],[402.85,254.45],[404.68,278.23],[451.82,278.23]],"sqft":1124.6,"gaj":124.95,"front":23.95,"depth":46.96,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":104.5},{"n":"49","pts":[[412.42,302.22],[453.35,302.22],[451.82,278.23],[404.68,278.23],[406.47,301.37]],"sqft":1124.5,"gaj":124.94,"front":23.31,"depth":48.25,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 3 (north part)","corner":"","m2":104.5},{"n":"50","pts":[[418.34,4.52],[422.26,35.61],[457.67,35.61],[452.27,4.73]],"sqft":1073.8,"gaj":119.31,"front":31.45,"depth":34.14,"face":"W","bear":288.7,"prem":false,"com":false,"road":"Notch-side road (9 m)","corner":"","m2":99.8},{"n":"51","pts":[[426.0,65.32],[462.87,65.32],[457.67,35.61],[422.26,35.61]],"sqft":1073.7,"gaj":119.3,"front":30.27,"depth":35.47,"face":"W","bear":288.7,"prem":false,"com":false,"road":"Notch-side road (9 m)","corner":"","m2":99.7},{"n":"52","pts":[[429.6,93.92],[467.87,93.92],[462.87,65.32],[426.0,65.32]],"sqft":1074.5,"gaj":119.39,"front":29.13,"depth":36.89,"face":"W","bear":288.7,"prem":false,"com":false,"road":"Notch-side road (9 m)","corner":"","m2":99.8},{"n":"53","pts":[[433.08,121.5],[472.69,121.5],[467.87,93.92],[429.6,93.92]],"sqft":1074.0,"gaj":119.33,"front":28.1,"depth":38.21,"face":"W","bear":288.7,"prem":false,"com":false,"road":"Notch-side road (9 m)","corner":"12 m main road","m2":99.8},{"n":"54","pts":[[492.98,160.87],[444.3,160.87],[446.35,192.86],[494.61,192.86]],"sqft":1550.6,"gaj":172.28,"front":32.13,"depth":48.25,"face":"W","bear":298.6,"prem":true,"com":false,"road":"Avenue 4 (north part)","corner":"12 m main road","m2":144.1},{"n":"55","pts":[[494.61,192.86],[446.35,192.86],[448.42,225.14],[496.25,225.14]],"sqft":1550.9,"gaj":172.32,"front":32.42,"depth":47.84,"face":"W","bear":298.6,"prem":true,"com":false,"road":"Avenue 4 (north part)","corner":"","m2":144.1},{"n":"56","pts":[[496.25,225.14],[448.42,225.14],[450.5,257.7],[497.9,257.7]],"sqft":1550.3,"gaj":172.26,"front":32.71,"depth":47.4,"face":"W","bear":298.6,"prem":true,"com":false,"road":"Avenue 4 (north part)","corner":"","m2":144.0},{"n":"57","pts":[[497.9,257.7],[450.5,257.7],[452.61,290.56],[499.58,290.56]],"sqft":1550.5,"gaj":172.28,"front":33.0,"depth":46.98,"face":"W","bear":298.6,"prem":true,"com":false,"road":"Avenue 4 (north part)","corner":"","m2":144.0},{"n":"58","pts":[[473.16,323.73],[494.32,328.8],[501.56,329.56],[499.58,290.56],[452.61,290.56],[454.06,313.22],[462.48,318.34]],"sqft":1550.8,"gaj":172.31,"front":39.15,"depth":39.61,"face":"W","bear":298.6,"prem":true,"com":false,"road":"Avenue 4 (north part)","corner":"","m2":144.1},{"n":"59","pts":[[528.65,121.5],[528.65,83.0],[496.01,83.43],[502.67,121.5]],"sqft":1122.8,"gaj":124.76,"front":26.08,"depth":43.05,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"Notch-side road (9 m)","m2":104.3},{"n":"60","pts":[[557.67,121.5],[557.67,82.62],[528.65,83.0],[528.65,121.5]],"sqft":1122.8,"gaj":124.75,"front":29.12,"depth":38.56,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"61","pts":[[557.67,121.5],[586.41,121.5],[586.41,82.24],[557.67,82.62]],"sqft":1122.9,"gaj":124.76,"front":28.84,"depth":38.94,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"62","pts":[[614.87,121.5],[614.87,81.87],[586.41,82.24],[586.41,121.5]],"sqft":1122.6,"gaj":124.73,"front":28.57,"depth":39.3,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"63","pts":[[614.87,121.5],[643.07,121.5],[643.07,81.5],[614.87,81.87]],"sqft":1122.8,"gaj":124.75,"front":28.3,"depth":39.68,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"64","pts":[[643.07,121.5],[671.01,121.5],[671.01,81.13],[643.07,81.5]],"sqft":1122.8,"gaj":124.75,"front":28.04,"depth":40.04,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"65","pts":[[671.01,121.5],[698.13,121.5],[698.13,78.58],[677.12,81.05],[671.01,81.13]],"sqft":1122.7,"gaj":124.75,"front":27.22,"depth":41.24,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"66","pts":[[723.42,121.5],[723.42,75.6],[698.13,78.58],[698.13,121.5]],"sqft":1123.1,"gaj":124.79,"front":25.38,"depth":44.25,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"","m2":104.3},{"n":"67","pts":[[746.87,121.5],[746.95,72.0],[738.15,72.0],[737.95,73.89],[723.42,75.6],[723.42,121.5]],"sqft":1122.7,"gaj":124.74,"front":23.55,"depth":47.68,"face":"N","bear":28.6,"prem":false,"com":false,"road":"12 m main road","corner":"Avenue 5 (south part)","m2":104.3},{"n":"68","pts":[[746.79,160.87],[698.12,160.87],[698.38,184.54],[746.75,184.54]],"sqft":1148.5,"gaj":127.61,"front":23.77,"depth":48.32,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"12 m main road","m2":106.7},{"n":"69","pts":[[746.75,184.54],[698.38,184.54],[698.65,208.36],[746.71,208.36]],"sqft":1148.5,"gaj":127.61,"front":23.92,"depth":48.01,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"70","pts":[[746.71,208.36],[698.65,208.36],[698.93,232.33],[746.66,232.33]],"sqft":1148.0,"gaj":127.56,"front":24.08,"depth":47.68,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"71","pts":[[746.66,232.33],[698.93,232.33],[699.2,256.47],[746.62,256.47]],"sqft":1148.5,"gaj":127.61,"front":24.24,"depth":47.39,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"72","pts":[[746.62,256.47],[699.2,256.47],[699.48,280.77],[746.58,280.77]],"sqft":1148.4,"gaj":127.6,"front":24.4,"depth":47.07,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"73","pts":[[746.58,280.77],[699.48,280.77],[699.75,305.23],[746.53,305.23]],"sqft":1148.2,"gaj":127.57,"front":24.57,"depth":46.74,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"74","pts":[[746.53,305.23],[699.75,305.23],[700.03,329.87],[746.49,329.87]],"sqft":1148.7,"gaj":127.64,"front":24.73,"depth":46.44,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"75","pts":[[707.42,333.6],[715.03,339.29],[716.83,344.5],[718.16,350.09],[718.78,355.58],[718.59,366.67],[746.42,366.67],[746.49,329.87],[700.03,329.87],[700.06,331.79],[702.81,332.16]],"sqft":1148.3,"gaj":127.59,"front":36.9,"depth":31.12,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":106.7},{"n":"76","pts":[[718.59,366.67],[718.09,395.44],[718.45,406.64],[731.28,407.63],[746.34,408.35],[746.42,366.67]],"sqft":1148.3,"gaj":127.59,"front":41.78,"depth":27.48,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Loop road (7.5 m)","corner":"Avenue 5 (north part)","m2":106.7},{"n":"77","pts":[[827.34,4.81],[776.6,4.81],[776.56,27.86],[826.99,27.86]],"sqft":1166.0,"gaj":129.55,"front":23.15,"depth":50.36,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (south part)","corner":"","m2":108.3},{"n":"78","pts":[[826.99,27.86],[776.56,27.86],[776.52,51.05],[826.65,51.05]],"sqft":1166.0,"gaj":129.55,"front":23.29,"depth":50.06,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (south part)","corner":"","m2":108.3},{"n":"79","pts":[[826.65,51.05],[776.52,51.05],[776.48,74.39],[826.3,74.39]],"sqft":1166.4,"gaj":129.6,"front":23.44,"depth":49.77,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (south part)","corner":"","m2":108.4},{"n":"80","pts":[[826.3,74.39],[776.48,74.39],[776.44,97.87],[825.94,97.87]],"sqft":1166.0,"gaj":129.56,"front":23.58,"depth":49.45,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (south part)","corner":"","m2":108.3},{"n":"81","pts":[[825.59,121.5],[825.94,97.87],[776.44,97.87],[776.39,121.5]],"sqft":1166.1,"gaj":129.57,"front":23.73,"depth":49.15,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (south part)","corner":"Main road (9 m part)","m2":108.3},{"n":"82","pts":[[825.15,151.03],[776.34,151.03],[776.3,175.06],[824.79,175.06]],"sqft":1169.1,"gaj":129.9,"front":24.13,"depth":48.44,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"12 m main road","m2":108.6},{"n":"83","pts":[[824.79,175.06],[776.3,175.06],[776.25,199.25],[824.42,199.25]],"sqft":1169.1,"gaj":129.9,"front":24.29,"depth":48.13,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"84","pts":[[824.42,199.25],[776.25,199.25],[776.21,223.6],[824.06,223.6]],"sqft":1169.0,"gaj":129.89,"front":24.45,"depth":47.81,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"85","pts":[[824.06,223.6],[776.21,223.6],[776.16,248.12],[823.69,248.12]],"sqft":1169.4,"gaj":129.93,"front":24.62,"depth":47.5,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"86","pts":[[823.69,248.12],[776.16,248.12],[776.12,272.81],[823.32,272.81]],"sqft":1169.4,"gaj":129.94,"front":24.78,"depth":47.18,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"87","pts":[[823.32,272.81],[776.12,272.81],[776.07,297.66],[822.95,297.66]],"sqft":1168.9,"gaj":129.88,"front":24.96,"depth":46.84,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"88","pts":[[822.95,297.66],[776.07,297.66],[776.03,322.69],[822.57,322.69]],"sqft":1169.2,"gaj":129.91,"front":25.13,"depth":46.52,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"89","pts":[[822.57,322.69],[776.03,322.69],[775.98,347.9],[822.2,347.9]],"sqft":1169.2,"gaj":129.92,"front":25.31,"depth":46.2,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"90","pts":[[821.82,373.29],[822.2,347.9],[775.98,347.9],[775.94,373.29]],"sqft":1169.2,"gaj":129.91,"front":25.49,"depth":45.87,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 5 (north part)","corner":"","m2":108.6},{"n":"91","pts":[[878.07,4.91],[827.34,4.91],[826.99,27.95],[877.42,27.95]],"sqft":1165.4,"gaj":129.48,"front":23.14,"depth":50.36,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.3},{"n":"92","pts":[[877.42,27.95],[826.99,27.95],[826.64,51.12],[876.77,51.12]],"sqft":1165.0,"gaj":129.44,"front":23.28,"depth":50.04,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.2},{"n":"93","pts":[[876.77,51.12],[826.64,51.12],[826.3,74.43],[876.11,74.43]],"sqft":1164.8,"gaj":129.42,"front":23.42,"depth":49.73,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.2},{"n":"94","pts":[[876.11,74.43],[826.3,74.43],[825.94,97.89],[875.45,97.89]],"sqft":1165.0,"gaj":129.45,"front":23.57,"depth":49.43,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.2},{"n":"95","pts":[[874.79,121.5],[875.45,97.89],[825.94,97.89],[825.59,121.5]],"sqft":1165.3,"gaj":129.47,"front":23.72,"depth":49.13,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"Main road (9 m part)","m2":108.3},{"n":"96","pts":[[825.15,151.03],[824.79,175.06],[873.28,175.06],[873.96,151.03]],"sqft":1169.1,"gaj":129.9,"front":24.14,"depth":48.42,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"Main road (9 m part)","m2":108.6},{"n":"97","pts":[[824.42,199.25],[872.6,199.25],[873.28,175.06],[824.79,175.06]],"sqft":1169.2,"gaj":129.91,"front":24.3,"depth":48.11,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"98","pts":[[824.06,223.6],[871.91,223.6],[872.6,199.25],[824.42,199.25]],"sqft":1169.2,"gaj":129.91,"front":24.46,"depth":47.79,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"99","pts":[[823.69,248.12],[871.22,248.12],[871.91,223.6],[824.06,223.6]],"sqft":1169.4,"gaj":129.93,"front":24.63,"depth":47.48,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"100","pts":[[823.32,272.81],[870.53,272.81],[871.22,248.12],[823.69,248.12]],"sqft":1169.6,"gaj":129.95,"front":24.79,"depth":47.17,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.7},{"n":"101","pts":[[822.95,297.66],[869.83,297.66],[870.53,272.81],[823.32,272.81]],"sqft":1169.1,"gaj":129.9,"front":24.97,"depth":46.83,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"102","pts":[[822.57,322.69],[869.12,322.69],[869.83,297.66],[822.95,297.66]],"sqft":1169.3,"gaj":129.92,"front":25.14,"depth":46.51,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"103","pts":[[822.2,347.9],[868.41,347.9],[869.12,322.69],[822.57,322.69]],"sqft":1169.2,"gaj":129.92,"front":25.32,"depth":46.18,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"104","pts":[[821.82,373.29],[867.7,373.29],[868.41,347.9],[822.2,347.9]],"sqft":1169.1,"gaj":129.9,"front":25.5,"depth":45.84,"face":"W","bear":298.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":108.6},{"n":"105","pts":[[957.76,19.0],[907.21,19.0],[906.56,42.16],[956.8,42.16]],"sqft":1167.1,"gaj":129.68,"front":23.27,"depth":50.15,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.4},{"n":"106","pts":[[956.8,42.16],[906.56,42.16],[905.9,65.47],[955.84,65.47]],"sqft":1167.6,"gaj":129.73,"front":23.42,"depth":49.87,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.5},{"n":"107","pts":[[955.84,65.47],[905.9,65.47],[905.24,88.92],[954.87,88.92]],"sqft":1167.5,"gaj":129.72,"front":23.56,"depth":49.55,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.5},{"n":"108","pts":[[954.87,88.92],[905.24,88.92],[904.58,112.52],[953.89,112.52]],"sqft":1167.5,"gaj":129.72,"front":23.71,"depth":49.25,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (south part)","corner":"","m2":108.5},{"n":"109","pts":[[904.58,112.52],[903.91,136.26],[952.91,136.26],[953.89,112.52]],"sqft":1166.9,"gaj":129.66,"front":23.86,"depth":48.92,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Main road (9 m part)","corner":"Avenue 6 (south part)","m2":108.4},{"n":"110","pts":[[952.91,136.26],[903.91,136.26],[903.24,160.01],[951.93,160.01]],"sqft":1160.1,"gaj":128.9,"front":23.85,"depth":48.64,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Main road (9 m part)","corner":"Avenue 6 (north part)","m2":107.8},{"n":"111","pts":[[951.93,160.01],[903.24,160.01],[902.57,183.9],[950.94,183.9]],"sqft":1159.4,"gaj":128.82,"front":24.0,"depth":48.3,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"112","pts":[[950.94,183.9],[902.57,183.9],[901.89,207.95],[949.95,207.95]],"sqft":1159.6,"gaj":128.84,"front":24.16,"depth":47.99,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"113","pts":[[949.95,207.95],[901.89,207.95],[901.21,232.16],[948.95,232.16]],"sqft":1159.7,"gaj":128.85,"front":24.32,"depth":47.68,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"114","pts":[[948.95,232.16],[901.21,232.16],[900.52,256.54],[947.94,256.54]],"sqft":1160.0,"gaj":128.89,"front":24.48,"depth":47.38,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.8},{"n":"115","pts":[[947.94,256.54],[900.52,256.54],[899.83,281.08],[946.93,281.08]],"sqft":1159.8,"gaj":128.86,"front":24.65,"depth":47.05,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"116","pts":[[946.93,281.08],[899.83,281.08],[899.14,305.79],[945.91,305.79]],"sqft":1159.8,"gaj":128.86,"front":24.82,"depth":46.73,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"117","pts":[[945.91,305.79],[899.14,305.79],[898.44,330.67],[944.88,330.67]],"sqft":1159.5,"gaj":128.84,"front":24.99,"depth":46.39,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"118","pts":[[944.88,330.67],[898.44,330.67],[897.73,355.73],[943.84,355.73]],"sqft":1159.7,"gaj":128.85,"front":25.17,"depth":46.07,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"119","pts":[[943.84,355.73],[897.73,355.73],[897.02,380.97],[942.8,380.97]],"sqft":1159.7,"gaj":128.85,"front":25.35,"depth":45.74,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Avenue 6 (north part)","corner":"","m2":107.7},{"n":"120","pts":[[896.3,406.4],[941.75,406.4],[942.8,380.97],[897.02,380.97]],"sqft":1160.0,"gaj":128.89,"front":25.54,"depth":45.43,"face":"E","bear":118.6,"prem":false,"com":false,"road":"Loop road (7.5 m)","corner":"","m2":107.8},{"n":"C1","pts":[[91.54,4.66],[40.8,4.66],[44.1,27.74],[94.54,27.74]],"sqft":1167.6,"gaj":129.74,"front":23.38,"depth":49.95,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"C2","pts":[[94.54,27.74],[44.1,27.74],[47.43,50.96],[97.55,50.96]],"sqft":1167.5,"gaj":129.72,"front":23.52,"depth":49.64,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"C3","pts":[[97.55,50.96],[47.43,50.96],[50.77,74.33],[100.59,74.33]],"sqft":1167.8,"gaj":129.76,"front":23.66,"depth":49.35,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"C4","pts":[[100.59,74.33],[50.77,74.33],[54.13,97.84],[103.64,97.84]],"sqft":1167.6,"gaj":129.74,"front":23.81,"depth":49.04,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (south part)","corner":"","m2":108.5},{"n":"C5","pts":[[106.72,121.5],[103.64,97.84],[54.13,97.84],[57.52,121.5]],"sqft":1167.7,"gaj":129.75,"front":23.96,"depth":48.74,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (south part)","corner":"12 m main road","m2":108.5},{"n":"C6","pts":[[63.15,160.87],[66.59,184.86],[114.95,184.86],[111.83,160.87]],"sqft":1164.0,"gaj":129.33,"front":24.3,"depth":47.91,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (north part)","corner":"12 m main road","m2":108.1},{"n":"C7","pts":[[70.04,209.02],[118.09,209.02],[114.95,184.86],[66.59,184.86]],"sqft":1164.6,"gaj":129.4,"front":24.46,"depth":47.62,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (north part)","corner":"","m2":108.2},{"n":"C8","pts":[[73.52,233.33],[121.24,233.33],[118.09,209.02],[70.04,209.02]],"sqft":1164.1,"gaj":129.34,"front":24.62,"depth":47.28,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (north part)","corner":"","m2":108.1},{"n":"C9","pts":[[77.02,257.81],[124.42,257.81],[121.24,233.33],[73.52,233.33]],"sqft":1164.3,"gaj":129.36,"front":24.78,"depth":46.98,"face":"W","bear":298.6,"prem":false,"com":true,"road":"Avenue 1 (north part)","corner":"","m2":108.2}],"main":[[[903.49,151.03],[904.33,121.5],[776.39,121.5],[776.34,151.03]],[[776.32,160.87],[776.39,121.5],[17.11,121.5],[22.75,160.87]]],"sub":[[[362.96,121.49],[392.58,121.49],[383.53,4.3],[353.92,4.3]],[[252.45,4.48],[222.77,4.48],[234.88,121.49],[264.57,121.49]],[[121.31,4.66],[91.54,4.66],[106.71,121.49],[136.49,121.49]],[[124.48,258.23],[154.25,258.23],[141.61,160.88],[111.83,160.88]],[[251.59,282.75],[281.27,282.75],[268.65,160.88],[238.96,160.88]],[[376.54,297.24],[406.47,301.37],[395.62,160.88],[366.01,160.88]],[[501.56,329.56],[515.56,331.05],[531.23,331.69],[522.54,160.88],[492.98,160.88]],[[746.79,160.88],[746.35,406.4],[896.3,406.4],[903.49,151.04],[873.95,151.04],[867.46,381.79],[775.92,381.79],[776.32,160.88]],[[907.61,4.91],[878.07,4.91],[874.79,121.49],[904.33,121.49]],[[776.6,4.81],[747.19,4.81],[747.08,5.22],[746.87,121.49],[776.39,121.49]],[[482.28,4.91],[452.27,4.73],[472.69,121.49],[502.66,121.49]]],"park":[[[644.59,328.46],[688.29,330.18],[700.06,331.79],[698.12,160.87],[522.54,160.87],[531.23,331.69],[536.85,331.91],[558.23,331.72],[622.89,329.01]]],"fpark":[[[17.11,121.5],[57.52,121.5],[40.44,2.16],[0.0,1.91]],[[55.99,265.46],[74.94,266.88],[78.34,267.02],[63.15,160.87],[22.75,160.87],[37.46,263.74]]],"green":[[[172.05,4.66],[172.03,4.48],[303.19,4.48],[303.22,4.8],[353.95,4.8],[353.91,4.3],[383.37,4.3],[40.44,2.16],[40.8,4.66]],[[93.96,267.63],[113.05,268.96],[132.27,270.95],[171.01,274.31],[203.93,277.73],[201.65,258.23],[124.48,258.23],[124.42,257.81],[77.02,257.81],[78.34,267.02]],[[309.51,289.38],[329.65,291.81],[349.95,294.61],[370.32,296.39],[376.54,297.24],[375.42,282.74],[251.62,282.76],[269.44,285.21]],[[827.34,4.81],[827.34,4.91],[907.61,4.91],[907.21,19.0],[957.76,19.0],[958.54,0.0],[747.5,3.71],[747.19,4.81]],[[746.95,72.0],[747.08,5.23],[744.29,15.28],[738.15,72.0]],[[442.05,307.97],[452.17,312.08],[454.06,313.22],[453.35,302.22],[412.42,302.22],[431.88,305.55]],[[867.69,373.29],[775.94,373.29],[775.92,381.79],[867.46,381.79]],[[889.7,411.98],[912.82,412.26],[936.07,412.07],[941.51,412.11],[941.75,406.4],[746.35,406.4],[746.34,408.35],[775.96,409.78],[866.73,411.25]]],"mainLine":[[18.11,124.99],[22.11,138.97],[26.11,141.19],[30.11,141.19],[34.11,141.19],[38.11,141.19],[42.11,141.19],[46.11,141.19],[50.11,141.19],[54.11,141.19],[58.11,141.19],[62.11,141.19],[66.11,141.19],[70.11,141.19],[74.11,141.19],[78.11,141.19],[82.11,141.19],[86.11,141.19],[90.11,141.19],[94.11,141.19],[98.11,141.19],[102.11,141.19],[106.11,141.19],[110.11,141.19],[114.11,141.19],[118.11,141.19],[122.11,141.19],[126.11,141.19],[130.11,141.19],[134.11,141.19],[138.11,141.19],[142.11,141.19],[146.11,141.19],[150.11,141.19],[154.11,141.19],[158.11,141.19],[162.11,141.19],[166.11,141.19],[170.11,141.19],[174.11,141.19],[178.11,141.19],[182.11,141.19],[186.11,141.19],[190.11,141.19],[194.11,141.19],[198.11,141.19],[202.11,141.19],[206.11,141.19],[210.11,141.19],[214.11,141.19],[218.11,141.19],[222.11,141.19],[226.11,141.19],[230.11,141.19],[234.11,141.19],[238.11,141.19],[242.11,141.19],[246.11,141.19],[250.11,141.19],[254.11,141.19],[258.11,141.19],[262.11,141.19],[266.11,141.19],[270.11,141.19],[274.11,141.19],[278.11,141.19],[282.11,141.19],[286.11,141.19],[290.11,141.19],[294.11,141.19],[298.11,141.19],[302.11,141.19],[306.11,141.19],[310.11,141.19],[314.11,141.19],[318.11,141.19],[322.11,141.19],[326.11,141.19],[330.11,141.19],[334.11,141.19],[338.11,141.19],[342.11,141.19],[346.11,141.19],[350.11,141.19],[354.11,141.19],[358.11,141.19],[362.11,141.19],[366.11,141.19],[370.11,141.19],[374.11,141.19],[378.11,141.19],[382.11,141.19],[386.11,141.19],[390.11,141.19],[394.11,141.19],[398.11,141.19],[402.11,141.19],[406.11,141.19],[410.11,141.19],[414.11,141.19],[418.11,141.19],[422.11,141.19],[426.11,141.19],[430.11,141.19],[434.11,141.19],[438.11,141.19],[442.11,141.19],[446.11,141.19],[450.11,141.19],[454.11,141.19],[458.11,141.19],[462.11,141.19],[466.11,141.19],[470.11,141.19],[474.11,141.19],[478.11,141.19],[482.11,141.19],[486.11,141.19],[490.11,141.19],[494.11,141.19],[498.11,141.19],[502.11,141.19],[506.11,141.19],[510.11,141.19],[514.11,141.19],[518.11,141.19],[522.11,141.19],[526.11,141.19],[530.11,141.19],[534.11,141.19],[538.11,141.19],[542.11,141.19],[546.11,141.19],[550.11,141.19],[554.11,141.19],[558.11,141.19],[562.11,141.19],[566.11,141.19],[570.11,141.19],[574.11,141.19],[578.11,141.19],[582.11,141.19],[586.11,141.19],[590.11,141.19],[594.11,141.19],[598.11,141.19],[602.11,141.19],[606.11,141.19],[610.11,141.19],[614.11,141.19],[618.11,141.19],[622.11,141.19],[626.11,141.19],[630.11,141.19],[634.11,141.19],[638.11,141.19],[642.11,141.19],[646.11,141.19],[650.11,141.19],[654.11,141.19],[658.11,141.19],[662.11,141.19],[666.11,141.19],[670.11,141.19],[674.11,141.19],[678.11,141.19],[682.11,141.19],[686.11,141.19],[690.11,141.19],[694.11,141.19],[698.11,141.19],[702.11,141.19],[706.11,141.19],[710.11,141.19],[714.11,141.19],[718.11,141.19],[722.11,141.19],[726.11,141.19],[730.11,141.19],[734.11,141.19],[738.11,141.19],[742.11,141.19],[746.11,141.19],[750.11,141.19],[754.11,141.19],[758.11,141.19],[762.11,141.19],[766.11,141.19],[770.11,141.19],[774.11,141.19],[778.11,136.26],[782.11,136.26],[786.11,136.26],[790.11,136.26],[794.11,136.26],[798.11,136.26],[802.11,136.26],[806.11,136.26],[810.11,136.26],[814.11,136.26],[818.11,136.26],[822.11,136.26],[826.11,136.26],[830.11,136.26],[834.11,136.26],[838.11,136.26],[842.11,136.26],[846.11,136.26],[850.11,136.26],[854.11,136.26],[858.11,136.26],[862.11,136.26],[866.11,136.26],[870.11,136.26],[874.11,136.26],[878.11,136.26],[882.11,136.26],[886.11,136.26],[890.11,136.26],[894.11,136.26],[898.11,136.26],[902.11,136.26]],"subLines":[[[368.63,3.16],[377.86,122.63]],[[249.89,123.01],[237.45,2.96]],[[121.85,123.39],[106.18,2.76]],[[139.61,260.13],[126.47,158.98]],[[266.59,284.28],[253.65,159.36]],[[380.73,159.74],[391.75,302.5]],[[507.72,160.13],[516.49,332.44]],[[824.69,406.54],[825.15,150.9]],[[889.54,121.91],[892.85,4.5]],[[761.63,121.52],[761.84,4.78]],[[488.12,124.03],[466.82,2.18]]],"vm":121.5,"site":282708.5252669999,"stats":{"plots":129,"com":9,"prem":5,"plot":53.36,"road":30.79,"park":10.31,"fpark":3.2,"green":2.33,"dead":52},"roads":[{"name":"12 m main road","kind":"main","w":12,"polys":[[[17.11,121.5],[22.75,160.87],[776.32,160.87],[776.39,121.5]]],"sqft":29780.6,"note":"Main boulevard from the gate to the far side of the central park","plots":9},{"name":"Main road (9 m part)","kind":"main9","w":9,"polys":[[[776.39,121.5],[776.34,151.03],[903.49,151.03],[904.33,121.5]]],"sqft":3766.1,"note":"Continues the main road past the park to the last avenue","plots":2},{"name":"Loop road (7.5 m)","kind":"loop","w":7.5,"polys":[[[746.35,406.4],[896.3,406.4],[897.0,381.79],[746.39,381.79]]],"sqft":3697.8,"note":"Links the two north-west avenues so they are not dead ends","plots":2},{"name":"Notch-side road (9 m)","kind":"bc","w":9,"polys":[[[452.27,4.73],[472.69,121.5],[502.67,121.5],[482.28,4.91]]],"sqft":3497.5,"note":"Runs along the notch boundary so the plots beside it have a proper road","plots":4},{"name":"Avenue 1 (south part)","kind":"av","w":9,"polys":[[[136.49,121.49],[121.31,4.66],[91.54,4.66],[106.71,121.49]]],"sqft":3478.7,"note":"9 m avenue, ends at the south boundary","plots":10},{"name":"Avenue 1 (north part)","kind":"av","w":9,"polys":[[[111.83,160.88],[124.48,258.23],[154.25,258.23],[141.61,160.88]]],"sqft":2898.7,"note":"9 m avenue, runs north from the main road","plots":8},{"name":"Avenue 2 (south part)","kind":"av","w":9,"polys":[[[264.57,121.49],[252.45,4.48],[222.77,4.48],[234.88,121.49]]],"sqft":3473.5,"note":"9 m avenue, ends at the south boundary","plots":10},{"name":"Avenue 2 (north part)","kind":"av","w":9,"polys":[[[268.65,160.88],[238.96,160.88],[251.59,282.75],[281.27,282.75]]],"sqft":3617.9,"note":"9 m avenue, runs north from the main road","plots":10},{"name":"Avenue 3 (south part)","kind":"av","w":9,"polys":[[[353.92,4.3],[362.96,121.49],[392.58,121.49],[383.53,4.3]]],"sqft":3470.7,"note":"9 m avenue, ends at the south boundary","plots":9},{"name":"Avenue 3 (north part)","kind":"av","w":9,"polys":[[[395.62,160.88],[366.01,160.88],[376.54,297.24],[406.47,301.37]]],"sqft":4099.5,"note":"9 m avenue, runs north from the main road","plots":11},{"name":"Avenue 4 (north part)","kind":"av","w":9,"polys":[[[531.23,331.69],[522.54,160.88],[492.98,160.88],[501.56,329.56],[515.56,331.05]]],"sqft":5025.9,"note":"9 m avenue, runs north from the main road","plots":5},{"name":"Avenue 5 (south part)","kind":"av","w":9,"polys":[[[746.87,121.49],[776.39,121.49],[776.6,4.81],[747.19,4.81],[747.08,5.22]]],"sqft":3445.3,"note":"9 m avenue, ends at the south boundary","plots":5},{"name":"Avenue 5 (north part)","kind":"av","w":9,"polys":[[[746.39,381.78],[775.92,381.78],[776.32,160.88],[746.79,160.88]]],"sqft":6522.8,"note":"9 m avenue, runs north from the main road to the loop road","plots":17},{"name":"Avenue 6 (south part)","kind":"av","w":9,"polys":[[[904.33,121.49],[907.61,4.91],[878.07,4.91],[874.79,121.49]]],"sqft":3443.6,"note":"9 m avenue, ends at the south boundary","plots":9},{"name":"Avenue 6 (north part)","kind":"av","w":9,"polys":[[[873.95,151.04],[867.46,381.78],[897.0,381.78],[903.49,151.04]]],"sqft":6816.1,"note":"9 m avenue, runs north from the main road to the loop road","plots":18}]}};
+(async () => {
+try { await Promise.race([document.fonts.ready, new Promise(r=>setTimeout(r,1200))]); } catch(e){}
+try {
+const LAY=B.layout, POLY=B.boundary, J=POLY.length-1, SITE=LAY.site;
+const LET=["A","B","C","D","E","F","G","H","I"], cornerName=i=>i===J?"J":LET[i];
+const SIDES=[
+  {a:0,b:1,txt:"482'-3½\"",parts:[["218'-9½\"",218+9.5/12],["127'-0½\"",127+.5/12],["136'-5½\"",136+5.5/12]]},
+  {a:1,b:2,txt:"79'-8½\"",parts:[["79'-8½\"",1]]},{a:2,b:3,txt:"181'-1½\"",parts:[["181'-1½\"",1]]},{a:3,b:4,txt:"61'-3\"",parts:[["61'-3\"",1]]},
+  {a:4,b:5,txt:"58'-11½\"",parts:[["58'-11½\"",1]]},{a:5,b:6,txt:"12'-0\"",parts:[["12'",1]]},{a:6,b:7,txt:"211'-1\"",parts:[["211'-1\"",1]]},
+  {a:7,b:8,txt:"412'-5½\"",parts:[["308'-8½\"",308+8.5/12],["103'-9\"",103.75]]},{a:J,b:0,txt:"264'-6\"",parts:[["264'-6\"",1]]}
+];
+
+let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9; POLY.forEach(p=>{x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1]);});
+const CX=(x0+x1)/2, CZ=(y0+y1)/2, HW=(x1-x0)/2, HZ=(y1-y0)/2;
+const W=p=>[-(p[0]-CX), -(p[1]-CZ)];
+const nr=B.northDeg*Math.PI/180, NW=[-Math.cos(nr),-Math.sin(nr)], EW=[-NW[1],NW[0]];
+const Nsv=[Math.cos(nr),Math.sin(nr)], Esv=[-Nsv[1],Nsv[0]];
+const bearingOf=(dx,dy)=>((Math.atan2(dx*Esv[0]+dy*Esv[1],dx*Nsv[0]+dy*Nsv[1])*180/Math.PI)+360)%360;
+const COMP=["North","North-east","East","South-east","South","South-west","West","North-west"], comp=b=>COMP[Math.round(b/45)%8];
+const inside=(pt,P)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if(((a[1]>pt[1])!==(b[1]>pt[1]))&&(pt[0]<(b[0]-a[0])*(pt[1]-a[1])/(b[1]-a[1])+a[0]))c=!c;}return c;};
+const areaOf=P=>{let s=0;for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length];s+=a[0]*b[1]-b[0]*a[1];}return Math.abs(s/2);};
+const cen=pts=>{let a=0,x=0,y=0;for(let i=0;i<pts.length;i++){const p=pts[i],q=pts[(i+1)%pts.length],c=p[0]*q[1]-q[0]*p[1];a+=c;x+=(p[0]+q[0])*c;y+=(p[1]+q[1])*c;}return [x/(3*a),y/(3*a)];};
+const fmtFt=f=>{let ft=Math.floor(f),inch=Math.round((f-ft)*24)/2;if(inch>=12){ft++;inch-=12;}const ip=Math.floor(inch);return `${ft}'-${ip}${inch-ip?"½":""}"`;};
+const n0=(x,d=0)=>x.toLocaleString("en-IN",{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=a=>(a/SITE*100).toFixed(2)+"%";
+const areaRows=sqft=>[["Area (Gaj)",`${n0(sqft/9,1)} gaj`],["Area (Sq Ft)",`${n0(sqft)} sq ft`],["Area (Metric)",`${n0(sqft*0.09290304,1)} m²`]];
+const FACE={E:"East",W:"West",N:"North",S:"South"};
+
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove("show"),2400);
+}
+
+/* ---------- Color Themes Specification ---------- */
+const COL_3D_DARK = {
+  E:{fill:0x0F4A41,emissive:0x0F4A41,edge:0x3FE0B8},
+  W:{fill:0x232A66,emissive:0x232A66,edge:0x8C95FF},
+  N:{fill:0x123F5C,emissive:0x123F5C,edge:0x6FD3FF},
+  S:{fill:0x5C122A,emissive:0x5C122A,edge:0xFF6B9D},
+  P:{fill:0x5A4410,emissive:0x5A4410,edge:0xF2C14E},
+  C:{fill:0x5C2A0E,emissive:0x5C2A0E,edge:0xFF8A3D}
+};
+const COL_3D_LIGHT = {
+  E:{fill:0xCCFBF1,emissive:0x99F6E4,edge:0x0D9488},
+  W:{fill:0xEEF2FF,emissive:0xE0E7FF,edge:0x4F46E5},
+  N:{fill:0xE0F2FE,emissive:0xBAE6FD,edge:0x0284C7},
+  S:{fill:0xFFE4E6,emissive:0xFECDD3,edge:0xE11D48},
+  P:{fill:0xFEF3C7,emissive:0xFDE68A,edge:0xB45309},
+  C:{fill:0xFFEDD5,emissive:0xFED7AA,edge:0xC2410C}
+};
+
+const C2_DARK = {
+  E:["#12564B","#3FE0B8","#B5F7E4"],
+  W:["#2A3178","#8C95FF","#D4D8FF"],
+  N:["#154B6D","#6FD3FF","#CFF3FF"],
+  S:["#5C122A","#FF6B9D","#FFD1E1"],
+  P:["#6B5212","#F2C14E","#FFE7AE"],
+  C:["#6E3311","#FF8A3D","#FFD2B3"]
+};
+const C2_LIGHT = {
+  E:["#CCFBF1","#0D9488","#0F766E"],
+  W:["#EEF2FF","#4F46E5","#3730A3"],
+  N:["#E0F2FE","#0284C7","#0369A1"],
+  S:["#FFE4E6","#E11D48","#881337"],
+  P:["#FEF3C7","#B45309","#78350F"],
+  C:["#FFEDD5","#C2410C","#7C2D12"]
+};
+
+let currentTheme = localStorage.getItem("nandi_theme") || "dark";
+document.documentElement.setAttribute("data-theme", currentTheme);
+
+/* ---------- 3D WebGL Setup ---------- */
+const canvas=document.getElementById("c");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(currentTheme==="light"?0xEDF2F7:0x070C18);
+scene.fog=new THREE.Fog(currentTheme==="light"?0xEDF2F7:0x070C18,2200,4200);
+const camera=new THREE.PerspectiveCamera(38,1,1,9000);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true; controls.dampingFactor=0.08; controls.maxPolarAngle=1.40; controls.screenSpacePanning=true;
+controls.enableZoom=true; controls.zoomSpeed=1.2; controls.rotateSpeed=0.8; controls.panSpeed=1.3;
+controls.minDistance=35; controls.maxDistance=3000;
+const MIN_D=35, MAX_D=3000;
+
+const hemiLight=new THREE.HemisphereLight(currentTheme==="light"?0xFFFFFF:0xC4D8FF,currentTheme==="light"?0x94A3B8:0x091122,0.9);
+scene.add(hemiLight);
+const sun=new THREE.DirectionalLight(0xFFF4E0,1.05);
+sun.castShadow=true;
+const sm=window.innerWidth<700?1024:2048; sun.shadow.mapSize.set(sm,sm);
+Object.assign(sun.shadow.camera,{left:-650,right:650,top:650,bottom:-650,near:10,far:2000});
+sun.shadow.bias=-0.0004; scene.add(sun);
+
+const sunTimes=[
+  {name:"Sun: Morning",pos:[EW[0]*580,380,EW[1]*580],color:0xFFF2DC,intensity:1.1},
+  {name:"Sun: Midday",pos:[0,880,0],color:0xFFFFFF,intensity:1.2},
+  {name:"Sun: Sunset",pos:[-EW[0]*620,240,-EW[1]*620],color:0xFFB373,intensity:0.95}
+];
+let curSunIdx=0;
+function applySun(idx){
+  curSunIdx=idx%sunTimes.length; const s=sunTimes[curSunIdx];
+  sun.position.set(...s.pos); sun.color.setHex(s.color); sun.intensity=s.intensity;
+  const btn=document.getElementById("tSun"); if(btn) btn.textContent=s.name;
+}
+applySun(0);
+
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(8000,8000),new THREE.MeshStandardMaterial({color:currentTheme==="light"?0xDCE4EC:0x091022,roughness:1}));
+ground.rotation.x=-Math.PI/2; ground.position.y=-0.2; ground.receiveShadow=true; scene.add(ground);
+let grid=new THREE.GridHelper(3000,60,currentTheme==="light"?0xB5C4D6:0x18284A,currentTheme==="light"?0xCBD5E1:0x101B34); grid.position.y=-0.1; scene.add(grid);
+
+const PICK=[], LABELS=[]; let hl2=null, view="2d"; const DIM2=[];
+function pick(m,info){m.userData.pick=info;PICK.push(m);return m;}
+function shapeOf(pts){const s=new THREE.Shape();pts.forEach((p,i)=>{const w=W(p);i?s.lineTo(w[0],-w[1]):s.moveTo(w[0],-w[1]);});s.closePath();return s;}
+function flat(pts,y,color,opts={}){const g=new THREE.ShapeGeometry(shapeOf(pts));g.rotateX(-Math.PI/2);
+  const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial(Object.assign({color,roughness:.95,side:THREE.DoubleSide},opts)));m.position.y=y;m.receiveShadow=true;return m;}
+function slab(pts,h,y,mat){const g=new THREE.ExtrudeGeometry(shapeOf(pts),{depth:h,bevelEnabled:false});g.rotateX(-Math.PI/2);const m=new THREE.Mesh(g,mat);m.position.y=y;return m;}
+function ribbon(pts,width,y,closed=true){
+  const pos=[],n=pts.length,segs=closed?n:n-1;
+  for(let i=0;i<segs;i++){const a=W(pts[i]),b=W(pts[(i+1)%n]);const L=Math.hypot(b[0]-a[0],b[1]-a[1]);if(L<0.01)continue;
+    const nx=-(b[1]-a[1])/L*width/2,nz=(b[0]-a[0])/L*width/2;
+    const q=[[a[0]+nx,a[1]+nz],[b[0]+nx,b[1]+nz],[b[0]-nx,b[1]-nz],[a[0]-nx,a[1]-nz]];
+    [[0,1,2],[0,2,3]].forEach(t=>t.forEach(k=>pos.push(q[k][0],y,q[k][1])));}
+  const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));return g;}
+function outline(pts,y,color,op=1){const v=[];pts.forEach(p=>{const w=W(p);v.push(new THREE.Vector3(w[0],y,w[1]));});v.push(v[0].clone());
+  return new THREE.Line(new THREE.BufferGeometry().setFromPoints(v),new THREE.LineBasicMaterial({color,transparent:op<1,opacity:op}));}
+
+function label(lines,{w,color="#E6ECF7",align=null,y=1,sizes=null}){
+  const cw=512, chh=lines.length>1?256:160, cv=document.createElement("canvas"); cv.width=cw; cv.height=chh;
+  const g=cv.getContext("2d"); g.textAlign="center"; g.textBaseline="middle";
+  const sz=sizes||(lines.length>1?[110,80]:[110]);
+  lines.forEach((t,i)=>{let s=sz[i];const f=x=>`700 ${x}px "JetBrains Mono",ui-monospace,Menlo,monospace`; g.font=f(s);
+    while(g.measureText(t).width>cw-28&&s>20){s-=4;g.font=f(s);}
+    g.lineWidth=12; g.strokeStyle="rgba(7,12,24,0.92)";
+    g.strokeText(t,cw/2,lines.length>1?(i===0?chh*0.35:chh*0.75):chh/2);
+    g.fillStyle=Array.isArray(color)?color[i]:color; g.fillText(t,cw/2,lines.length>1?(i===0?chh*0.35:chh*0.75):chh/2);});
+  const tex=new THREE.CanvasTexture(cv); tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,w*chh/cw),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));
+  m.rotation.order="YXZ"; m.rotation.x=-Math.PI/2; m.position.y=y; m.renderOrder=5; m.userData.align=align; LABELS.push(m); return m;}
+const dirAngle=(a,b)=>{const A=W(a),Bp=W(b);return Math.atan2(-(Bp[1]-A[1]),Bp[0]-A[0]);};
+
+function dashes(line,width,dash,gap,color,y){
+  const pos=[]; for(let i=0;i<line.length-1;i++){const a=W(line[i]),b=W(line[i+1]);const L=Math.hypot(b[0]-a[0],b[1]-a[1]);if(L<0.01)continue;
+    const u=[(b[0]-a[0])/L,(b[1]-a[1])/L],n=[-u[1]*width/2,u[0]*width/2];
+    for(let s=0;s<L;s+=dash+gap){const e=Math.min(L,s+dash);const p1=[a[0]+u[0]*s,a[1]+u[1]*s],p2=[a[0]+u[0]*e,a[1]+u[1]*e];
+      const q=[[p1[0]+n[0],p1[1]+n[1]],[p2[0]+n[0],p2[1]+n[1]],[p2[0]-n[0],p2[1]-n[1]],[p1[0]-n[0],p1[1]-n[1]]];
+      [[0,1,2],[0,2,3]].forEach(t=>t.forEach(k=>pos.push(q[k][0],y,q[k][1])));}}
+  const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));
+  return new THREE.Mesh(g,new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide}));}
+
+function trees(polys,info){
+  const pts=[];
+  polys.forEach(p=>{let a=1e9,b=-1e9,c=1e9,d=-1e9;p.forEach(q=>{a=Math.min(a,q[0]);b=Math.max(b,q[0]);c=Math.min(c,q[1]);d=Math.max(d,q[1]);});
+    const segD=pt=>{let m=1e9;for(let i=0;i<p.length;i++){const s=p[i],e=p[(i+1)%p.length],dx=e[0]-s[0],dy=e[1]-s[1],L2=dx*dx+dy*dy;let t=L2?((pt[0]-s[0])*dx+(pt[1]-s[1])*dy)/L2:0;t=Math.max(0,Math.min(1,t));m=Math.min(m,Math.hypot(pt[0]-s[0]-t*dx,pt[1]-s[1]-t*dy));}return m;};
+    let k=0; for(let x=a+9;x<b;x+=17)for(let y=c+9;y<d;y+=17){k++;const j=[x+((k*37)%9)-4.5,y+((k*53)%9)-4.5];
+      if(inside(j,p)&&segD(j)>7&&((k*7)%5!==0)) pts.push(j);} });
+  if(!pts.length) return 0;
+  const trunk=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.6,0.9,7,6),new THREE.MeshStandardMaterial({color:0x52402E}),pts.length);
+  const crown=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(5.5,0),new THREE.MeshStandardMaterial({color:0x2F8F57,roughness:.85,flatShading:true}),pts.length);
+  const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),S=new THREE.Vector3();
+  pts.forEach((p,i)=>{const w=W(p),s=0.8+((i*29)%10)/25;M.compose(new THREE.Vector3(w[0],3.5,w[1]),Q,S.set(1,1,1));trunk.setMatrixAt(i,M);
+    M.compose(new THREE.Vector3(w[0],8.5*s+1,w[1]),Q,S.set(s,s*1.1,s));crown.setMatrixAt(i,M);});
+  trunk.castShadow=crown.castShadow=true; scene.add(trunk,crown); pick(crown,info); pick(trunk,info); return pts.length;}
+function outwardN(a,b){const t=[b[0]-a[0],b[1]-a[1]],L=Math.hypot(...t);let n=[t[1]/L,-t[0]/L];const m=[(a[0]+b[0])/2+n[0]*2,(a[1]+b[1])/2+n[1]*2];if(inside(m,POLY))n=[-n[0],-n[1]];return n;}
+
+const siteInfo={kind:"site"};
+const site3dMesh=pick(flat(POLY,0.02,currentTheme==="light"?0xDDE5ED:0x111C33),siteInfo); scene.add(site3dMesh);
+const eastRoad3dMesh=pick(flat(B.eastRoad,0.05,currentTheme==="light"?0x94A3B8:0x283040),{kind:"eastroad",pts:B.eastRoad}); scene.add(eastRoad3dMesh);
+const chakRoad3dMeshes=B.chakroad.map(p=>{ const cm=pick(flat(p,0.04,currentTheme==="light"?0xCBD5E1:0x352F22),{kind:"chakroad",pts:p}); scene.add(cm); return cm; });
+{ const r=B.eastRoad,m=[(r[0][0]+r[1][0]+r[2][0]+r[3][0])/4,(r[0][1]+r[1][1]+r[2][1]+r[3][1])/4],w=W(m);
+  const L=label(["22'-6\" ROAD · ENTRY / EXIT"],{w:150,color:"#F2C14E",align:dirAngle(r[0],r[1]),y:0.3});L.position.set(w[0],0.3,w[1]);scene.add(L);}
+{ const m=POLY[Math.floor((8+J)/2)+14],w=W(m);
+  const L=label(["CHAKROAD · NO ACCESS"],{w:120,color:"#B9A77C",align:dirAngle(POLY[40],POLY[50]),y:0.3});L.position.set(w[0]+NW[0]*14,0.3,w[1]+NW[1]*14);scene.add(L);}
+
+const sideOfSeg=i=>{for(const sd of SIDES){ if(sd.a===J){ if(i===J) return sd; continue;} if(i>=sd.a&&i<sd.b) return sd;} return null;};
+const wallMat=new THREE.MeshStandardMaterial({
+  color:currentTheme==="light"?0x1E293B:0xF0F4FF,
+  emissive:currentTheme==="light"?0x0F172A:0x334466,
+  emissiveIntensity:.35,
+  roughness:.6
+});
+const gateInfo={kind:"gate"};
+function wallPiece(a,b,info){const L=Math.hypot(b[0]-a[0],b[1]-a[1]);if(L<0.05)return;
+  const m=new THREE.Mesh(new THREE.BoxGeometry(L+0.8,5,1.2),wallMat);m.position.set((a[0]+b[0])/2,2.5,(a[1]+b[1])/2);
+  m.rotation.y=-Math.atan2(b[1]-a[1],b[0]-a[0]);m.castShadow=true;scene.add(pick(m,info));}
+for(let i=0;i<POLY.length;i++){ if(i===J) continue;
+  const sd=sideOfSeg(i); wallPiece(W(POLY[i]),W(POLY[(i+1)%POLY.length]),sd?{kind:"side",sd}:{kind:"chakside"}); }
+
+{ const lm=new THREE.LineBasicMaterial({color:0xF2C14E});
+  SIDES.forEach(sd=>{const a=POLY[sd.a],b=POLY[sd.b],n=outwardN(a,b),small=(sd.a===4||sd.a===5),off=sd.a===J?42:(small?10:20);
+    const t=[b[0]-a[0],b[1]-a[1]],L=Math.hypot(...t),u=[t[0]/L,t[1]/L],tot=sd.parts.reduce((q,x)=>q+x[1],0);
+    let acc=0; const P=s=>{const w=W([a[0]+u[0]*s+n[0]*off,a[1]+u[1]*s+n[1]*off]);return new THREE.Vector3(w[0],0.4,w[1]);};
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([P(0),P(L)]),lm));
+    DIM2.push({line:[[a[0]+n[0]*off,a[1]+n[1]*off],[b[0]+n[0]*off,b[1]+n[1]*off]],sd});
+    const tick=s=>{const w1=W([a[0]+u[0]*s+n[0]*(off-6),a[1]+u[1]*s+n[1]*(off-6)]),w2=W([a[0]+u[0]*s+n[0]*(off+6),a[1]+u[1]*s+n[1]*(off+6)]);
+      scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(w1[0],0.4,w1[1]),new THREE.Vector3(w2[0],0.4,w2[1])]),lm));
+      DIM2.push({line:[[a[0]+u[0]*s+n[0]*(off-6),a[1]+u[1]*s+n[1]*(off-6)],[a[0]+u[0]*s+n[0]*(off+6),a[1]+u[1]*s+n[1]*(off+6)]],sd});};
+    tick(0);tick(L);
+    sd.parts.forEach(([t2,f])=>{const k=f/tot*L; if(sd.parts.length>1&&acc+k<L-0.1) tick(acc+k);
+      const c=W([a[0]+u[0]*(acc+k/2)+n[0]*(off+(small?0:10)),a[1]+u[1]*(acc+k/2)+n[1]*(off+(small?0:10))]);
+      const lab=label([t2],{w:Math.min(70,Math.max(26,k*0.7)),color:"#F2C14E",align:dirAngle(a,b),y:0.5});
+      lab.position.set(c[0],0.5,c[1]); scene.add(pick(lab,{kind:"side",sd}));
+      DIM2.push({text:t2,at:[a[0]+u[0]*(acc+k/2)+n[0]*(off+(small?0:10)),a[1]+u[1]*(acc+k/2)+n[1]*(off+(small?0:10))],ang:dirAngle(a,b),size:Math.min(70,Math.max(26,k*0.7)),sd}); acc+=k;});
+  }); }
+
+{ const g=new THREE.Group(), R=40;
+  const ring=new THREE.Mesh(new THREE.RingGeometry(R-2,R,64),new THREE.MeshBasicMaterial({color:0x8C9BB8,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;g.add(ring);
+  const tri=(dir,len,col)=>{const s=new THREE.Shape();const e=[dir[1],-dir[0]];s.moveTo(dir[0]*len,-dir[1]*len);s.lineTo(e[0]*7,-e[1]*7);s.lineTo(-e[0]*7,e[1]*7);s.closePath();
+    const m=new THREE.Mesh(new THREE.ShapeGeometry(s),new THREE.MeshBasicMaterial({color:col,side:THREE.DoubleSide}));m.rotation.x=-Math.PI/2;m.position.y=0.3;return m;};
+  g.add(tri(NW,R-4,0xFF5A5A)); g.add(tri([-NW[0],-NW[1]],R-4,0x8C9BB8));
+  [["N",NW,"#FF6B6B"],["E",EW,"#C9D3E8"],["S",[-NW[0],-NW[1]],"#C9D3E8"],["W",[-EW[0],-EW[1]],"#C9D3E8"]].forEach(([t,v,c])=>{
+    const L=label([t],{w:30,color:c,y:0.4});L.position.set(v[0]*(R+16),0.4,v[1]*(R+16));g.add(L);});
+  g.position.set(HW*0.62,0,HZ+72); scene.add(g);
+  [["NORTH",NW],["EAST",EW],["SOUTH",[-NW[0],-NW[1]]],["WEST",[-EW[0],-EW[1]]]].forEach(([t,v])=>{
+    const k=1/Math.max(Math.abs(v[0])/(HW+70),Math.abs(v[1])/(HZ+70));
+    const L=label([t],{w:70,color:t==="NORTH"?"#FF6B6B":"#6F7FA3",y:0.4});L.position.set(v[0]*k,0.4,v[1]*k);scene.add(L);});
+}
+
+const ROADCOL_DARK={main:0x262D3C,main9:0x262D3C,loop:0x283040,bc:0x262D3C,av:0x262D3C};
+const ROADCOL_LIGHT={main:0x475569,main9:0x475569,loop:0x64748B,bc:0x475569,av:0x475569};
+const road3dMeshes=[];
+LAY.roads.forEach(r=>r.polys.forEach(p=>{
+  const rm=pick(flat(p,0.12,currentTheme==="light"?ROADCOL_LIGHT[r.kind]:ROADCOL_DARK[r.kind]),{kind:"road",r});
+  road3dMeshes.push({mesh:rm,kind:r.kind});
+  scene.add(rm);
+}));
+scene.add(dashes(LAY.mainLine,0.9,10,8,0xF2C14E,0.2));
+LAY.subLines.forEach(l=>scene.add(dashes(l,0.6,6,7,0xC9D3E8,0.2)));
+{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)],w=W(m);
+  const L=label(["12 M MAIN ROAD","(40 FT WIDE)"],{w:70,color:"#F2C14E",align:dirAngle(a,b),y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+{ const m=[840.1,136.3],w=W(m);
+  const L=label(["9 M ROAD","(30 FT)"],{w:30,color:"#F2C14E",align:0,y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+{ const m=[821.5,394.1],w=W(m);
+  const L=label(["7.5 M LOOP ROAD","(25 FT)"],{w:36,color:"#F2C14E",align:0,y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L); }
+LAY.subLines.forEach(l=>{
+  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2],w=W(m);
+  const L=label(["9 M ROAD","(30 FT)"],{w:28,color:"#FFFFFF",align:dirAngle(l[0],l[1]),y:0.35});
+  L.position.set(w[0],0.35,w[1]); scene.add(L);
+});
+
+const parkInfo={kind:"park",polys:LAY.park}, fparkInfo={kind:"fpark",polys:LAY.fpark};
+LAY.park.forEach(p=>{scene.add(pick(flat(p,0.3,0x184B2E),parkInfo));scene.add(outline(p,0.45,0x4AC782,.85));});
+LAY.fpark.forEach(p=>{scene.add(pick(flat(p,0.3,0x184B2E),fparkInfo));scene.add(outline(p,0.45,0x4AC782,.85));});
+LAY.green.forEach(p=>scene.add(pick(flat(p,0.25,0x214E34),{kind:"green",pts:p})));
+parkInfo.trees=trees(LAY.park,parkInfo); fparkInfo.trees=trees(LAY.fpark,fparkInfo);
+LAY.park.forEach(p=>{if(areaOf(p)<5000)return;const c=W(cen(p));const L=label(["CENTRAL PARK"],{w:70,color:"#BDF5D3",y:22});L.position.set(c[0],22,c[1]);scene.add(L);});
+LAY.fpark.forEach(p=>{if(areaOf(p)<1500)return;const c=W(cen(p));const L=label(["FRONT GARDEN"],{w:46,color:"#BDF5D3",align:dirAngle(POLY[J],POLY[0]),y:14});L.position.set(c[0],14,c[1]);scene.add(L);});
+
+/* ---------- Plots & 3D Architectural Villas ---------- */
+const houseGroup=new THREE.Group(); houseGroup.visible=false; scene.add(houseGroup);
+const villaBodyMat=new THREE.MeshStandardMaterial({color:0xE2E8F0,roughness:.65}), villaRoofMat=new THREE.MeshStandardMaterial({color:0x334155,roughness:.7});
+const comBodyMat=new THREE.MeshStandardMaterial({color:0x1E293B,roughness:.5}), comGlassMat=new THREE.MeshStandardMaterial({color:0x38BDF8,roughness:.15,metalness:.6});
+
+const plotLabels=[], PLOTS=LAY.plots, plot3dMeshes=[];
+const plotName=p=>p.com?`Commercial ${p.n}`:p.n.endsWith(p.face)?`Plot ${p.n}`:`Plot ${p.n}${p.face}`;
+
+PLOTS.forEach(p=>{
+  const colSet = currentTheme==="light"?COL_3D_LIGHT:COL_3D_DARK;
+  const c=colSet[p.com?"C":p.prem?"P":p.face]||colSet.E;
+  const mat=new THREE.MeshStandardMaterial({color:c.fill,emissive:c.emissive,emissiveIntensity:.35,roughness:.8,transparent:true,opacity:1});
+  const m=slab(p.pts,1.4,0.15,mat);
+  m.receiveShadow=true; scene.add(pick(m,{kind:"plot",p}));
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry),new THREE.LineBasicMaterial({color:c.edge,transparent:true,opacity:1}));
+  e.position.y=0.15; scene.add(e);
+  plot3dMeshes.push({mesh:m,edge:e,p});
+
+  const cc=cen(p.pts);
+  const hp=p.pts.map(q=>[cc[0]+(q[0]-cc[0])*0.72,cc[1]+(q[1]-cc[1])*0.72]);
+  const h=slab(hp,p.com?24:19,1.55,p.com?comBodyMat:villaBodyMat);
+  h.castShadow=h.receiveShadow=true; houseGroup.add(pick(h,{kind:"plot",p}));
+  const deck=p.pts.map(q=>[cc[0]+(q[0]-cc[0])*0.6,cc[1]+(q[1]-cc[1])*0.6]);
+  houseGroup.add(slab(deck,1.2,p.com?comGlassMat:villaRoofMat));
+
+  const cw=W(cc), sz=Math.max(14,Math.min(p.front,p.depth)*0.96);
+  const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
+  const c2 = c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
+  const L=label([p.com?p.n:`${p.n}${p.face}`,`${p.com?"COM ":""}${Math.round(p.gaj)} GAJ`],{w:sz,color:[c2[2],"#D5DEEF"],y:1.7,sizes:[150,110]});
+  L.position.set(cw[0],1.7,cw[1]); scene.add(L); plotLabels.push(L); p.cw=cw;
+});
+
+{ const a=W(POLY[J]), b=W(POLY[0]); const t=[b[0]-a[0],b[1]-a[1]],L=Math.hypot(...t),u=[t[0]/L,t[1]/L];
+  const proj=q=>((q[0]-a[0])*u[0]+(q[1]-a[1])*u[1]);
+  let s0=1e9,s1=-1e9; LAY.main.forEach(p=>p.forEach(q=>{const w=W(q); const d=Math.abs((w[0]-a[0])*u[1]-(w[1]-a[1])*u[0]); if(d<3){const s=proj(w);s0=Math.min(s0,s);s1=Math.max(s1,s);}}));
+  const sd=SIDES[SIDES.length-1];
+  [[0,s0],[s1,L]].forEach(([p0,p1])=>{if(p1-p0>1) wallPiece([a[0]+u[0]*p0,a[1]+u[1]*p0],[a[0]+u[0]*p1,a[1]+u[1]*p1],{kind:"side",sd});});
+  const pm=new THREE.MeshStandardMaterial({color:0xF2C14E,emissive:0x5A4410,emissiveIntensity:.5});
+  gateInfo.width=(s1-s0);
+  [s0,s1].forEach(s=>{const m=new THREE.Mesh(new THREE.BoxGeometry(3.5,14,3.5),pm);m.position.set(a[0]+u[0]*s,7,a[1]+u[1]*s);m.castShadow=true;scene.add(pick(m,gateInfo));});
+  const mid=[a[0]+u[0]*(s0+s1)/2,a[1]+u[1]*(s0+s1)/2];
+  gateInfo.w=[[a[0]+u[0]*s0,a[1]+u[1]*s0],[a[0]+u[0]*s1,a[1]+u[1]*s1]]; gateInfo.mid=mid;
+  gateInfo.pts=gateInfo.w.map(w=>[-w[0]+CX,-w[1]+CZ]);
+  const GL=label(["MAIN GATE"],{w:44,color:"#F2C14E",y:16});GL.position.set(mid[0],16,mid[1]);scene.add(pick(GL,gateInfo));
+}
+
+const S=LAY.stats, res=PLOTS.filter(p=>!p.com), std=res.filter(p=>!p.prem), gajSum=PLOTS.reduce((q,p)=>q+p.gaj,0);
+const roadA=LAY.roads.reduce((q,r)=>q+r.sqft,0), parkA=LAY.park.reduce((q,p)=>q+areaOf(p),0), fparkA=LAY.fpark.reduce((q,p)=>q+areaOf(p),0), greenA=LAY.green.reduce((q,p)=>q+areaOf(p),0);
+
+document.getElementById("sum").innerHTML=`<div class="sum-left"><b>${PLOTS.length} PLOTS</b> · ${S.plot.toFixed(1)}% PLOTTED · ROADS ${S.road.toFixed(1)}% · PARKS ${(S.park+S.fpark+S.green).toFixed(1)}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+
+/* ---------- Card, Highlights & Details ---------- */
+const card=document.getElementById("card");
+let currentSelectedInfo=null;
+
+function show(kind,title,tags,rows,note,acts,dims=null,stepper=null){
+  document.getElementById("cK").textContent=kind;
+  document.getElementById("cT").textContent=title;
+  document.getElementById("cTags").innerHTML=(tags||[]).map(t=>`<span class="tag" style="${t[1]?`background:${t[1]};color:#0F0C05;font-weight:700`:""}">${t[0]}</span>`).join("");
+  document.getElementById("cB").innerHTML=rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");
+  document.getElementById("cN").textContent=note||""; document.getElementById("cN").style.display=note?"":"none";
+
+  const dBox=document.getElementById("cDimBox"), dGrid=document.getElementById("cDimGrid");
+  if(dims && dims.length){
+    dBox.style.display="block";
+    dGrid.innerHTML=dims.map(([k,v])=>`<div><span>${k}</span><b>${v}</b></div>`).join("");
+  } else {
+    dBox.style.display="none";
+  }
+
+  const sBox=document.getElementById("cStepper");
+  if(stepper){
+    sBox.style.display="flex";
+    document.getElementById("cPrev").onclick=stepper.prev;
+    document.getElementById("cNext").onclick=stepper.next;
+  } else {
+    sBox.style.display="none";
+  }
+
+  const A=document.getElementById("cA"); A.innerHTML="";
+  (acts||[]).forEach(([t,f,cls])=>{const b=document.createElement("button");b.textContent=t;b.className=cls||"";b.onclick=f;A.appendChild(b);});
+
+  card.classList.add("on");
+  card.style.transform="";
+}
+
+const hl=new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshBasicMaterial({color:0x59D7FF,side:THREE.DoubleSide,depthTest:false,transparent:true,opacity:.95}));
+hl.renderOrder=10; scene.add(hl);
+
+function highlight(polys,closed=true,width=2.4){
+  if(hl2) hl2.setAttribute("d",polys.map(p=>dpath(p,closed)).join(" "));
+  const gs=polys.map(p=>ribbon(p,width,2.4,closed));
+  const pos=[];gs.forEach(g=>pos.push(...g.attributes.position.array));hl.geometry.dispose();
+  const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));hl.geometry=g;hl.visible=true;
+}
+
+function clearPlotDims2(){
+  const g=document.getElementById("plotDims2");
+  if(g) g.innerHTML="";
+}
+
+function drawPlotDims2(pts){
+  const g=document.getElementById("plotDims2"); if(!g) return;
+  g.innerHTML="";
+  for(let i=0;i<pts.length;i++){
+    const p1=pts[i], p2=pts[(i+1)%pts.length];
+    const L=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]); if(L<2) continue;
+    const txt=fmtFt(L);
+    const mid=[(p1[0]+p2[0])/2,(p1[1]+p2[1])/2];
+    const wMid=W(mid);
+    const ang=deg(dirAngle(p1,p2));
+    let normAng=((ang%360)+540)%360-180;
+    if(normAng>90||normAng<-90) normAng+=180;
+    const isLight = document.documentElement.getAttribute("data-theme")==="light";
+    const t=el2("text",{
+      x:wMid[0].toFixed(2),
+      y:wMid[1].toFixed(2),
+      "font-size":"7",
+      fill:isLight?"#0284C7":"#59D7FF",
+      stroke:isLight?"#FFFFFF":"#070C18",
+      "stroke-width":"1.5",
+      "paint-order":"stroke fill",
+      transform:`rotate(${normAng.toFixed(2)} ${wMid[0].toFixed(2)} ${wMid[1].toFixed(2)})`
+    },g);
+    t.textContent=txt;
+  }
+}
+
+function closeCard(){
+  card.classList.remove("on");
+  card.style.transform="";
+  hl.visible=false;
+  if(hl2) hl2.setAttribute("d","");
+  clearPlotDims2();
+  currentSelectedInfo=null;
+  if(location.hash && location.hash.includes("plot=")) history.replaceState(null,"",location.pathname+location.search);
+}
+document.getElementById("cx").onclick=closeCard;
+
+function sideLen(sd){let L=0;if(sd.a===J){return Math.hypot(POLY[0][0]-POLY[J][0],POLY[0][1]-POLY[J][1]);}for(let i=sd.a;i<sd.b;i++)L+=Math.hypot(POLY[i+1][0]-POLY[i][0],POLY[i+1][1]-POLY[i][1]);return L;}
+function sidePts(sd){return sd.a===J?[POLY[J],POLY[0]]:POLY.slice(sd.a,sd.b+1);}
+
+function getPlotSides(pts){
+  const sides=[];
+  for(let i=0;i<pts.length;i++){
+    const p1=pts[i], p2=pts[(i+1)%pts.length];
+    sides.push({len:Math.hypot(p2[0]-p1[0],p2[1]-p1[1]),str:fmtFt(Math.hypot(p2[0]-p1[0],p2[1]-p1[1]))});
+  }
+  return sides;
+}
+
+function select(info){
+  currentSelectedInfo=info;
+  const k=info.kind;
+  const isNew = (view==="new2d");
+  const curPlots = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  if(k==="plot"){
+    const p=info.p, irr=p.pts.length>4;
+    const tags=[];
+    if(p.com) tags.push(["Commercial","#FF8A3D"]);
+    else if(p.prem) tags.push(["Premium Park Facing","#F2C14E"]);
+    else tags.push(["Standard Residential"]);
+    if(p.corner) tags.push(["Corner Plot"]);
+    tags.push([`${FACE[p.face]} Facing`]);
+    tags.push([`${Math.round(p.gaj)} Gaj`]);
+
+    const s=getPlotSides(p.pts);
+    let dims=[];
+    if(s.length===4){
+      const is0Front = Math.abs(s[0].len - p.front) < Math.abs(s[1].len - p.front);
+      const fSide = is0Front ? s[0] : s[1];
+      const rSide = is0Front ? s[2] : s[3];
+      const dSide = is0Front ? s[1] : s[0];
+      dims=[["Road Frontage",fSide.str],["Rear Boundary",rSide.str],["Plot Depth",dSide.str],["Width × Depth",fmtFt(p.front)+" × "+fmtFt(p.depth)]];
+    } else {
+      dims=[["Frontage",fmtFt(p.front)],["Avg Depth",fmtFt(p.depth)],["Total Edges",`${s.length} segments`]];
+    }
+
+    let roadWidthStr = "9 m (30 ft)";
+    if(p.road && p.road.includes("12 m")) roadWidthStr = "12 m (40 ft)";
+    else if(p.road && (p.road.includes("7.5 m") || p.road.includes("Loop"))) roadWidthStr = "7.5 m (25 ft)";
+
+    const curIdx=curPlots.findIndex(x=>x.n===p.n);
+    const stepper={
+      prev:()=>{const prevIdx=(curIdx-1+curPlots.length)%curPlots.length; select({kind:"plot",p:curPlots[prevIdx]}); flyTo(curPlots[prevIdx].cw,140);},
+      next:()=>{const nextIdx=(curIdx+1)%curPlots.length; select({kind:"plot",p:curPlots[nextIdx]}); flyTo(curPlots[nextIdx].cw,140);}
+    };
+
+    const shareAction=()=>{
+      const shareUrl=window.location.origin+window.location.pathname+"#plot="+p.n;
+      if(navigator.share){
+        navigator.share({title:`NANDI Township - Plot ${p.n}`,text:`Check out Plot ${p.n} (${Math.round(p.gaj)} Gaj, ${FACE[p.face]} Facing) in NANDI Township!`,url:shareUrl}).catch(()=>{});
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(()=>toast("Share link copied to clipboard!"));
+      }
+    };
+
+    let plotNote = isNew ? "Perfect 90° rectangular plot aligned to the straight colony grid." : "100% Vastu aligned orientation with zero south-facing exposure.";
+    if(p.face==="S"){
+      plotNote = "Prime boulevard-facing plot directly south of the expanded Central Park, facing the 12m main boulevard.";
+    } else if(p.n==="74"||p.n==="75"||p.n==="76"){
+      plotNote = isNew ? "Standard 90° rectangular plot aligned to the orthogonal avenue grid." : "Equal Area Note: Plots 74, 75 & 76 each have exactly 127.6 Gaj (1,148 sq ft). As depth decreases along the curved boundary (46.4' on 74, 31.1' on 75, 27.5' on 76), the road frontage was widened (24.7' on 74, 36.9' on 75, 41.8' on 76) so every owner receives the exact same land area.";
+    } else if(irr){
+      plotNote = "This plot follows the colony boundary curve; perimeter and area are mathematically exact.";
+    }
+
+    show(
+      p.com?"Commercial Plot":"Residential Plot",
+      plotName(p),
+      tags,
+      [
+        ...areaRows(p.sqft),
+        ["Category", p.com ? "Commercial" : (p.prem ? "Premium (Park Facing)" : "Standard Residential")],
+        ["Facing", `${FACE[p.face]} (${p.bear.toFixed(0)}° from north)`],
+        ["Front Road", p.road],
+        ["Road Width", roadWidthStr],
+        ...(p.corner?[["Corner Road",p.corner]]:[])
+      ],
+      plotNote,
+      [["Zoom to Plot",()=>flyTo(p.cw,140),"btn-accent"],["Share Link",shareAction]],
+      dims,
+      stepper
+    );
+    highlight([p.pts]);
+    drawPlotDims2(p.pts);
+    history.replaceState(null,"",location.pathname+"#plot="+p.n);
+    return;
+  }
+  clearPlotDims2();
+  if(k==="road"){
+    const r=info.r, wft=r.w/0.3048, len=r.sqft/wft;
+    show("Colony Road",r.name,[[`${r.w} m (${fmtFt(wft)}) Wide`]],
+      [["Width",`${r.w} m (${fmtFt(wft)})`],["Approx Length",`${n0(len)} ft · ${n0(len*0.3048)} m`],["Total Area",`${n0(r.sqft)} sq ft`],["Share of Site",pct(r.sqft)],["Plots Facing",String(r.plots)]],
+      r.note);
+    highlight(r.polys); return;
+  }
+  if(k==="park"||k==="fpark"){
+    const polys = info.polys || (k==="park" ? (isNew?window.LAY_NEW.park:LAY.park) : (isNew?window.LAY_NEW.fpark:LAY.fpark));
+    const a = polys.reduce((s, p) => s + areaOf(p), 0);
+    show("Open Green Space",k==="park"?"Central Park":"Front Entrance Garden",[["Recreational Park","#3FAF6E"]],[...areaRows(a),["Share of Site",pct(a)],["Trees Planted",String(info.trees||(k==="park"?82:24))]],
+      k==="park"?"Spacious landscaped park north of the 12m boulevard. Combined open greens exceed the 13% statutory MDA quota.":"Landscaped welcome garden flanking the main entry road.");
+    highlight(polys); return;
+  }
+  if(k==="green"){
+    const a=areaOf(info.pts);
+    show("Open Green Space","Green Buffer Pocket",[["Landscaped"]],[...areaRows(a),["Share of Site",pct(a)]],"Perimeter buffer landscaped with native green cover.");
+    highlight([info.pts]); return;
+  }
+  if(k==="side"){
+    const sd=info.sd, pts=sidePts(sd), a=pts[0], b=pts[pts.length-1], n=outwardN(a,b), br=bearingOf(n[0],n[1]);
+    show("Site Boundary",`Side ${cornerName(sd.a)}–${cornerName(sd.b)}`,sd.a===J?[["Road Frontage"]]:[],
+      [["Survey Dimension",sd.txt],...(sd.parts.length>1?[["Composite",sd.parts.map(x=>x[0]).join(" + ")]]:[]),["CAD Length",fmtFt(sideLen(sd))],["Direction",`${comp(br)} (${br.toFixed(0)}°)`]],
+      sd.a===J?"Public road frontage along 22'-6\" existing road.":"Colony boundary wall verified against original survey paper.");
+    highlight([pts],false,3.2); return;
+  }
+  if(k==="chakside"){
+    const pts=POLY.slice(8,J+1);let L=0;for(let i=0;i<pts.length-1;i++)L+=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);
+    show("Site Boundary","Chakroad Side (I–J)",[["Curved Boundary"]],[["CAD Arc Length",`${fmtFt(L)}`],["Orientation","North"]],"Traced directly from surveyor site coordinates.");
+    highlight([pts],false,3.2); return;
+  }
+  if(k==="gate"){
+    show("Colony Entrance","Main Boulevard Gate",[["Primary Entry & Exit"]],[["Boulevard Opening",`${fmtFt(info.width)} (12m Road)`],["Opens Onto","22'-6\" Public Road"],["Orientation","East Facing"]],"Primary 12m wide entrance avenue into the township.");
+    if(gateInfo.pts) highlight([gateInfo.pts],false,3.5); return;
+  }
+  if(k==="eastroad"){show("External Road","22'-6\" Public Road",[["Public Access"]],[["Width","22'-6\" (6.86 m)"],["Side","East"]],"Existing connecting road.");highlight([info.pts]);return;}
+  if(k==="chakroad"){show("External Track","Chakroad",[["No Colony Access"]],[["Side","North"]],"Agricultural easement track.");highlight([info.pts]);return;}
+  if(k==="site"){showSummaryModal();return;}
+}
+
+function showSummaryModal(){
+  const b=document.getElementById("sumModalBody");
+  if(view==="new2d"){
+    const d = window.LAY_NEW;
+    const pList = d ? d.plots : [];
+    const rList = d ? d.roads : [];
+    const pkList = d ? (d.park||[]) : [];
+    const fpList = d ? (d.fpark||[]) : [];
+    const grList = d ? (d.green||[]) : [];
+    const st = d ? d.stats : null;
+    const dName = (typeof DESIGN_NAMES!=="undefined" && DESIGN_NAMES[currentDesignKey]) ? DESIGN_NAMES[currentDesignKey] : "New Grid";
+    
+    const nTotal = pList.length;
+    const nCom = pList.filter(p=>p.com).length;
+    const nRes = nTotal - nCom;
+    const plotSqft = pList.reduce((acc,p)=>acc+p.sqft,0);
+    const plotGaj = plotSqft / 9;
+    const plotPct = st ? st.plot.toFixed(1) : (plotSqft / SITE * 100).toFixed(1);
+    const roadSqft = rList.reduce((acc,r)=>acc+r.sqft,0);
+    const roadPct = st ? st.road.toFixed(1) : (roadSqft / SITE * 100).toFixed(1);
+    const parkSqft = pkList.reduce((acc,p)=>acc+areaOf(p),0);
+    const parkPct = (parkSqft / SITE * 100).toFixed(1);
+    const fparkSqft = fpList.reduce((acc,p)=>acc+areaOf(p),0);
+    const fparkPct = (fparkSqft / SITE * 100).toFixed(1);
+    const greenSqft = grList.reduce((acc,p)=>acc+areaOf(p),0);
+    const greenPct = (greenSqft / SITE * 100).toFixed(1);
+    const totalGreenSqft = Math.max(0, SITE - plotSqft - roadSqft);
+    const totalGreenPct = (100.0 - parseFloat(plotPct) - parseFloat(roadPct)).toFixed(1);
+    
+    const nE = pList.filter(p=>p.face==="E"&&!p.com).length;
+    const nW = pList.filter(p=>p.face==="W"&&!p.com).length;
+    const nN = pList.filter(p=>p.face==="N").length;
+    const nS = pList.filter(p=>p.face==="S").length;
+    
+    b.innerHTML=`
+    <dl>
+      <dt>Layout Design</dt><dd><b>${currentDesignKey} · ${dName}</b></dd>
+      <dt>Gross Site Area</dt><dd>${n0(SITE/9,1)} gaj (${n0(SITE)} sq ft · 38.45 bigha)</dd>
+      <dt>Total Plots</dt><dd>${nTotal} (${nRes} Residential, ${nCom} Commercial)</dd>
+      <dt>Plotted Saleable Area</dt><dd>${n0(plotGaj,1)} gaj (${plotPct}%)</dd>
+      <dt>Roads Area</dt><dd>${n0(roadSqft,0)} sq ft (${roadPct}%)</dd>
+      <dt>Central / Pocket Parks</dt><dd>${n0(parkSqft,0)} sq ft (${parkPct}%)</dd>
+      <dt>Chakroad Buffer & Perimeter Greens</dt><dd>${n0(totalGreenSqft - parkSqft,0)} sq ft (${(totalGreenPct - parkPct).toFixed(1)}%)</dd>
+      <dt>Total Parks & Green</dt><dd><b>${n0(totalGreenSqft,0)} sq ft (${totalGreenPct}% · MDA Compliant)</b></dd>
+      <dt>Standard Plot Range</dt><dd>125.0 – 130.0 Gaj (front ≥ 23 ft)</dd>
+      <dt>Facing Breakdown</dt><dd>${nE} East · ${nW} West · ${nN} North · ${nS} South</dd>
+      <dt>Grid Layout</dt><dd>100% Straight Perpendicular Grid (All 90° Rectangles)</dd>
+      <dt>Longest Dead End</dt><dd>52 m (MDA limit is 100 m)</dd>
+    </dl>
+    `;
+  } else {
+    b.innerHTML=`
+    <dl>
+      <dt>Gross Site Area</dt><dd>${n0(SITE/9,1)} gaj (${n0(SITE)} sq ft · 38.45 bigha)</dd>
+      <dt>Total Plots</dt><dd>${PLOTS.length} (${res.length} Residential, ${S.com} Commercial)</dd>
+      <dt>Plotted Saleable Area</dt><dd>${n0(gajSum,1)} gaj (${S.plot.toFixed(2)}%)</dd>
+      <dt>Roads Area</dt><dd>${n0(roadA,0)} sq ft (${S.road.toFixed(2)}%)</dd>
+      <dt>Central Park</dt><dd>${n0(parkA,0)} sq ft (${S.park.toFixed(2)}%)</dd>
+      <dt>Front Entrance Garden</dt><dd>${n0(fparkA,0)} sq ft (${S.fpark.toFixed(2)}%)</dd>
+      <dt>Green Pockets</dt><dd>${n0(greenA,0)} sq ft (${S.green.toFixed(2)}%)</dd>
+      <dt>Total Parks & Green</dt><dd><b>${(S.park+S.fpark+S.green).toFixed(2)}% (Exceeds MDA 13% Quota)</b></dd>
+      <dt>Standard Plot Range</dt><dd>${Math.min(...std.map(p=>p.gaj)).toFixed(0)} – ${Math.max(...std.map(p=>p.gaj)).toFixed(0)} Gaj</dd>
+      <dt>Vastu Facing</dt><dd>62 East · 58 West · 9 North · <b>0 South (100% Auspicious)</b></dd>
+      <dt>Longest Dead End</dt><dd>${S.dead} m (MDA limit is 100 m)</dd>
+    </dl>
+    `;
+  }
+  document.getElementById("sumModal").classList.add("open");
+}
+document.getElementById("sum").onclick=showSummaryModal;
+document.getElementById("brandBtn").onclick=showSummaryModal;
+document.getElementById("sumModalX").onclick=()=>document.getElementById("sumModal").classList.remove("open");
+document.getElementById("sumModal").onclick=e=>{if(e.target===document.getElementById("sumModal"))document.getElementById("sumModal").classList.remove("open");};
+
+/* ---------- Category & Legend Filters ---------- */
+let activeFilter=null;
+const chips=document.querySelectorAll(".chip");
+const filterPill=document.getElementById("filterPill");
+const clearFilterBtn=document.getElementById("clearFilterBtn");
+
+function setFilter(f){
+  if(activeFilter===f){ f=null; }
+  activeFilter=f;
+  chips.forEach(c=>c.classList.toggle("active",c.dataset.filter===f));
+
+  if(!f){
+    filterPill.classList.remove("show");
+    plot3dMeshes.forEach(item=>{item.mesh.material.opacity=1;item.edge.material.opacity=1;});
+    document.querySelectorAll("#map2d [data-k]").forEach(el=>el.style.opacity="1");
+    return;
+  }
+
+  const isNew = (view==="new2d");
+  const curPlots = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  let matchFn=p=>false, name="";
+  if(f==="E"){ matchFn=p=>p.face==="E"&&!p.com; name=`East Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="W"){ matchFn=p=>p.face==="W"&&!p.com&&!p.prem; name=`West Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="N"){ matchFn=p=>p.face==="N"; name=`North Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="S"){ matchFn=p=>p.face==="S"; name=`South Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="P"){ matchFn=p=>p.prem; name=`Premium Park-Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="C"){ matchFn=p=>p.com; name=`Commercial Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="PARK"){ name="Parks & Green Reserves"; }
+
+  filterPill.querySelector("span").textContent="Showing: "+name;
+  filterPill.classList.add("show");
+
+  plot3dMeshes.forEach(item=>{
+    const match = (f==="PARK")?false:matchFn(item.p);
+    item.mesh.material.opacity=match?1:0.18;
+    item.edge.material.opacity=match?1:0.18;
+  });
+
+  document.querySelectorAll("#map2d [data-k]").forEach(el=>{
+    const info = el._info || P2[+el.getAttribute("data-k")];
+    if(!info) return;
+    if(f==="PARK"){
+      const match = (info.kind==="park"||info.kind==="fpark"||info.kind==="green");
+      el.style.opacity=match?"1":"0.18";
+    } else if(info.kind==="plot"){
+      el.style.opacity=matchFn(info.p)?"1":"0.18";
+    } else {
+      el.style.opacity="0.25";
+    }
+  });
+}
+chips.forEach(c=>c.addEventListener("click",()=>setFilter(c.dataset.filter)));
+clearFilterBtn.onclick=()=>setFilter(null);
+
+/* ---------- Autocomplete & Search ---------- */
+const qInp=document.getElementById("q"), qClear=document.getElementById("qClear"), acDrop=document.getElementById("acDrop");
+
+function updateAc(){
+  const val=qInp.value.trim().toUpperCase();
+  qClear.classList.toggle("show",val.length>0);
+  if(!val){ acDrop.classList.remove("open"); return; }
+
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const matches=curPlots.filter(p=>{
+    const num=p.n.toUpperCase();
+    return num.startsWith(val)||num.includes(val)||(p.n+p.face).toUpperCase().includes(val)||p.face===val||(val==="COM"&&p.com)||(val==="PREM"&&p.prem);
+  }).slice(0,8);
+
+  if(!matches.length){ acDrop.classList.remove("open"); return; }
+  const colSet = currentTheme==="light"?C2_LIGHT:C2_DARK;
+  acDrop.innerHTML=matches.map(p=>`
+    <div class="ac-item" data-plot="${p.n}">
+      <div><b>${p.com?"Commercial "+p.n:"Plot "+p.n+(p.n.endsWith(p.face)?"":p.face)}</b> <span>· ${Math.round(p.gaj)} Gaj</span></div>
+      <span class="ac-tag" style="background:${colSet[p.com?"C":p.prem?"P":p.face][0]};color:${colSet[p.com?"C":p.prem?"P":p.face][1]}">${FACE[p.face]}</span>
+    </div>
+  `).join("");
+  acDrop.classList.add("open");
+}
+qInp.addEventListener("input",updateAc);
+qClear.addEventListener("click",()=>{qInp.value="";updateAc();qInp.focus();});
+acDrop.addEventListener("click",e=>{
+  const item=e.target.closest(".ac-item"); if(!item) return;
+  const n=item.dataset.plot;
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const p=curPlots.find(x=>x.n===n);
+  if(p){ select({kind:"plot",p}); flyTo(p.cw,140); acDrop.classList.remove("open"); qInp.value=n; }
+});
+document.addEventListener("click",e=>{if(!e.target.closest(".find-wrap"))acDrop.classList.remove("open");});
+
+document.getElementById("find").addEventListener("submit",e=>{
+  e.preventDefault();
+  const raw=qInp.value.trim().toUpperCase().replace(/^PLOT\s*/,"");
+  const noFace=raw.replace(/[EWNS]$/,"");
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const p=curPlots.find(x=>{
+    const xn=x.n.toUpperCase(), xNoFace=xn.replace(/[EWNS]$/,"");
+    return xn===raw || xn===noFace || xNoFace===raw || xNoFace===noFace || (xn+x.face).toUpperCase()===raw;
+  });
+  if(!p){ qInp.value=""; qInp.placeholder="No such plot"; setTimeout(()=>qInp.placeholder="Search plot (e.g. 25, C1)...",1800); return;}
+  qInp.blur(); acDrop.classList.remove("open"); select({kind:"plot",p}); flyTo(p.cw,140);
+});
+
+/* ---------- Mobile Card Drag Handle Dismiss ---------- */
+const cardEl=document.getElementById("card"), cardHandle=document.getElementById("cardHandle");
+let cardStartY=0, cardDragY=0, isCardDragging=false;
+if(cardHandle){
+  cardHandle.addEventListener("touchstart",e=>{isCardDragging=true;cardStartY=e.touches[0].clientY;cardDragY=0;},{passive:true});
+  window.addEventListener("touchmove",e=>{
+    if(!isCardDragging) return;
+    cardDragY=Math.max(0,e.touches[0].clientY-cardStartY);
+    cardEl.style.transform=`translateY(${cardDragY}px)`;
+  },{passive:true});
+  window.addEventListener("touchend",()=>{
+    if(!isCardDragging) return; isCardDragging=false;
+    if(cardDragY>75){ closeCard(); } else { cardEl.style.transform=""; }
+  });
+}
+
+/* ---------- Camera & Controls ---------- */
+let mode="3d", tw=null;
+
+function setView(m,animate=true){
+  mode=m; const asp=window.innerWidth/window.innerHeight, portrait=asp<0.9;
+  const fovV=camera.fov*Math.PI/180, fovH=2*Math.atan(Math.tan(fovV/2)*asp);
+  const spanW=portrait?(y1-y0)*1.15:(x1-x0)*1.12, spanL=portrait?(x1-x0)*1.18:(y1-y0)*1.55;
+  let dist=Math.max((spanW/2)/Math.tan(fovH/2),(spanL/2)/Math.tan(fovV/2));
+  const T=new THREE.Vector3(portrait?60:0,0,portrait?0:30), P=new THREE.Vector3();
+  if(m==="top"){ if(portrait) P.set(T.x+0.01,dist,T.z); else P.set(T.x,dist,T.z+0.01); }
+  else { const el=0.92; if(portrait) P.set(T.x+dist*Math.cos(el),dist*Math.sin(el),T.z); else P.set(T.x,dist*Math.sin(el),T.z+dist*Math.cos(el)); }
+  applyControlsMode();
+  tween(P,T,animate?650:0);
+  document.getElementById("v3d").setAttribute("aria-pressed",m==="3d"); document.getElementById("vTop").setAttribute("aria-pressed",m==="top");
+}
+
+let dragMode3d = "orbit"; // "orbit" or "pan"
+function applyControlsMode(){
+  if(mode==="top"){
+    controls.enableRotate=false;
+    controls.touches={ONE:THREE.TOUCH.PAN,TWO:THREE.TOUCH.DOLLY_PAN};
+    controls.mouseButtons={LEFT:THREE.MOUSE.PAN,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.ROTATE};
+  } else if(dragMode3d==="pan"){
+    controls.enableRotate=true;
+    controls.touches={ONE:THREE.TOUCH.PAN,TWO:THREE.TOUCH.DOLLY_ROTATE};
+    controls.mouseButtons={LEFT:THREE.MOUSE.PAN,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.ROTATE};
+  } else {
+    controls.enableRotate=true;
+    controls.touches={ONE:THREE.TOUCH.ROTATE,TWO:THREE.TOUCH.DOLLY_PAN};
+    controls.mouseButtons={LEFT:THREE.MOUSE.ROTATE,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.PAN};
+  }
+}
+
+function setDragMode3d(m){
+  dragMode3d=m;
+  const btnO=document.getElementById("modeOrbit");
+  const btnP=document.getElementById("modePan");
+  if(btnO) btnO.setAttribute("aria-pressed",m==="orbit");
+  if(btnP) btnP.setAttribute("aria-pressed",m==="pan");
+  applyControlsMode();
+}
+const btnModeOrbit=document.getElementById("modeOrbit"); if(btnModeOrbit) btnModeOrbit.onclick=()=>setDragMode3d("orbit");
+const btnModePan=document.getElementById("modePan"); if(btnModePan) btnModePan.onclick=()=>setDragMode3d("pan");
+
+function tween(P,T,ms){
+  if(!ms){camera.position.copy(P);controls.target.copy(T);controls.update();tw=null;return;}
+  tw={p0:camera.position.clone(),t0:controls.target.clone(),p1:P.clone(),t1:T.clone(),s:performance.now(),ms};
+}
+function stepTween(){ if(!tw)return; let k=(performance.now()-tw.s)/tw.ms; if(k>=1){k=1;} const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  camera.position.lerpVectors(tw.p0,tw.p1,e); controls.target.lerpVectors(tw.t0,tw.t1,e); if(k===1)tw=null;}
+
+function flyTo(cw,dist){ if(view==="2d"||view==="new2d"){fly2d(cw);return;} const T=new THREE.Vector3(cw[0],0,cw[1]); const dir=camera.position.clone().sub(controls.target).normalize(); tween(T.clone().add(dir.multiplyScalar(dist)),T,650); }
+const plane=new THREE.Plane(new THREE.Vector3(0,1,0),0), ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+function groundAt(cx,cy){ const r=canvas.getBoundingClientRect(); ndc.set((cx-r.left)/r.width*2-1,-((cy-r.top)/r.height)*2+1); ray.setFromCamera(ndc,camera);
+  const p=new THREE.Vector3(); return ray.ray.intersectPlane(plane,p)?p:null; }
+
+let down3d=null, lastTap3d=0;
+canvas.addEventListener("pointerdown",e=>{
+  down3d=[e.clientX,e.clientY,performance.now()];
+});
+canvas.addEventListener("pointerup",e=>{
+  if(!down3d) return;
+  const moved=Math.hypot(e.clientX-down3d[0],e.clientY-down3d[1]);
+  const dt=performance.now()-down3d[2];
+  down3d=null;
+  if(moved>8||dt>400) return; // user dragged/panned/orbited, do not select
+
+  const now=performance.now();
+  if(now-lastTap3d<300){
+    camera.position.sub(controls.target).multiplyScalar(0.7).add(controls.target);
+    controls.update();
+    lastTap3d=0;
+    return;
+  }
+  lastTap3d=now;
+
+  const r=canvas.getBoundingClientRect();
+  ndc.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const hits=ray.intersectObjects(PICK.filter(o=>o.visible&&(!o.parent||o.parent.visible)),false);
+  const h=hits.find(x=>x.object.userData.pick);
+  if(h) select(h.object.userData.pick);
+  else closeCard();
+});
+canvas.addEventListener("dblclick",e=>e.preventDefault());
+
+document.getElementById("zIn").onclick=()=>{
+  if(view==="2d"||view==="new2d") zoom2(innerWidth/2,innerHeight/2,1.6,true);
+  else { camera.position.sub(controls.target).multiplyScalar(0.7).add(controls.target); controls.update(); }
+};
+document.getElementById("zOut").onclick=()=>{
+  if(view==="2d"||view==="new2d") zoom2(innerWidth/2,innerHeight/2,1/1.6,true);
+  else { camera.position.sub(controls.target).multiplyScalar(1/0.7).add(controls.target); controls.update(); }
+};
+document.getElementById("zFit").onclick=()=>(view==="2d"||view==="new2d")?fit2d(true):setView(mode);
+document.getElementById("v3d").onclick=()=>setView("3d");
+document.getElementById("vTop").onclick=()=>setView("top");
+const press=(id,on)=>document.getElementById(id).setAttribute("aria-pressed",on);
+document.getElementById("tHouse").onclick=e=>{const on=e.currentTarget.getAttribute("aria-pressed")!=="true";press("tHouse",on);houseGroup.visible=on;plotLabels.forEach(L=>L.position.y=on?25:1.7);};
+document.getElementById("tSun").onclick=()=>applySun(curSunIdx+1);
+document.getElementById("tLab").onclick=e=>{const on=e.currentTarget.getAttribute("aria-pressed")!=="true";press("tLab",on);LABELS.forEach(L=>L.visible=on);labs2.style.display=on?"":"none";};
+document.getElementById("tSpin").onclick=e=>{const on=e.currentTarget.getAttribute("aria-pressed")!=="true";press("tSpin",on);controls.autoRotate=on;controls.autoRotateSpeed=0.6;};
+
+function resize(){const w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+let lastPortrait=null;
+window.addEventListener("resize",()=>{resize();const p=innerWidth/innerHeight<0.9;if(p!==lastPortrait){lastPortrait=p;setView(mode,false);fit2d(false);}else if(view==="2d"||view==="new2d")apply2();});
+resize(); lastPortrait=innerWidth/innerHeight<0.9; setView("3d",false);
+
+/* ================= 2D SVG Engine ================= */
+const svg2=document.getElementById("map2d"), NS2="http://www.w3.org/2000/svg";
+const el2=(t,a,par)=>{const e=document.createElementNS(NS2,t);for(const k in a)e.setAttribute(k,a[k]);(par||svg2).appendChild(e);return e;};
+function dpath(pts,closed=true){return "M"+pts.map(p=>{const w=W(p);return w[0].toFixed(2)+" "+w[1].toFixed(2);}).join("L")+(closed?"Z":"");}
+const P2=[]; const pk2=(e,info)=>{e._info=info; e.setAttribute("data-k",P2.length);e.classList.add("hit");P2.push(info);return e;};
+const world2=el2("g",{id:"world2"}), base2=el2("g",{id:"base2"},world2), labs2=el2("g",{id:"labs2"},world2), top2=el2("g",{id:"top2"},world2), dimsOverlay=el2("g",{id:"plotDims2"},world2);
+const NSS="non-scaling-stroke";
+
+// Common base elements (boundary fill, public east road, agricultural chakroad)
+const sitePath2 = pk2(el2("path",{d:dpath(POLY),fill:currentTheme==="light"?"#FFFFFF":"#111C33"},base2),{kind:"site"});
+const eastRoad2 = pk2(el2("path",{d:dpath(B.eastRoad),fill:currentTheme==="light"?"#94A3B8":"#283040"},base2),{kind:"eastroad",pts:B.eastRoad});
+const chakPaths2 = B.chakroad.map(p=>pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#CBD5E1":"#352F22"},base2),{kind:"chakroad",pts:p}));
+
+// Layer groups for Old vs New 2D Layouts
+const gOldBase = el2("g",{id:"gOldBase"},base2);
+const gOldLabs = el2("g",{id:"gOldLabs"},labs2);
+const gNewBase = el2("g",{id:"gNewBase"},base2);
+const gNewLabs = el2("g",{id:"gNewLabs"},labs2);
+
+const treeDots=polys=>{let d="";polys.forEach(p=>{let a=1e9,b=-1e9,c=1e9,e=-1e9;p.forEach(q=>{a=Math.min(a,q[0]);b=Math.max(b,q[0]);c=Math.min(c,q[1]);e=Math.max(e,q[1]);});
+  let k=0;for(let x=a+9;x<b;x+=17)for(let y=c+9;y<e;y+=17){k++;const j=[x+((k*37)%9)-4.5,y+((k*53)%9)-4.5];if(inside(j,p)&&((k*7)%5!==0)){const w=W(j);d+=`M${(w[0]-3.2).toFixed(1)} ${w[1].toFixed(1)}a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0`;}}});return d;};
+
+const L2=[];
+function txt2(str,w,size,color,ang,par,extra){const t=el2("text",Object.assign({x:w[0].toFixed(2),y:w[1].toFixed(2),"font-size":size.toFixed(2),fill:color},extra||{}),par||labs2);t.textContent=str;L2.push([t,w[0],w[1],ang]);return t;}
+const deg=a=>-a*180/Math.PI;
+
+/* ----- BUILD OLD 2D ELEMENTS ----- */
+const roadPaths2 = [];
+LAY.roads.forEach(r=>r.polys.forEach(p=>roadPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#334155":"#262D3C"},gOldBase),{kind:"road",r}))));
+const mainLine2 = el2("path",{d:dpath(LAY.mainLine,false),fill:"none",stroke:"#F2C14E","stroke-width":1.4,"stroke-dasharray":"9 7","vector-effect":NSS,"pointer-events":"none"},gOldBase);
+const subLines2 = LAY.subLines.map(l=>el2("path",{d:dpath(l,false),fill:"none",stroke:"#C9D3E8","stroke-opacity":.55,"stroke-width":1,"stroke-dasharray":"6 7","vector-effect":NSS,"pointer-events":"none"},gOldBase));
+
+const parkPaths2 = [];
+LAY.park.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gOldBase),parkInfo)));
+LAY.fpark.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gOldBase),fparkInfo)));
+const treeDotsPath2 = el2("path",{d:treeDots(LAY.park)+treeDots(LAY.fpark),fill:currentTheme==="light"?"#15803D":"#2F8F57","pointer-events":"none"},gOldBase);
+const greenPaths2 = [];
+LAY.green.forEach(p=>greenPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#D1FAE5":"#214E34"},gOldBase),{kind:"green",pts:p})));
+
+const oldPlotSvgItems=[];
+const oldPlotTxt=[], oldGajTxt=[];
+PLOTS.forEach((p,i)=>{
+  const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
+  const c=c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
+  const path = pk2(el2("path",{d:dpath(p.pts),fill:c[0],stroke:c[1],"stroke-width":1,"vector-effect":NSS},gOldBase),{kind:"plot",p});
+  const fs=Math.max(4.5,Math.min(p.front,p.depth)*0.27);
+  const tN = txt2(p.com?p.n:`${p.n}${p.face}`,[p.cw[0],p.cw[1]-fs*0.45],fs,c[2],null,gOldLabs);
+  const tG = txt2(`${Math.round(p.gaj)} GAJ`,[p.cw[0],p.cw[1]+fs*0.55],fs*0.62,currentTheme==="light"?"#334155":"#D5DEEF",null,gOldLabs);
+  oldPlotTxt.push(tN); oldGajTxt.push(tG);
+  oldPlotSvgItems.push({path,p,txtN:tN,txtG:tG});
+});
+
+{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)]; txt2("12 M MAIN ROAD (40 FT)",W(m),8.5,"#F2C14E",deg(dirAngle(a,b)),gOldLabs); }
+{ const m=[840.1,136.3]; txt2("9 M ROAD (30 FT)",W(m),7,"#9FB0D0",0,gOldLabs); }
+{ const m=[821.5,394.1]; txt2("7.5 M LOOP ROAD (25 FT)",W(m),7,"#F2C14E",0,gOldLabs); }
+LAY.subLines.forEach(l=>{
+  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
+  txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])),gOldLabs);
+});
+LAY.park.forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W(cen(p)),11,"#BDF5D3",null,gOldLabs);});
+LAY.fpark.forEach(p=>{if(areaOf(p)>1500)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])),gOldLabs);});
+
+/* ----- BUILD NEW 2D ELEMENTS ----- */
+let currentDesignKey = "1";
+const DESIGN_NAMES = {
+  "1": "Current",
+  "2": "Optimized Grid",
+  "3": "Pocket Parks",
+  "4": "Ring Road",
+  "5": "Long Blocks"
+};
+
+let newRoadPaths = [];
+let newParkPaths = [];
+let newGreenPaths = [];
+let newTreeDotsPath = null;
+let newPlotSvgItems = [];
+let newPlotTxt = [], newGajTxt = [];
+let newMainLine = null, newSubLines = [];
+
+function renderNewLayout(key){
+  currentDesignKey = key || "1";
+  const d = (window.ALL_LAYOUTS && window.ALL_LAYOUTS[currentDesignKey]) ? window.ALL_LAYOUTS[currentDesignKey] : window.LAY_NEW;
+  window.LAY_NEW = d;
+  const lay = d;
+  lay.plots.forEach(p => { p.cw = W(cen(p.pts)); });
+
+  // Clear previous SVG elements in gNewBase and gNewLabs
+  gNewBase.innerHTML = "";
+  gNewLabs.innerHTML = "";
+  for(let i=L2.length-1; i>=0; i--){
+    if(!L2[i][0].isConnected) L2.splice(i, 1);
+  }
+
+  newRoadPaths = [];
+  newParkPaths = [];
+  newGreenPaths = [];
+  newPlotSvgItems = [];
+  newPlotTxt = [];
+  newGajTxt = [];
+
+  const newParkInfo = {kind:"park", polys:lay.park||[], trees:82};
+  const newFparkInfo = {kind:"fpark", polys:lay.fpark||[], trees:24};
+
+  // Roads
+  (lay.roads||[]).forEach(r=>r.polys.forEach(p=>newRoadPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#334155":"#262D3C"},gNewBase),{kind:"road",r}))));
+  if(lay.mainLine) newMainLine = el2("path",{d:dpath(lay.mainLine,false),fill:"none",stroke:"#F2C14E","stroke-width":1.4,"stroke-dasharray":"9 7","vector-effect":NSS,"pointer-events":"none"},gNewBase);
+  if(lay.subLines) newSubLines = lay.subLines.map(l=>el2("path",{d:dpath(l,false),fill:"none",stroke:"#C9D3E8","stroke-opacity":.55,"stroke-width":1,"stroke-dasharray":"6 7","vector-effect":NSS,"pointer-events":"none"},gNewBase));
+
+  // Parks & Greens
+  (lay.park||[]).forEach(p=>newParkPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gNewBase),newParkInfo)));
+  (lay.fpark||[]).forEach(p=>newParkPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gNewBase),newFparkInfo)));
+  newTreeDotsPath = el2("path",{d:treeDots(lay.park||[])+treeDots(lay.fpark||[]),fill:currentTheme==="light"?"#15803D":"#2F8F57","pointer-events":"none"},gNewBase);
+  (lay.green||[]).forEach(p=>newGreenPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#D1FAE5":"#214E34"},gNewBase),{kind:"green",pts:p})));
+
+  // Plots
+  const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
+  lay.plots.forEach((p,i)=>{
+    const c=c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
+    const path = pk2(el2("path",{d:dpath(p.pts),fill:c[0],stroke:c[1],"stroke-width":1,"vector-effect":NSS},gNewBase),{kind:"plot",p});
+    const fs=Math.max(4.5,Math.min(p.front,p.depth)*0.27);
+    const displayName = p.com?p.n:(p.n.endsWith(p.face)?p.n:`${p.n}${p.face}`);
+    const tN = txt2(displayName,[p.cw[0],p.cw[1]-fs*0.45],fs,c[2],null,gNewLabs);
+    const tG = txt2(`${Math.round(p.gaj)} GAJ`,[p.cw[0],p.cw[1]+fs*0.55],fs*0.62,currentTheme==="light"?"#334155":"#D5DEEF",null,gNewLabs);
+    newPlotTxt.push(tN); newGajTxt.push(tG);
+    newPlotSvgItems.push({path,p,txtN:tN,txtG:tG});
+  });
+
+  // Road and Park Labels
+  const roadTxtStyle = {"paint-order":"stroke fill", stroke:currentTheme==="light"?"#FFFFFF":"#262D3C", "stroke-width":"3.5"};
+  txt2("12 M MAIN ROAD (40 FT)",W([380.0,141.19]),8.5,"#F2C14E",0,gNewLabs,roadTxtStyle);
+  txt2("9 M ROAD (30 FT)",W([833.0,136.26]),7,"#9FB0D0",0,gNewLabs,roadTxtStyle);
+  if(lay.roads.some(r=>r.name.includes("Loop"))) txt2("7.5 M LOOP ROAD (25 FT)",W([818.2,394.1]),7,"#F2C14E",0,gNewLabs,roadTxtStyle);
+  (lay.subLines||[]).forEach(l=>{
+    const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
+    txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])),gNewLabs,roadTxtStyle);
+  });
+  (lay.park||[]).forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W([605.0,287.5]),12,"#BDF5D3",0,gNewLabs);});
+  (lay.fpark||[]).forEach((p,idx)=>{if(areaOf(p)>1000)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])),gNewLabs);});
+  txt2("CHAKROAD GREEN BELT",W([318.0,282.5]),7.5,"#BDF5D3",-6.0,gNewLabs);
+
+  // Update BrandMeta, Summary Bar, Chips
+  const brand=document.getElementById("brandMeta");
+  const st = lay.stats;
+  const nPlots = st ? st.plots : lay.plots.length;
+  const pPlot = st ? st.plot.toFixed(1) : (lay.plots.reduce((a,b)=>a+b.sqft,0)/SITE*100).toFixed(1);
+  const pRoad = st ? st.road.toFixed(1) : (lay.roads.reduce((a,b)=>a+b.sqft,0)/SITE*100).toFixed(1);
+  const pGreen = st ? (st.park + st.fpark + st.green).toFixed(1) : (100.0 - parseFloat(pPlot) - parseFloat(pRoad)).toFixed(1);
+
+  if(brand) brand.textContent=`MDA Master Plan · ${nPlots} Plots (${DESIGN_NAMES[currentDesignKey]||"New Grid"})`;
+  const sumEl = document.getElementById("sum");
+  if(sumEl) sumEl.innerHTML=`<div class="sum-left"><b>${nPlots} PLOTS</b> · ${pPlot}% PLOTTED · ROADS ${pRoad}% · PARKS ${pGreen}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+
+  const dSel = document.getElementById("designSelect");
+  if(dSel && dSel.value !== currentDesignKey) dSel.value = currentDesignKey;
+
+  updateChipCounts("new2d");
+  if(activeFilter) setFilter(activeFilter);
+  if(typeof apply2 === "function") apply2();
+}
+
+/* ----- COMMON TOP OVERLAYS ----- */
+const boundaryPath2 = el2("path",{d:dpath(POLY),fill:"none",stroke:currentTheme==="light"?"#0F172A":"#F4F7FF","stroke-width":2.6,"vector-effect":NSS,"stroke-linejoin":"round","pointer-events":"none"},top2);
+SIDES.forEach(sd=>pk2(el2("path",{d:dpath(sidePts(sd),false),fill:"none",stroke:"transparent","stroke-width":18,"vector-effect":NSS,"pointer-events":"stroke"},top2),{kind:"side",sd}));
+pk2(el2("path",{d:dpath(POLY.slice(8,J+1),false),fill:"none",stroke:"transparent","stroke-width":18,"vector-effect":NSS,"pointer-events":"stroke"},top2),{kind:"chakside"});
+
+if(gateInfo.w) gateInfo.w.forEach(w=>pk2(el2("rect",{x:w[0]-3,y:w[1]-3,width:6,height:6,fill:"#F2C14E"},top2),gateInfo));
+const dimLines2 = DIM2.filter(d=>d.line).map(d=>pk2(el2("path",{d:dpath(d.line,false),fill:"none",stroke:"#F2C14E","stroke-width":1.2,"vector-effect":NSS},top2),{kind:"side",sd:d.sd}));
+
+const dimTexts2 = [];
+DIM2.filter(d=>d.text).forEach(d=>{const w=W(d.at);const t=txt2(d.text,w,Math.max(9,d.size*0.2),"#F2C14E",deg(d.ang),labs2);t.style.pointerEvents="auto";pk2(t,{kind:"side",sd:d.sd});dimTexts2.push(t);});
+
+{ const r=B.eastRoad,m=[(r[0][0]+r[1][0]+r[2][0]+r[3][0])/4,(r[0][1]+r[1][1]+r[2][1]+r[3][1])/4]; txt2(`22'-6" ROAD · ENTRY / EXIT`,W(m),7,"#F2C14E",deg(dirAngle(r[0],r[1]))); }
+{ const m=POLY[Math.floor((8+J)/2)+14],w=W(m); txt2("CHAKROAD · NO ACCESS",[w[0]+NW[0]*14,w[1]+NW[1]*14],7,"#B9A77C",deg(dirAngle(POLY[40],POLY[50]))); }
+if(gateInfo.mid) txt2("MAIN GATE",[gateInfo.mid[0]+EW[0]*14,gateInfo.mid[1]+EW[1]*14],7,"#F2C14E",null);
+
+const cardinalLabels2 = [];
+[["NORTH",NW,"#FF6B6B"],["EAST",EW,"#6F7FA3"],["SOUTH",[-NW[0],-NW[1]],"#6F7FA3"],["WEST",[-EW[0],-EW[1]],"#6F7FA3"]].forEach(([t,v,c])=>{
+  const k=1/Math.max(Math.abs(v[0])/(HW+70),Math.abs(v[1])/(HZ+70)); const el = txt2(t,[v[0]*k,v[1]*k],14,c,null); cardinalLabels2.push(el);});
+
+{ const cx=HW*0.62, cz=HZ+72, R=40, g=el2("g",{"pointer-events":"none"},top2);
+  el2("circle",{cx,cy:cz,r:R,fill:"none",stroke:"#8C9BB8","stroke-width":1.2,"vector-effect":NSS},g);
+  const tri=(d,col)=>{const e=[d[1],-d[0]];el2("path",{d:`M${cx+d[0]*(R-4)} ${cz+d[1]*(R-4)}L${cx+e[0]*7} ${cz+e[1]*7}L${cx-e[0]*7} ${cz-e[1]*7}Z`,fill:col},g);};
+  tri(NW,"#FF5A5A"); tri([-NW[0],-NW[1]],"#8C9BB8");
+  [["N",NW,"#FF6B6B"],["E",EW,"#C9D3E8"],["S",[-NW[0],-NW[1]],"#C9D3E8"],["W",[-EW[0],-EW[1]],"#C9D3E8"]].forEach(([t,v,c])=>txt2(t,[cx+v[0]*(R+14),cz+v[1]*(R+14)],12,c,null,g)); }
+hl2=el2("path",{d:"",fill:"#59D7FF","fill-opacity":.15,stroke:"#59D7FF","stroke-width":3,"vector-effect":NSS,"stroke-linejoin":"round","pointer-events":"none"},world2);
+
+/* ---------- Theme Switcher Function ---------- */
+function applyTheme(t){
+  currentTheme=t;
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("nandi_theme", t);
+
+  // 3D Scene adjustments
+  const isLight = (t==="light");
+  scene.background.setHex(isLight?0xEDF2F7:0x070C18);
+  scene.fog.color.setHex(isLight?0xEDF2F7:0x070C18);
+  ground.material.color.setHex(isLight?0xDCE4EC:0x091022);
+  hemiLight.color.setHex(isLight?0xFFFFFF:0xC4D8FF);
+  hemiLight.groundColor.setHex(isLight?0x94A3B8:0x091122);
+  wallMat.color.setHex(isLight?0x1E293B:0xF0F4FF);
+  wallMat.emissive.setHex(isLight?0x0F172A:0x334466);
+
+  if(grid){
+    scene.remove(grid);
+    if(grid.geometry) grid.geometry.dispose();
+    if(grid.material) grid.material.dispose();
+    grid=new THREE.GridHelper(3000,60,isLight?0xB5C4D6:0x18284A,isLight?0xCBD5E1:0x101B34);
+    grid.position.y=-0.1;
+    scene.add(grid);
+  }
+
+  if(site3dMesh && site3dMesh.material) site3dMesh.material.color.setHex(isLight?0xDDE5ED:0x111C33);
+  if(eastRoad3dMesh && eastRoad3dMesh.material) eastRoad3dMesh.material.color.setHex(isLight?0x94A3B8:0x283040);
+  chakRoad3dMeshes.forEach(m=>{ if(m.material) m.material.color.setHex(isLight?0xCBD5E1:0x352F22); });
+  road3dMeshes.forEach(item=>{ if(item.mesh.material) item.mesh.material.color.setHex(isLight?ROADCOL_LIGHT[item.kind]:ROADCOL_DARK[item.kind]); });
+
+  // 3D plot materials
+  const colSet3d = isLight?COL_3D_LIGHT:COL_3D_DARK;
+  plot3dMeshes.forEach(item=>{
+    const c=colSet3d[item.p.com?"C":item.p.prem?"P":item.p.face]||colSet3d.E;
+    item.mesh.material.color.setHex(c.fill);
+    item.mesh.material.emissive.setHex(c.emissive);
+    item.edge.material.color.setHex(c.edge);
+  });
+
+  // 2D SVG common elements
+  sitePath2.setAttribute("fill", isLight?"#FFFFFF":"#111C33");
+  eastRoad2.setAttribute("fill", isLight?"#94A3B8":"#283040");
+  chakPaths2.forEach(p=>p.setAttribute("fill", isLight?"#CBD5E1":"#352F22"));
+  boundaryPath2.setAttribute("stroke", isLight?"#0F172A":"#F4F7FF");
+
+  // Old 2D elements
+  roadPaths2.forEach(p=>p.setAttribute("fill", isLight?"#334155":"#262D3C"));
+  parkPaths2.forEach(p=>{
+    p.setAttribute("fill", isLight?"#DCFCE7":"#184B2E");
+    p.setAttribute("stroke", isLight?"#16A34A":"#4AC782");
+  });
+  treeDotsPath2.setAttribute("fill", isLight?"#15803D":"#2F8F57");
+  greenPaths2.forEach(p=>p.setAttribute("fill", isLight?"#D1FAE5":"#214E34"));
+  const colSet2d = isLight?C2_LIGHT:C2_DARK;
+  oldPlotSvgItems.forEach(item=>{
+    const c=colSet2d[item.p.com?"C":item.p.prem?"P":item.p.face]||colSet2d.E;
+    item.path.setAttribute("fill", c[0]);
+    item.path.setAttribute("stroke", c[1]);
+    if(item.txtN) item.txtN.setAttribute("fill", c[2]);
+    if(item.txtG) item.txtG.setAttribute("fill", isLight?"#334155":"#D5DEEF");
+  });
+
+  // New 2D elements
+  newRoadPaths.forEach(p=>p.setAttribute("fill", isLight?"#334155":"#262D3C"));
+  newParkPaths.forEach(p=>{
+    p.setAttribute("fill", isLight?"#DCFCE7":"#184B2E");
+    p.setAttribute("stroke", isLight?"#16A34A":"#4AC782");
+  });
+  if(newTreeDotsPath) newTreeDotsPath.setAttribute("fill", isLight?"#15803D":"#2F8F57");
+  newGreenPaths.forEach(p=>p.setAttribute("fill", isLight?"#D1FAE5":"#214E34"));
+  newPlotSvgItems.forEach(item=>{
+    const c=colSet2d[item.p.com?"C":item.p.prem?"P":item.p.face]||colSet2d.E;
+    item.path.setAttribute("fill", c[0]);
+    item.path.setAttribute("stroke", c[1]);
+    if(item.txtN) item.txtN.setAttribute("fill", c[2]);
+    if(item.txtG) item.txtG.setAttribute("fill", isLight?"#334155":"#D5DEEF");
+  });
+
+  if(currentSelectedInfo && currentSelectedInfo.kind==="plot"){
+    drawPlotDims2(currentSelectedInfo.p.pts);
+  }
+}
+document.getElementById("themeToggle").onclick=()=>applyTheme(currentTheme==="light"?"dark":"light");
+
+let s2=1,tx2=0,ty2=0,th2=0,north2=false;
+const avgFs=PLOTS.reduce((q,p)=>q+Math.max(4.5,Math.min(p.front,p.depth)*0.27),0)/PLOTS.length;
+let lastTh=null;
+
+function updateScaleBar(){
+  const scaleLine=document.getElementById("scaleLine"), scaleLabel=document.getElementById("scaleLabel");
+  if(!scaleLine||!scaleLabel) return;
+  const targetPx=90, ftRaw=targetPx/s2;
+  const steps=[10,25,50,100,200,500];
+  let chosenFt=steps[0];
+  for(let i=0;i<steps.length;i++){ if(steps[i]>=ftRaw*0.75){chosenFt=steps[i];break;} }
+  const px=chosenFt*s2;
+  scaleLine.style.width=`${px.toFixed(1)}px`;
+  scaleLabel.textContent=`${chosenFt} ft (${Math.round(chosenFt*0.3048)} m)`;
+}
+
+function apply2(){
+  const c=Math.cos(th2)*s2,sn=Math.sin(th2)*s2;
+  world2.setAttribute("transform",`matrix(${c} ${sn} ${-sn} ${c} ${tx2} ${ty2})`);
+  const showN=s2*avgFs>=6.5, showG=s2*avgFs*0.62>=6.5;
+  const curPlotTxt = (view==="new2d") ? newPlotTxt : oldPlotTxt;
+  const curGajTxt = (view==="new2d") ? newGajTxt : oldGajTxt;
+  curPlotTxt.forEach(t=>t.style.display=showN?"":"none");
+  curGajTxt.forEach(t=>t.style.display=showG?"":"none");
+  if(lastTh!==th2){lastTh=th2; const td=th2*180/Math.PI;
+    L2.forEach(([t,x,y,a])=>{let r=a===null?-td:a; if(a!==null){let sa=((a+td)%360+540)%360-180; if(sa>90||sa<-90) r=a+180;} t.setAttribute("transform",`rotate(${r.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)})`);});}
+  updateScaleBar();
+}
+
+const portrait2=()=>innerWidth/innerHeight<0.9;
+function baseTh(){ if(north2){const a=Math.atan2(NW[1],NW[0]);return -Math.PI/2-a;} return portrait2()?Math.PI/2:0; }
+
+function fit2d(anim){
+  th2=baseTh(); const pts=POLY.concat(B.eastRoad).map(W); let a=1e9,b=-1e9,c=1e9,d=-1e9;
+  pts.forEach(([x,z])=>{const X=x*Math.cos(th2)-z*Math.sin(th2),Y=x*Math.sin(th2)+z*Math.cos(th2);a=Math.min(a,X);b=Math.max(b,X);c=Math.min(c,Y);d=Math.max(d,Y);});
+  const Wv=innerWidth,Hv=innerHeight,padT=80,padB=160,padX=Math.min(70,Wv*0.06), m=60;
+  const ns=Math.min((Wv-2*padX)/(b-a+2*m),(Hv-padT-padB)/(d-c+2*m));
+  const ntx=Wv/2-(a+b)/2*ns, nty=padT+(Hv-padT-padB)/2-(c+d)/2*ns;
+  animate2(ns,ntx,nty,anim?350:0);
+}
+
+let an2=null;
+function animate2(ns,ntx,nty,ms){ if(!ms){s2=ns;tx2=ntx;ty2=nty;an2=null;apply2();return;}
+  const st={s:s2,x:tx2,y:ty2,t:performance.now()}; an2=st;
+  const step=()=>{if(an2!==st)return;let k=(performance.now()-st.t)/ms;if(k>1)k=1;const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    s2=st.s+(ns-st.s)*e; tx2=st.x+(ntx-st.x)*e; ty2=st.y+(nty-st.y)*e; apply2(); if(k<1)requestAnimationFrame(step); else an2=null;}; step(); }
+
+function rotate2(cx, cy, dTh){
+  if(Math.abs(dTh) < 1e-6) return;
+  const oldTh = th2;
+  const newTh = oldTh + dTh;
+  const c = Math.cos(oldTh)*s2, sn = Math.sin(oldTh)*s2;
+  const invS2 = 1 / (s2 * s2);
+  const dx = cx - tx2, dy = cy - ty2;
+  const wx = invS2 * (c * dx + sn * dy);
+  const wy = invS2 * (-sn * dx + c * dy);
+  
+  th2 = newTh;
+  const cN = Math.cos(newTh)*s2, snN = Math.sin(newTh)*s2;
+  tx2 = cx - (cN * wx - snN * wy);
+  ty2 = cy - (snN * wx + cN * wy);
+  apply2();
+}
+
+let anRot2 = null;
+function animateRotate2(targetTh, ms = 260){
+  const cx = innerWidth / 2, cy = innerHeight / 2;
+  const startTh = th2;
+  let diff = (targetTh - startTh) % (Math.PI * 2);
+  if(diff > Math.PI) diff -= Math.PI * 2;
+  if(diff < -Math.PI) diff += Math.PI * 2;
+  const st = { sTh: startTh, diff, t: performance.now(), ms };
+  anRot2 = st;
+  const step = () => {
+    if(anRot2 !== st) return;
+    let k = (performance.now() - st.t) / st.ms;
+    if(k > 1) k = 1;
+    const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    const curTh = st.sTh + st.diff * e;
+    rotate2(cx, cy, curTh - th2);
+    if(k < 1) requestAnimationFrame(step);
+    else anRot2 = null;
+  };
+  step();
+}
+
+function zoom2(cx,cy,f,anim){ const ns=Math.min(40,Math.max(0.15,s2*f)); f=ns/s2;
+  const ntx=cx-(cx-tx2)*f, nty=cy-(cy-ty2)*f; if(anim) animate2(ns,ntx,nty,220); else {an2=null;s2=ns;tx2=ntx;ty2=nty;apply2();} }
+
+function fly2d(cw){ const ns=Math.max(s2,2.4), X=cw[0]*Math.cos(th2)-cw[1]*Math.sin(th2), Y=cw[0]*Math.sin(th2)+cw[1]*Math.cos(th2);
+  const sy=innerWidth<=720?innerHeight*0.3:innerHeight*0.5, sx=innerWidth<=720?innerWidth/2:(innerWidth-370)/2;
+  animate2(ns,sx-X*ns,sy-Y*ns,450); }
+
+const ptr2=new Map();
+let pd2=null, mid2=null, down2=null, multi2=false, lastTap2=0, lastXY2=[0,0];
+let pAng2=null;
+let isRotateDrag2=false;
+
+svg2.addEventListener("pointerdown",e=>{
+  try{svg2.setPointerCapture(e.pointerId);}catch(err){}
+  ptr2.set(e.pointerId,[e.clientX,e.clientY]);
+  an2=null;
+  anRot2=null;
+  if(ptr2.size===1){
+    down2=[e.clientX,e.clientY,performance.now()];
+    multi2=false;
+    isRotateDrag2=(e.button===2||e.shiftKey||e.altKey);
+    svg2.classList.add("drag");
+  } else if(ptr2.size===2){
+    multi2=true;
+    isRotateDrag2=false;
+    const [a,b]=[...ptr2.values()];
+    pd2=Math.hypot(a[0]-b[0],a[1]-b[1]);
+    mid2=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    pAng2=Math.atan2(b[1]-a[1],b[0]-a[0]);
+  }
+});
+
+svg2.addEventListener("pointermove",e=>{
+  if(!ptr2.has(e.pointerId))return;
+  const prev=ptr2.get(e.pointerId);
+  ptr2.set(e.pointerId,[e.clientX,e.clientY]);
+
+  if(ptr2.size===1&&!multi2){
+    if(isRotateDrag2){
+      const dTh=(e.clientX-prev[0])*0.007;
+      rotate2(innerWidth/2,innerHeight/2,dTh);
+    } else {
+      tx2+=e.clientX-prev[0];
+      ty2+=e.clientY-prev[1];
+      apply2();
+    }
+  } else if(ptr2.size===2){
+    const [a,b]=[...ptr2.values()];
+    const d=Math.hypot(a[0]-b[0],a[1]-b[1]);
+    const m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
+
+    if(mid2){
+      tx2+=m[0]-mid2[0];
+      ty2+=m[1]-mid2[1];
+    }
+    if(pd2&&pd2>0&&d>0){
+      zoom2(m[0],m[1],d/pd2,false);
+    }
+    if(pAng2!==null){
+      let dAng=ang-pAng2;
+      while(dAng>Math.PI) dAng-=2*Math.PI;
+      while(dAng<-Math.PI) dAng+=2*Math.PI;
+      if(Math.abs(dAng)>0.004){
+        rotate2(m[0],m[1],dAng);
+      }
+    }
+    pd2=d;
+    mid2=m;
+    pAng2=ang;
+  }
+});
+
+const end2=e=>{
+  ptr2.delete(e.pointerId);
+  try{svg2.releasePointerCapture(e.pointerId);}catch(err){}
+  if(ptr2.size<2){pd2=null;pAng2=null;}
+  if(ptr2.size===0){
+    svg2.classList.remove("drag");
+    isRotateDrag2=false;
+  }
+  if(e.type!=="pointerup"||!down2||multi2){
+    if(ptr2.size===0){multi2=false;down2=null;}
+    return;
+  }
+  const moved=Math.hypot(e.clientX-down2[0],e.clientY-down2[1]);
+  const dt=performance.now()-down2[2];
+  down2=null;
+  if(moved>8||dt>500)return;
+
+  const now=performance.now();
+  if(now-lastTap2<320&&Math.hypot(e.clientX-lastXY2[0],e.clientY-lastXY2[1])<30){
+    zoom2(e.clientX,e.clientY,1.8,true);
+    lastTap2=0;
+    return;
+  }
+  lastTap2=now;
+  lastXY2=[e.clientX,e.clientY];
+
+  const t=document.elementFromPoint(e.clientX,e.clientY);
+  const h=t&&t.closest?t.closest("[data-k]"):null;
+  if(h) select(h._info || P2[+h.getAttribute("data-k")]);
+  else closeCard();
+};
+
+svg2.addEventListener("pointerup",end2);
+svg2.addEventListener("pointercancel",end2);
+svg2.addEventListener("contextmenu",e=>e.preventDefault());
+svg2.addEventListener("wheel",e=>{e.preventDefault();zoom2(e.clientX,e.clientY,Math.exp(-e.deltaY*(e.ctrlKey?0.01:0.0018)),false);},{passive:false});
+svg2.addEventListener("dblclick",e=>e.preventDefault());
+
+const btnRot2=document.getElementById("tRotate2d");
+if(btnRot2) btnRot2.onclick=()=>animateRotate2(th2+Math.PI/2,280);
+
+const btnNorth2=document.getElementById("tNorth");
+if(btnNorth2) btnNorth2.onclick=e=>{
+  north2=!north2;
+  e.currentTarget.setAttribute("aria-pressed",north2);
+  animateRotate2(baseTh(),320);
+};
+
+function updateChipCounts(t){
+  const isNew = (t === "new2d");
+  const pList = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const cE = document.getElementById("cntE"); if(cE) cE.textContent = pList.filter(p=>p.face==="E"&&!p.com).length;
+  const cW = document.getElementById("cntW"); if(cW) cW.textContent = pList.filter(p=>p.face==="W"&&!p.com&&!p.prem).length;
+  const cN = document.getElementById("cntN"); if(cN) cN.textContent = pList.filter(p=>p.face==="N").length;
+  const cS = document.getElementById("cntS"); if(cS) cS.textContent = pList.filter(p=>p.face==="S").length;
+  const cP = document.getElementById("cntP"); if(cP) cP.textContent = pList.filter(p=>p.prem).length;
+  const cC = document.getElementById("cntC"); if(cC) cC.textContent = pList.filter(p=>p.com).length;
+  const chipS = document.querySelector('.chip[data-filter="S"]');
+  if(chipS) chipS.style.display = isNew ? "" : "none";
+}
+
+function setTab(t){
+  view=t;
+  const is2d = (t==="2d" || t==="new2d");
+  document.body.classList.toggle("m2d", is2d);
+  document.body.classList.toggle("m3d", t==="3d");
+  const tNew = document.getElementById("tabNew2"); if(tNew) tNew.setAttribute("aria-pressed", t==="new2d");
+  const t2 = document.getElementById("tab2"); if(t2) t2.setAttribute("aria-pressed", t==="2d");
+  const t3 = document.getElementById("tab3"); if(t3) t3.setAttribute("aria-pressed", t==="3d");
+
+  if(t==="new2d"){
+    gNewBase.style.display="";
+    gNewLabs.style.display="";
+    gOldBase.style.display="none";
+    gOldLabs.style.display="none";
+    const brand=document.getElementById("brandMeta");
+    const st = window.LAY_NEW ? window.LAY_NEW.stats : null;
+    const nPlots = st ? st.plots : (window.LAY_NEW ? window.LAY_NEW.plots.length : 130);
+    const pPlot = st ? st.plot.toFixed(1) : "55.7";
+    const pRoad = st ? st.road.toFixed(1) : "29.6";
+    const pGreen = st ? (st.park + st.fpark + st.green).toFixed(1) : "14.7";
+    const dName = (typeof DESIGN_NAMES!=="undefined" && DESIGN_NAMES[currentDesignKey]) ? DESIGN_NAMES[currentDesignKey] : "New Grid";
+    if(brand) brand.textContent=`MDA Master Plan · ${nPlots} Plots (${dName})`;
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>${nPlots} PLOTS</b> · ${pPlot}% PLOTTED · ROADS ${pRoad}% · PARKS ${pGreen}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("new2d");
+    if(activeFilter) setFilter(activeFilter);
+    apply2();
+  } else if(t==="2d"){
+    gNewBase.style.display="none";
+    gNewLabs.style.display="none";
+    gOldBase.style.display="";
+    gOldLabs.style.display="";
+    const brand=document.getElementById("brandMeta");
+    if(brand) brand.textContent="MDA Master Plan · 129 Plots (Original)";
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>129 PLOTS</b> · ${S.plot.toFixed(1)}% PLOTTED · ROADS ${S.road.toFixed(1)}% · PARKS ${(S.park+S.fpark+S.green).toFixed(1)}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("2d");
+    if(activeFilter) setFilter(activeFilter);
+    apply2();
+  } else if(t==="3d"){
+    gNewBase.style.display="none";
+    gNewLabs.style.display="none";
+    gOldBase.style.display="none";
+    gOldLabs.style.display="none";
+    const brand=document.getElementById("brandMeta");
+    if(brand) brand.textContent="MDA Master Plan · 129 Plots (Original)";
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>129 PLOTS</b> · ${S.plot.toFixed(1)}% PLOTTED · ROADS ${S.road.toFixed(1)}% · PARKS ${(S.park+S.fpark+S.green).toFixed(1)}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("3d");
+    if(activeFilter) setFilter(activeFilter);
+    resize();
+  }
+}
+
+const bNew2 = document.getElementById("tabNew2"); if(bNew2) bNew2.onclick=()=>setTab("new2d");
+document.getElementById("tab2").onclick=()=>setTab("2d");
+document.getElementById("tab3").onclick=()=>setTab("3d");
+renderNewLayout("1");
+fit2d(false);
+setTab("new2d");
+
+const dSel = document.getElementById("designSelect");
+if(dSel){
+  dSel.addEventListener("change", function(){
+    setTab("new2d");
+    renderNewLayout(this.value);
+    closeCard();
+  });
+}
+
+/* ---------- Labels orientation & Animation Loop ---------- */
+let lastAz=null;
+function orientLabels(){const az=controls.getAzimuthalAngle(); if(lastAz!==null&&Math.abs(az-lastAz)<0.004)return; lastAz=az;
+  const wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
+  LABELS.forEach(L=>{const al=L.userData.align; if(al===null||al===undefined){L.rotation.y=az;return;} L.rotation.y=Math.abs(wrap(al-az))<=Math.PI/2?al:al+Math.PI;});}
+
+let running=true;
+document.addEventListener("visibilitychange",()=>{running=!document.hidden;if(running)loop();});
+
+function loop(){
+  if(!running) return;
+  requestAnimationFrame(loop);
+  if(view!=="3d") return;
+  stepTween();
+  controls.update();
+  orientLabels();
+  renderer.render(scene,camera);
+}
+loop();
+
+/* Deep Link Check */
+function checkHash(){
+  const h=location.hash.replace(/^#/,"");
+  if(!h) return;
+  const params=new URLSearchParams(h.includes("=")?h:"plot="+h);
+  const pNo=params.get("plot");
+  if(pNo){
+    const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+    const p=curPlots.find(x=>x.n.toUpperCase()===pNo.toUpperCase());
+    if(p){ select({kind:"plot",p}); flyTo(p.cw,140); }
+  }
+}
+checkHash();
+if(currentTheme==="light") applyTheme("light");
+
+window.NANDI = {
+  select,
+  setTab,
+  applyTheme,
+  PLOTS,
+  LAY,
+  controls,
+  camera,
+  scene,
+  renderer,
+  rotate2,
+  animateRotate2,
+  setDragMode3d,
+  getDragMode3d: () => dragMode3d,
+  getTh2: () => th2,
+  getTheme: () => currentTheme,
+  getView: () => view
+};
+
+document.getElementById("load").remove();
+setTimeout(()=>{const h=document.getElementById("hint");if(h){h.style.opacity="0";setTimeout(()=>h.remove(),500);}},4500);
+
+} catch(err){
+  const l=document.getElementById("load"); if(l) l.textContent="Unable to load 3D/2D views: "+err.message;
+  console.error(err);
+}
+})();
+</script>
+</body>
+</html>
