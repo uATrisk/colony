@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>NANDI Township — 2D & 3D Interactive Master Plan</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -360,7 +363,7 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
   <div class="top-row-2">
     <div class="design-wrap">
       <select id="designSelect" class="design-select" aria-label="Layout design">
-        <option value="6" selected>6 · Ultra-Optimized — 60.3% plotted</option>
+        <option value="6" selected>6 · Ultra-Optimized — 60.3% plotted (★ Target Met)</option>
         <option value="1">1 · Current — 55.7% plotted</option>
         <option value="2">2 · Optimized Grid — 52.7% plotted</option>
         <option value="3">3 · Pocket Parks — 54.7% plotted</option>
@@ -461,7 +464,7 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
   </div>
 </div>
 
-<script src="layout-new.js"></script>
+<script src="layout-new.js?v=d6_final_60pct"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
@@ -1833,12 +1836,26 @@ function setTab(t){
 const bNew2 = document.getElementById("tabNew2"); if(bNew2) bNew2.onclick=()=>setTab("new2d");
 document.getElementById("tab2").onclick=()=>setTab("2d");
 document.getElementById("tab3").onclick=()=>setTab("3d");
-renderNewLayout("6");
+const urlParams = new URLSearchParams(window.location.search);
+const reqLayout = urlParams.get("layout") || urlParams.get("d") || (urlParams.get("v") === "6" ? "6" : null);
+const initialDesign = reqLayout || "6";
+renderNewLayout(initialDesign);
 fit2d(false);
 setTab("new2d");
 
 const dSel = document.getElementById("designSelect");
 if(dSel){
+  let has6 = false;
+  for(let i=0; i<dSel.options.length; i++){
+    if(dSel.options[i].value === "6"){ has6 = true; break; }
+  }
+  if(!has6){
+    const opt = document.createElement("option");
+    opt.value = "6";
+    opt.textContent = "6 · Ultra-Optimized — 60.3% plotted (★ Target Met)";
+    dSel.insertBefore(opt, dSel.firstChild);
+  }
+  dSel.value = initialDesign;
   dSel.addEventListener("change", function(){
     setTab("new2d");
     renderNewLayout(this.value);
