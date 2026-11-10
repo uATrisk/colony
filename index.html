@@ -108,6 +108,7 @@ button[aria-pressed="true"]:hover{opacity:.95}
   padding:calc(var(--safe-top) + 10px) calc(var(--safe-right) + 14px) 14px calc(var(--safe-left) + 14px);
   background:var(--top-gradient);pointer-events:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .top>*{pointer-events:auto}
+.top-row-1, .top-row-2{display:contents}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;cursor:pointer}
 .brand-badge{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#D9981E);display:grid;place-items:center;
   color:#FFFFFF;font-family:var(--mono);font-weight:800;font-size:17px;box-shadow:0 0 16px var(--accent-glow)}
@@ -117,7 +118,12 @@ button[aria-pressed="true"]:hover{opacity:.95}
 .brand-meta{font:500 11px var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 
 .top-center{display:flex;align-items:center;gap:8px}
-.tabs button{font-size:13.5px;font-family:var(--mono)}
+.tabs button{font-size:13px;font-family:var(--mono);padding:0 10px}
+@media (max-width:720px){
+  .tabs button{font-size:11.5px;padding:0 7px;min-height:32px}
+  .chips-bar{gap:5px}
+  .chip{font-size:11.5px;padding:4px 8px}
+}
 
 /* Theme toggle button */
 .theme-toggle{min-width:38px;min-height:38px;padding:0;border-radius:9px}
@@ -128,6 +134,12 @@ button[aria-pressed="true"]:hover{opacity:.95}
 :root[data-theme="light"] .icon-moon{display:block;color:var(--ink)}
 
 /* Search & Autocomplete */
+.design-wrap{position:relative;flex:0 0 auto;min-width:0}
+.design-select{height:40px;background:var(--panel-solid);border:1px solid var(--rule);border-radius:10px;padding:0 30px 0 12px;font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9D3E8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .15s ease,box-shadow .15s ease}
+:root[data-theme="light"] .design-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")}
+.design-select:hover{border-color:var(--accent)}
+.design-select:focus-visible{border-color:var(--sel);box-shadow:0 0 12px var(--sel-glow)}
+.design-select option{background:var(--panel-solid);color:var(--ink)}
 .find-wrap{position:relative;flex:0 1 240px;min-width:0}
 .find{display:flex;align-items:center;background:var(--panel-solid);border:1px solid var(--rule);border-radius:10px;padding:0 4px 0 10px;min-height:40px}
 .find:focus-within{border-color:var(--sel);box-shadow:0 0 12px var(--sel-glow)}
@@ -248,16 +260,72 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
 
 /* Responsive mobile adjustments */
 @media (max-width:720px){
+  .top{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding:calc(var(--safe-top) + 8px) 12px 10px 12px;
+  }
+  .top-row-1{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    gap:8px;
+  }
+  .top-row-2{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    width:100%;
+  }
   .brand-text h1 .full{display:none}
   .brand-meta{display:none}
-  .find-wrap{flex:1 1 110px}
-  .find input{font-size:16px}
-  #card{left:0;right:0;top:auto;bottom:0;width:auto;max-height:68dvh;border-radius:20px 20px 0 0;
+  .brand-text h1{font-size:16px}
+  .brand-badge{width:28px;height:28px;font-size:15px}
+
+  .design-wrap{
+    flex:1 1 56%;
+    min-width:0;
+  }
+  .design-select{
+    width:100%;
+    height:38px;
+    font-size:12px;
+    font-weight:600;
+    padding:0 24px 0 8px;
+    border-radius:9px;
+  }
+  .find-wrap{
+    flex:1 1 44%;
+    min-width:0;
+  }
+  .find{
+    min-height:38px;
+    height:38px;
+    padding:0 4px 0 8px;
+    border-radius:9px;
+  }
+  .find input{
+    font-size:13.5px;
+    padding:0 4px;
+  }
+  .find input::placeholder{
+    font-size:12px;
+  }
+  .find .go-btn{
+    min-height:28px;
+    padding:0 8px;
+    font-size:11.5px;
+  }
+
+  #hint{top:calc(var(--safe-top) + 104px);bottom:auto;font-size:11px;padding:4px 12px}
+  #scaleBar{bottom:calc(var(--safe-bottom) + 155px)}
+
+  #card{left:0;right:0;top:auto;bottom:0;width:auto;max-height:72dvh;border-radius:20px 20px 0 0;
     padding:12px 18px calc(var(--safe-bottom) + 16px);transform:translateY(100%);display:block;pointer-events:none;transition:transform .25s ease}
   #card.on{transform:translateY(0);pointer-events:auto}
   .card-handle{display:block}
-  #hint{top:auto;bottom:160px;font-size:11.5px}
-  #scaleBar{bottom:calc(var(--safe-bottom) + 150px)}
 }
 </style>
 </head>
@@ -267,33 +335,48 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
 <div id="load">Loading NANDI Master Plan…</div>
 
 <div class="top">
-  <div class="brand" id="brandBtn">
-    <div class="brand-badge">N</div>
-    <div class="brand-text">
-      <h1>NANDI<span class="full"> Township</span></h1>
-      <div class="brand-meta">MDA Master Plan · 129 Plots</div>
+  <div class="top-row-1">
+    <div class="brand" id="brandBtn">
+      <div class="brand-badge">N</div>
+      <div class="brand-text">
+        <h1>NANDI<span class="full"> Township</span></h1>
+        <div class="brand-meta" id="brandMeta">MDA Master Plan · 130 Plots (New Grid)</div>
+      </div>
+    </div>
+
+    <div class="top-center">
+      <div class="seg tabs" role="group" aria-label="Map mode">
+        <button id="tabNew2" aria-pressed="true">New 2D</button>
+        <button id="tab2" aria-pressed="false">2D</button>
+        <button id="tab3" aria-pressed="false">3D</button>
+      </div>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle light or dark theme" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.34 4.34l1.42 1.42M14.24 14.24l1.42 1.42M4.34 15.66l1.42-1.42M14.24 5.76l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.29 13.27A8 8 0 016.73 2.71 8.001 8.001 0 1017.29 13.27z"/></svg>
+      </button>
     </div>
   </div>
 
-  <div class="top-center">
-    <div class="seg tabs" role="group" aria-label="Map mode">
-      <button id="tab2" aria-pressed="true">2D</button>
-      <button id="tab3" aria-pressed="false">3D</button>
+  <div class="top-row-2">
+    <div class="design-wrap">
+      <select id="designSelect" class="design-select" aria-label="Layout design">
+        <option value="1">1 · Current — 55.7% plotted</option>
+        <option value="2">2 · Optimized Grid — 52.7% plotted</option>
+        <option value="3">3 · Pocket Parks — 54.7% plotted</option>
+        <option value="4">4 · Ring Road — 49.4% plotted</option>
+        <option value="5">5 · Long Blocks — 55.5% plotted</option>
+      </select>
     </div>
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle light or dark theme" title="Toggle theme">
-      <svg class="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10" cy="10" r="4"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.34 4.34l1.42 1.42M14.24 14.24l1.42 1.42M4.34 15.66l1.42-1.42M14.24 5.76l1.42-1.42"/></svg>
-      <svg class="icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.29 13.27A8 8 0 016.73 2.71 8.001 8.001 0 1017.29 13.27z"/></svg>
-    </button>
-  </div>
 
-  <div class="find-wrap">
-    <form class="find" id="find" role="search">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
-      <input id="q" placeholder="Search plot (e.g. 25, C1)..." aria-label="Find plot" autocomplete="off" enterkeyhint="search">
-      <button type="button" class="clear-btn" id="qClear" aria-label="Clear">×</button>
-      <button class="go-btn" aria-label="Search">Go</button>
-    </form>
-    <div class="ac-dropdown" id="acDrop"></div>
+    <div class="find-wrap">
+      <form class="find" id="find" role="search">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+        <input id="q" placeholder="Search plot (e.g. 25, C1)..." aria-label="Find plot" autocomplete="off" enterkeyhint="search">
+        <button type="button" class="clear-btn" id="qClear" aria-label="Clear">×</button>
+        <button class="go-btn" aria-label="Search">Go</button>
+      </form>
+      <div class="ac-dropdown" id="acDrop"></div>
+    </div>
   </div>
 </div>
 
@@ -367,15 +450,17 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
   <button class="sum-bar" id="sum" aria-label="Site summary"></button>
 
   <div class="chips-bar" role="group" aria-label="Quick Category Filters">
-    <button class="chip" data-filter="E"><i style="background:var(--east)"></i>East Facing (62)</button>
-    <button class="chip" data-filter="W"><i style="background:var(--west)"></i>West Facing (58)</button>
-    <button class="chip" data-filter="N"><i style="background:var(--north)"></i>North Facing (9)</button>
-    <button class="chip" data-filter="P"><i style="background:var(--prem)"></i>Premium (5)</button>
-    <button class="chip" data-filter="C"><i style="background:var(--com)"></i>Commercial (9)</button>
+    <button class="chip" data-filter="E"><i style="background:var(--east)"></i>East Facing (<span id="cntE">59</span>)</button>
+    <button class="chip" data-filter="W"><i style="background:var(--west)"></i>West Facing (<span id="cntW">61</span>)</button>
+    <button class="chip" data-filter="N"><i style="background:var(--north)"></i>North Facing (<span id="cntN">9</span>)</button>
+    <button class="chip" data-filter="S"><i style="background:var(--south)"></i>South Facing (<span id="cntS">7</span>)</button>
+    <button class="chip" data-filter="P"><i style="background:var(--prem)"></i>Premium (<span id="cntP">5</span>)</button>
+    <button class="chip" data-filter="C"><i style="background:var(--com)"></i>Commercial (<span id="cntC">9</span>)</button>
     <button class="chip" data-filter="PARK"><i style="background:var(--park)"></i>Parks & Gardens</button>
   </div>
 </div>
 
+<script src="layout-new.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
@@ -406,7 +491,7 @@ const fmtFt=f=>{let ft=Math.floor(f),inch=Math.round((f-ft)*24)/2;if(inch>=12){f
 const n0=(x,d=0)=>x.toLocaleString("en-IN",{minimumFractionDigits:d,maximumFractionDigits:d});
 const pct=a=>(a/SITE*100).toFixed(2)+"%";
 const areaRows=sqft=>[["Area (Gaj)",`${n0(sqft/9,1)} gaj`],["Area (Sq Ft)",`${n0(sqft)} sq ft`],["Area (Metric)",`${n0(sqft*0.09290304,1)} m²`]];
-const FACE={E:"East",W:"West",N:"North"};
+const FACE={E:"East",W:"West",N:"North",S:"South"};
 
 function toast(msg){
   const t=document.getElementById("toast");
@@ -419,6 +504,7 @@ const COL_3D_DARK = {
   E:{fill:0x0F4A41,emissive:0x0F4A41,edge:0x3FE0B8},
   W:{fill:0x232A66,emissive:0x232A66,edge:0x8C95FF},
   N:{fill:0x123F5C,emissive:0x123F5C,edge:0x6FD3FF},
+  S:{fill:0x5C122A,emissive:0x5C122A,edge:0xFF6B9D},
   P:{fill:0x5A4410,emissive:0x5A4410,edge:0xF2C14E},
   C:{fill:0x5C2A0E,emissive:0x5C2A0E,edge:0xFF8A3D}
 };
@@ -426,6 +512,7 @@ const COL_3D_LIGHT = {
   E:{fill:0xCCFBF1,emissive:0x99F6E4,edge:0x0D9488},
   W:{fill:0xEEF2FF,emissive:0xE0E7FF,edge:0x4F46E5},
   N:{fill:0xE0F2FE,emissive:0xBAE6FD,edge:0x0284C7},
+  S:{fill:0xFFE4E6,emissive:0xFECDD3,edge:0xE11D48},
   P:{fill:0xFEF3C7,emissive:0xFDE68A,edge:0xB45309},
   C:{fill:0xFFEDD5,emissive:0xFED7AA,edge:0xC2410C}
 };
@@ -434,6 +521,7 @@ const C2_DARK = {
   E:["#12564B","#3FE0B8","#B5F7E4"],
   W:["#2A3178","#8C95FF","#D4D8FF"],
   N:["#154B6D","#6FD3FF","#CFF3FF"],
+  S:["#5C122A","#FF6B9D","#FFD1E1"],
   P:["#6B5212","#F2C14E","#FFE7AE"],
   C:["#6E3311","#FF8A3D","#FFD2B3"]
 };
@@ -441,6 +529,7 @@ const C2_LIGHT = {
   E:["#CCFBF1","#0D9488","#0F766E"],
   W:["#EEF2FF","#4F46E5","#3730A3"],
   N:["#E0F2FE","#0284C7","#0369A1"],
+  S:["#FFE4E6","#E11D48","#881337"],
   P:["#FEF3C7","#B45309","#78350F"],
   C:["#FFEDD5","#C2410C","#7C2D12"]
 };
@@ -634,7 +723,7 @@ const villaBodyMat=new THREE.MeshStandardMaterial({color:0xE2E8F0,roughness:.65}
 const comBodyMat=new THREE.MeshStandardMaterial({color:0x1E293B,roughness:.5}), comGlassMat=new THREE.MeshStandardMaterial({color:0x38BDF8,roughness:.15,metalness:.6});
 
 const plotLabels=[], PLOTS=LAY.plots, plot3dMeshes=[];
-const plotName=p=>p.com?`Commercial ${p.n}`:`Plot ${p.n}${p.face}`;
+const plotName=p=>p.com?`Commercial ${p.n}`:p.n.endsWith(p.face)?`Plot ${p.n}`:`Plot ${p.n}${p.face}`;
 
 PLOTS.forEach(p=>{
   const colSet = currentTheme==="light"?COL_3D_LIGHT:COL_3D_DARK;
@@ -782,11 +871,14 @@ function getPlotSides(pts){
 function select(info){
   currentSelectedInfo=info;
   const k=info.kind;
+  const isNew = (view==="new2d");
+  const curPlots = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
   if(k==="plot"){
     const p=info.p, irr=p.pts.length>4;
     const tags=[];
     if(p.com) tags.push(["Commercial","#FF8A3D"]);
-    if(p.prem) tags.push(["Premium Park Facing","#F2C14E"]);
+    else if(p.prem) tags.push(["Premium Park Facing","#F2C14E"]);
+    else tags.push(["Standard Residential"]);
     if(p.corner) tags.push(["Corner Plot"]);
     tags.push([`${FACE[p.face]} Facing`]);
     tags.push([`${Math.round(p.gaj)} Gaj`]);
@@ -794,15 +886,23 @@ function select(info){
     const s=getPlotSides(p.pts);
     let dims=[];
     if(s.length===4){
-      dims=[["Road Frontage",s[1].str],["Rear Boundary",s[3].str],["Left Depth",s[0].str],["Right Depth",s[2].str]];
+      const is0Front = Math.abs(s[0].len - p.front) < Math.abs(s[1].len - p.front);
+      const fSide = is0Front ? s[0] : s[1];
+      const rSide = is0Front ? s[2] : s[3];
+      const dSide = is0Front ? s[1] : s[0];
+      dims=[["Road Frontage",fSide.str],["Rear Boundary",rSide.str],["Plot Depth",dSide.str],["Width × Depth",fmtFt(p.front)+" × "+fmtFt(p.depth)]];
     } else {
       dims=[["Frontage",fmtFt(p.front)],["Avg Depth",fmtFt(p.depth)],["Total Edges",`${s.length} segments`]];
     }
 
-    const curIdx=PLOTS.findIndex(x=>x.n===p.n);
+    let roadWidthStr = "9 m (30 ft)";
+    if(p.road && p.road.includes("12 m")) roadWidthStr = "12 m (40 ft)";
+    else if(p.road && (p.road.includes("7.5 m") || p.road.includes("Loop"))) roadWidthStr = "7.5 m (25 ft)";
+
+    const curIdx=curPlots.findIndex(x=>x.n===p.n);
     const stepper={
-      prev:()=>{const prevIdx=(curIdx-1+PLOTS.length)%PLOTS.length; select({kind:"plot",p:PLOTS[prevIdx]}); flyTo(PLOTS[prevIdx].cw,140);},
-      next:()=>{const nextIdx=(curIdx+1)%PLOTS.length; select({kind:"plot",p:PLOTS[nextIdx]}); flyTo(PLOTS[nextIdx].cw,140);}
+      prev:()=>{const prevIdx=(curIdx-1+curPlots.length)%curPlots.length; select({kind:"plot",p:curPlots[prevIdx]}); flyTo(curPlots[prevIdx].cw,140);},
+      next:()=>{const nextIdx=(curIdx+1)%curPlots.length; select({kind:"plot",p:curPlots[nextIdx]}); flyTo(curPlots[nextIdx].cw,140);}
     };
 
     const shareAction=()=>{
@@ -814,9 +914,11 @@ function select(info){
       }
     };
 
-    let plotNote = "100% Vastu aligned orientation with zero south-facing exposure.";
-    if(p.n==="74"||p.n==="75"||p.n==="76"){
-      plotNote = "Equal Area Note: Plots 74, 75 & 76 each have exactly 127.6 Gaj (1,148 sq ft). As depth decreases along the curved boundary (46.4' on 74, 31.1' on 75, 27.5' on 76), the road frontage was widened (24.7' on 74, 36.9' on 75, 41.8' on 76) so every owner receives the exact same land area.";
+    let plotNote = isNew ? "Perfect 90° rectangular plot aligned to the straight colony grid." : "100% Vastu aligned orientation with zero south-facing exposure.";
+    if(p.face==="S"){
+      plotNote = "Prime boulevard-facing plot directly south of the expanded Central Park, facing the 12m main boulevard.";
+    } else if(p.n==="74"||p.n==="75"||p.n==="76"){
+      plotNote = isNew ? "Standard 90° rectangular plot aligned to the orthogonal avenue grid." : "Equal Area Note: Plots 74, 75 & 76 each have exactly 127.6 Gaj (1,148 sq ft). As depth decreases along the curved boundary (46.4' on 74, 31.1' on 75, 27.5' on 76), the road frontage was widened (24.7' on 74, 36.9' on 75, 41.8' on 76) so every owner receives the exact same land area.";
     } else if(irr){
       plotNote = "This plot follows the colony boundary curve; perimeter and area are mathematically exact.";
     }
@@ -825,7 +927,14 @@ function select(info){
       p.com?"Commercial Plot":"Residential Plot",
       plotName(p),
       tags,
-      [...areaRows(p.sqft),["Facing",`${FACE[p.face]} (${p.bear.toFixed(0)}° from north)`],["Front Road",p.road],...(p.corner?[["Corner Road",p.corner]]:[])],
+      [
+        ...areaRows(p.sqft),
+        ["Category", p.com ? "Commercial" : (p.prem ? "Premium (Park Facing)" : "Standard Residential")],
+        ["Facing", `${FACE[p.face]} (${p.bear.toFixed(0)}° from north)`],
+        ["Front Road", p.road],
+        ["Road Width", roadWidthStr],
+        ...(p.corner?[["Corner Road",p.corner]]:[])
+      ],
       plotNote,
       [["Zoom to Plot",()=>flyTo(p.cw,140),"btn-accent"],["Share Link",shareAction]],
       dims,
@@ -845,10 +954,11 @@ function select(info){
     highlight(r.polys); return;
   }
   if(k==="park"||k==="fpark"){
-    const a=k==="park"?parkA:fparkA;
-    show("Open Green Space",k==="park"?"Central Park":"Front Entrance Garden",[["Recreational Park","#3FAF6E"]],[...areaRows(a),["Share of Site",pct(a)],["Trees Planted",String(info.trees||0)]],
+    const polys = info.polys || (k==="park" ? (isNew?window.LAY_NEW.park:LAY.park) : (isNew?window.LAY_NEW.fpark:LAY.fpark));
+    const a = polys.reduce((s, p) => s + areaOf(p), 0);
+    show("Open Green Space",k==="park"?"Central Park":"Front Entrance Garden",[["Recreational Park","#3FAF6E"]],[...areaRows(a),["Share of Site",pct(a)],["Trees Planted",String(info.trees||(k==="park"?82:24))]],
       k==="park"?"Spacious landscaped park north of the 12m boulevard. Combined open greens exceed the 13% statutory MDA quota.":"Landscaped welcome garden flanking the main entry road.");
-    highlight(info.polys); return;
+    highlight(polys); return;
   }
   if(k==="green"){
     const a=areaOf(info.pts);
@@ -878,7 +988,56 @@ function select(info){
 
 function showSummaryModal(){
   const b=document.getElementById("sumModalBody");
-  b.innerHTML=`
+  if(view==="new2d"){
+    const d = window.LAY_NEW;
+    const pList = d ? d.plots : [];
+    const rList = d ? d.roads : [];
+    const pkList = d ? (d.park||[]) : [];
+    const fpList = d ? (d.fpark||[]) : [];
+    const grList = d ? (d.green||[]) : [];
+    const st = d ? d.stats : null;
+    const dName = (typeof DESIGN_NAMES!=="undefined" && DESIGN_NAMES[currentDesignKey]) ? DESIGN_NAMES[currentDesignKey] : "New Grid";
+    
+    const nTotal = pList.length;
+    const nCom = pList.filter(p=>p.com).length;
+    const nRes = nTotal - nCom;
+    const plotSqft = pList.reduce((acc,p)=>acc+p.sqft,0);
+    const plotGaj = plotSqft / 9;
+    const plotPct = st ? st.plot.toFixed(1) : (plotSqft / SITE * 100).toFixed(1);
+    const roadSqft = rList.reduce((acc,r)=>acc+r.sqft,0);
+    const roadPct = st ? st.road.toFixed(1) : (roadSqft / SITE * 100).toFixed(1);
+    const parkSqft = pkList.reduce((acc,p)=>acc+areaOf(p),0);
+    const parkPct = (parkSqft / SITE * 100).toFixed(1);
+    const fparkSqft = fpList.reduce((acc,p)=>acc+areaOf(p),0);
+    const fparkPct = (fparkSqft / SITE * 100).toFixed(1);
+    const greenSqft = grList.reduce((acc,p)=>acc+areaOf(p),0);
+    const greenPct = (greenSqft / SITE * 100).toFixed(1);
+    const totalGreenSqft = Math.max(0, SITE - plotSqft - roadSqft);
+    const totalGreenPct = (100.0 - parseFloat(plotPct) - parseFloat(roadPct)).toFixed(1);
+    
+    const nE = pList.filter(p=>p.face==="E"&&!p.com).length;
+    const nW = pList.filter(p=>p.face==="W"&&!p.com).length;
+    const nN = pList.filter(p=>p.face==="N").length;
+    const nS = pList.filter(p=>p.face==="S").length;
+    
+    b.innerHTML=`
+    <dl>
+      <dt>Layout Design</dt><dd><b>${currentDesignKey} · ${dName}</b></dd>
+      <dt>Gross Site Area</dt><dd>${n0(SITE/9,1)} gaj (${n0(SITE)} sq ft · 38.45 bigha)</dd>
+      <dt>Total Plots</dt><dd>${nTotal} (${nRes} Residential, ${nCom} Commercial)</dd>
+      <dt>Plotted Saleable Area</dt><dd>${n0(plotGaj,1)} gaj (${plotPct}%)</dd>
+      <dt>Roads Area</dt><dd>${n0(roadSqft,0)} sq ft (${roadPct}%)</dd>
+      <dt>Central / Pocket Parks</dt><dd>${n0(parkSqft,0)} sq ft (${parkPct}%)</dd>
+      <dt>Chakroad Buffer & Perimeter Greens</dt><dd>${n0(totalGreenSqft - parkSqft,0)} sq ft (${(totalGreenPct - parkPct).toFixed(1)}%)</dd>
+      <dt>Total Parks & Green</dt><dd><b>${n0(totalGreenSqft,0)} sq ft (${totalGreenPct}% · MDA Compliant)</b></dd>
+      <dt>Standard Plot Range</dt><dd>125.0 – 130.0 Gaj (front ≥ 23 ft)</dd>
+      <dt>Facing Breakdown</dt><dd>${nE} East · ${nW} West · ${nN} North · ${nS} South</dd>
+      <dt>Grid Layout</dt><dd>100% Straight Perpendicular Grid (All 90° Rectangles)</dd>
+      <dt>Longest Dead End</dt><dd>52 m (MDA limit is 100 m)</dd>
+    </dl>
+    `;
+  } else {
+    b.innerHTML=`
     <dl>
       <dt>Gross Site Area</dt><dd>${n0(SITE/9,1)} gaj (${n0(SITE)} sq ft · 38.45 bigha)</dd>
       <dt>Total Plots</dt><dd>${PLOTS.length} (${res.length} Residential, ${S.com} Commercial)</dd>
@@ -892,7 +1051,8 @@ function showSummaryModal(){
       <dt>Vastu Facing</dt><dd>62 East · 58 West · 9 North · <b>0 South (100% Auspicious)</b></dd>
       <dt>Longest Dead End</dt><dd>${S.dead} m (MDA limit is 100 m)</dd>
     </dl>
-  `;
+    `;
+  }
   document.getElementById("sumModal").classList.add("open");
 }
 document.getElementById("sum").onclick=showSummaryModal;
@@ -918,12 +1078,15 @@ function setFilter(f){
     return;
   }
 
+  const isNew = (view==="new2d");
+  const curPlots = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
   let matchFn=p=>false, name="";
-  if(f==="E"){ matchFn=p=>p.face==="E"&&!p.com; name="East Facing Plots (62)"; }
-  else if(f==="W"){ matchFn=p=>p.face==="W"&&!p.com&&!p.prem; name="West Facing Plots (58)"; }
-  else if(f==="N"){ matchFn=p=>p.face==="N"; name="North Facing Plots (9)"; }
-  else if(f==="P"){ matchFn=p=>p.prem; name="Premium Park-Facing Plots (5)"; }
-  else if(f==="C"){ matchFn=p=>p.com; name="Commercial Plots (9)"; }
+  if(f==="E"){ matchFn=p=>p.face==="E"&&!p.com; name=`East Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="W"){ matchFn=p=>p.face==="W"&&!p.com&&!p.prem; name=`West Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="N"){ matchFn=p=>p.face==="N"; name=`North Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="S"){ matchFn=p=>p.face==="S"; name=`South Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="P"){ matchFn=p=>p.prem; name=`Premium Park-Facing Plots (${curPlots.filter(matchFn).length})`; }
+  else if(f==="C"){ matchFn=p=>p.com; name=`Commercial Plots (${curPlots.filter(matchFn).length})`; }
   else if(f==="PARK"){ name="Parks & Green Reserves"; }
 
   filterPill.querySelector("span").textContent="Showing: "+name;
@@ -935,8 +1098,9 @@ function setFilter(f){
     item.edge.material.opacity=match?1:0.18;
   });
 
-  P2.forEach((info,idx)=>{
-    const el=document.querySelector(`#map2d [data-k="${idx}"]`); if(!el) return;
+  document.querySelectorAll("#map2d [data-k]").forEach(el=>{
+    const info = el._info || P2[+el.getAttribute("data-k")];
+    if(!info) return;
     if(f==="PARK"){
       const match = (info.kind==="park"||info.kind==="fpark"||info.kind==="green");
       el.style.opacity=match?"1":"0.18";
@@ -958,16 +1122,17 @@ function updateAc(){
   qClear.classList.toggle("show",val.length>0);
   if(!val){ acDrop.classList.remove("open"); return; }
 
-  const matches=PLOTS.filter(p=>{
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const matches=curPlots.filter(p=>{
     const num=p.n.toUpperCase();
-    return num.startsWith(val)||num.includes(val)||p.face===val||(val==="COM"&&p.com)||(val==="PREM"&&p.prem);
+    return num.startsWith(val)||num.includes(val)||(p.n+p.face).toUpperCase().includes(val)||p.face===val||(val==="COM"&&p.com)||(val==="PREM"&&p.prem);
   }).slice(0,8);
 
   if(!matches.length){ acDrop.classList.remove("open"); return; }
   const colSet = currentTheme==="light"?C2_LIGHT:C2_DARK;
   acDrop.innerHTML=matches.map(p=>`
     <div class="ac-item" data-plot="${p.n}">
-      <div><b>${p.com?"Commercial "+p.n:"Plot "+p.n+p.face}</b> <span>· ${Math.round(p.gaj)} Gaj</span></div>
+      <div><b>${p.com?"Commercial "+p.n:"Plot "+p.n+(p.n.endsWith(p.face)?"":p.face)}</b> <span>· ${Math.round(p.gaj)} Gaj</span></div>
       <span class="ac-tag" style="background:${colSet[p.com?"C":p.prem?"P":p.face][0]};color:${colSet[p.com?"C":p.prem?"P":p.face][1]}">${FACE[p.face]}</span>
     </div>
   `).join("");
@@ -977,15 +1142,22 @@ qInp.addEventListener("input",updateAc);
 qClear.addEventListener("click",()=>{qInp.value="";updateAc();qInp.focus();});
 acDrop.addEventListener("click",e=>{
   const item=e.target.closest(".ac-item"); if(!item) return;
-  const n=item.dataset.plot, p=PLOTS.find(x=>x.n===n);
+  const n=item.dataset.plot;
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const p=curPlots.find(x=>x.n===n);
   if(p){ select({kind:"plot",p}); flyTo(p.cw,140); acDrop.classList.remove("open"); qInp.value=n; }
 });
 document.addEventListener("click",e=>{if(!e.target.closest(".find-wrap"))acDrop.classList.remove("open");});
 
 document.getElementById("find").addEventListener("submit",e=>{
   e.preventDefault();
-  const q=qInp.value.trim().toUpperCase().replace(/^PLOTs*/,"").replace(/[EWN]$/,"");
-  const p=PLOTS.find(x=>x.n.toUpperCase()===q);
+  const raw=qInp.value.trim().toUpperCase().replace(/^PLOT\s*/,"");
+  const noFace=raw.replace(/[EWNS]$/,"");
+  const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const p=curPlots.find(x=>{
+    const xn=x.n.toUpperCase(), xNoFace=xn.replace(/[EWNS]$/,"");
+    return xn===raw || xn===noFace || xNoFace===raw || xNoFace===noFace || (xn+x.face).toUpperCase()===raw;
+  });
   if(!p){ qInp.value=""; qInp.placeholder="No such plot"; setTimeout(()=>qInp.placeholder="Search plot (e.g. 25, C1)...",1800); return;}
   qInp.blur(); acDrop.classList.remove("open"); select({kind:"plot",p}); flyTo(p.cw,140);
 });
@@ -1057,7 +1229,7 @@ function tween(P,T,ms){
 function stepTween(){ if(!tw)return; let k=(performance.now()-tw.s)/tw.ms; if(k>=1){k=1;} const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
   camera.position.lerpVectors(tw.p0,tw.p1,e); controls.target.lerpVectors(tw.t0,tw.t1,e); if(k===1)tw=null;}
 
-function flyTo(cw,dist){ if(view==="2d"){fly2d(cw);return;} const T=new THREE.Vector3(cw[0],0,cw[1]); const dir=camera.position.clone().sub(controls.target).normalize(); tween(T.clone().add(dir.multiplyScalar(dist)),T,650); }
+function flyTo(cw,dist){ if(view==="2d"||view==="new2d"){fly2d(cw);return;} const T=new THREE.Vector3(cw[0],0,cw[1]); const dir=camera.position.clone().sub(controls.target).normalize(); tween(T.clone().add(dir.multiplyScalar(dist)),T,650); }
 const plane=new THREE.Plane(new THREE.Vector3(0,1,0),0), ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
 function groundAt(cx,cy){ const r=canvas.getBoundingClientRect(); ndc.set((cx-r.left)/r.width*2-1,-((cy-r.top)/r.height)*2+1); ray.setFromCamera(ndc,camera);
   const p=new THREE.Vector3(); return ray.ray.intersectPlane(plane,p)?p:null; }
@@ -1093,14 +1265,14 @@ canvas.addEventListener("pointerup",e=>{
 canvas.addEventListener("dblclick",e=>e.preventDefault());
 
 document.getElementById("zIn").onclick=()=>{
-  if(view==="2d") zoom2(innerWidth/2,innerHeight/2,1.6,true);
+  if(view==="2d"||view==="new2d") zoom2(innerWidth/2,innerHeight/2,1.6,true);
   else { camera.position.sub(controls.target).multiplyScalar(0.7).add(controls.target); controls.update(); }
 };
 document.getElementById("zOut").onclick=()=>{
-  if(view==="2d") zoom2(innerWidth/2,innerHeight/2,1/1.6,true);
+  if(view==="2d"||view==="new2d") zoom2(innerWidth/2,innerHeight/2,1/1.6,true);
   else { camera.position.sub(controls.target).multiplyScalar(1/0.7).add(controls.target); controls.update(); }
 };
-document.getElementById("zFit").onclick=()=>view==="2d"?fit2d(true):setView(mode);
+document.getElementById("zFit").onclick=()=>(view==="2d"||view==="new2d")?fit2d(true):setView(mode);
 document.getElementById("v3d").onclick=()=>setView("3d");
 document.getElementById("vTop").onclick=()=>setView("top");
 const press=(id,on)=>document.getElementById(id).setAttribute("aria-pressed",on);
@@ -1111,42 +1283,171 @@ document.getElementById("tSpin").onclick=e=>{const on=e.currentTarget.getAttribu
 
 function resize(){const w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
 let lastPortrait=null;
-window.addEventListener("resize",()=>{resize();const p=innerWidth/innerHeight<0.9;if(p!==lastPortrait){lastPortrait=p;setView(mode,false);fit2d(false);}else if(view==="2d")apply2();});
+window.addEventListener("resize",()=>{resize();const p=innerWidth/innerHeight<0.9;if(p!==lastPortrait){lastPortrait=p;setView(mode,false);fit2d(false);}else if(view==="2d"||view==="new2d")apply2();});
 resize(); lastPortrait=innerWidth/innerHeight<0.9; setView("3d",false);
 
 /* ================= 2D SVG Engine ================= */
 const svg2=document.getElementById("map2d"), NS2="http://www.w3.org/2000/svg";
 const el2=(t,a,par)=>{const e=document.createElementNS(NS2,t);for(const k in a)e.setAttribute(k,a[k]);(par||svg2).appendChild(e);return e;};
 function dpath(pts,closed=true){return "M"+pts.map(p=>{const w=W(p);return w[0].toFixed(2)+" "+w[1].toFixed(2);}).join("L")+(closed?"Z":"");}
-const P2=[]; const pk2=(e,info)=>{e.setAttribute("data-k",P2.length);e.classList.add("hit");P2.push(info);return e;};
+const P2=[]; const pk2=(e,info)=>{e._info=info; e.setAttribute("data-k",P2.length);e.classList.add("hit");P2.push(info);return e;};
 const world2=el2("g",{id:"world2"}), base2=el2("g",{id:"base2"},world2), labs2=el2("g",{id:"labs2"},world2), top2=el2("g",{id:"top2"},world2), dimsOverlay=el2("g",{id:"plotDims2"},world2);
 const NSS="non-scaling-stroke";
 
+// Common base elements (boundary fill, public east road, agricultural chakroad)
 const sitePath2 = pk2(el2("path",{d:dpath(POLY),fill:currentTheme==="light"?"#FFFFFF":"#111C33"},base2),{kind:"site"});
 const eastRoad2 = pk2(el2("path",{d:dpath(B.eastRoad),fill:currentTheme==="light"?"#94A3B8":"#283040"},base2),{kind:"eastroad",pts:B.eastRoad});
 const chakPaths2 = B.chakroad.map(p=>pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#CBD5E1":"#352F22"},base2),{kind:"chakroad",pts:p}));
-const roadPaths2 = [];
-LAY.roads.forEach(r=>r.polys.forEach(p=>roadPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#334155":"#262D3C"},base2),{kind:"road",r}))));
-const mainLine2 = el2("path",{d:dpath(LAY.mainLine,false),fill:"none",stroke:"#F2C14E","stroke-width":1.4,"stroke-dasharray":"9 7","vector-effect":NSS,"pointer-events":"none"},base2);
-const subLines2 = LAY.subLines.map(l=>el2("path",{d:dpath(l,false),fill:"none",stroke:"#C9D3E8","stroke-opacity":.55,"stroke-width":1,"stroke-dasharray":"6 7","vector-effect":NSS,"pointer-events":"none"},base2));
+
+// Layer groups for Old vs New 2D Layouts
+const gOldBase = el2("g",{id:"gOldBase"},base2);
+const gOldLabs = el2("g",{id:"gOldLabs"},labs2);
+const gNewBase = el2("g",{id:"gNewBase"},base2);
+const gNewLabs = el2("g",{id:"gNewLabs"},labs2);
 
 const treeDots=polys=>{let d="";polys.forEach(p=>{let a=1e9,b=-1e9,c=1e9,e=-1e9;p.forEach(q=>{a=Math.min(a,q[0]);b=Math.max(b,q[0]);c=Math.min(c,q[1]);e=Math.max(e,q[1]);});
   let k=0;for(let x=a+9;x<b;x+=17)for(let y=c+9;y<e;y+=17){k++;const j=[x+((k*37)%9)-4.5,y+((k*53)%9)-4.5];if(inside(j,p)&&((k*7)%5!==0)){const w=W(j);d+=`M${(w[0]-3.2).toFixed(1)} ${w[1].toFixed(1)}a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0`;}}});return d;};
-const parkPaths2 = [];
-LAY.park.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},base2),parkInfo)));
-LAY.fpark.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},base2),fparkInfo)));
-const treeDotsPath2 = el2("path",{d:treeDots(LAY.park)+treeDots(LAY.fpark),fill:currentTheme==="light"?"#15803D":"#2F8F57","pointer-events":"none"},base2);
-const greenPaths2 = [];
-LAY.green.forEach(p=>greenPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#D1FAE5":"#214E34"},base2),{kind:"green",pts:p})));
 
-const plotSvgItems=[];
-PLOTS.forEach(p=>{
+const L2=[];
+function txt2(str,w,size,color,ang,par,extra){const t=el2("text",Object.assign({x:w[0].toFixed(2),y:w[1].toFixed(2),"font-size":size.toFixed(2),fill:color},extra||{}),par||labs2);t.textContent=str;L2.push([t,w[0],w[1],ang]);return t;}
+const deg=a=>-a*180/Math.PI;
+
+/* ----- BUILD OLD 2D ELEMENTS ----- */
+const roadPaths2 = [];
+LAY.roads.forEach(r=>r.polys.forEach(p=>roadPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#334155":"#262D3C"},gOldBase),{kind:"road",r}))));
+const mainLine2 = el2("path",{d:dpath(LAY.mainLine,false),fill:"none",stroke:"#F2C14E","stroke-width":1.4,"stroke-dasharray":"9 7","vector-effect":NSS,"pointer-events":"none"},gOldBase);
+const subLines2 = LAY.subLines.map(l=>el2("path",{d:dpath(l,false),fill:"none",stroke:"#C9D3E8","stroke-opacity":.55,"stroke-width":1,"stroke-dasharray":"6 7","vector-effect":NSS,"pointer-events":"none"},gOldBase));
+
+const parkPaths2 = [];
+LAY.park.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gOldBase),parkInfo)));
+LAY.fpark.forEach(p=>parkPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gOldBase),fparkInfo)));
+const treeDotsPath2 = el2("path",{d:treeDots(LAY.park)+treeDots(LAY.fpark),fill:currentTheme==="light"?"#15803D":"#2F8F57","pointer-events":"none"},gOldBase);
+const greenPaths2 = [];
+LAY.green.forEach(p=>greenPaths2.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#D1FAE5":"#214E34"},gOldBase),{kind:"green",pts:p})));
+
+const oldPlotSvgItems=[];
+const oldPlotTxt=[], oldGajTxt=[];
+PLOTS.forEach((p,i)=>{
   const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
   const c=c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
-  const path = pk2(el2("path",{d:dpath(p.pts),fill:c[0],stroke:c[1],"stroke-width":1,"vector-effect":NSS},base2),{kind:"plot",p});
-  plotSvgItems.push({path,p});
+  const path = pk2(el2("path",{d:dpath(p.pts),fill:c[0],stroke:c[1],"stroke-width":1,"vector-effect":NSS},gOldBase),{kind:"plot",p});
+  const fs=Math.max(4.5,Math.min(p.front,p.depth)*0.27);
+  const tN = txt2(p.com?p.n:`${p.n}${p.face}`,[p.cw[0],p.cw[1]-fs*0.45],fs,c[2],null,gOldLabs);
+  const tG = txt2(`${Math.round(p.gaj)} GAJ`,[p.cw[0],p.cw[1]+fs*0.55],fs*0.62,currentTheme==="light"?"#334155":"#D5DEEF",null,gOldLabs);
+  oldPlotTxt.push(tN); oldGajTxt.push(tG);
+  oldPlotSvgItems.push({path,p,txtN:tN,txtG:tG});
 });
 
+{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)]; txt2("12 M MAIN ROAD (40 FT)",W(m),8.5,"#F2C14E",deg(dirAngle(a,b)),gOldLabs); }
+{ const m=[840.1,136.3]; txt2("9 M ROAD (30 FT)",W(m),7,"#9FB0D0",0,gOldLabs); }
+{ const m=[821.5,394.1]; txt2("7.5 M LOOP ROAD (25 FT)",W(m),7,"#F2C14E",0,gOldLabs); }
+LAY.subLines.forEach(l=>{
+  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
+  txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])),gOldLabs);
+});
+LAY.park.forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W(cen(p)),11,"#BDF5D3",null,gOldLabs);});
+LAY.fpark.forEach(p=>{if(areaOf(p)>1500)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])),gOldLabs);});
+
+/* ----- BUILD NEW 2D ELEMENTS ----- */
+let currentDesignKey = "1";
+const DESIGN_NAMES = {
+  "1": "Current",
+  "2": "Optimized Grid",
+  "3": "Pocket Parks",
+  "4": "Ring Road",
+  "5": "Long Blocks"
+};
+
+let newRoadPaths = [];
+let newParkPaths = [];
+let newGreenPaths = [];
+let newTreeDotsPath = null;
+let newPlotSvgItems = [];
+let newPlotTxt = [], newGajTxt = [];
+let newMainLine = null, newSubLines = [];
+
+function renderNewLayout(key){
+  currentDesignKey = key || "1";
+  const d = (window.ALL_LAYOUTS && window.ALL_LAYOUTS[currentDesignKey]) ? window.ALL_LAYOUTS[currentDesignKey] : window.LAY_NEW;
+  window.LAY_NEW = d;
+  const lay = d;
+  lay.plots.forEach(p => { p.cw = W(cen(p.pts)); });
+
+  // Clear previous SVG elements in gNewBase and gNewLabs
+  gNewBase.innerHTML = "";
+  gNewLabs.innerHTML = "";
+  for(let i=L2.length-1; i>=0; i--){
+    if(!L2[i][0].isConnected) L2.splice(i, 1);
+  }
+
+  newRoadPaths = [];
+  newParkPaths = [];
+  newGreenPaths = [];
+  newPlotSvgItems = [];
+  newPlotTxt = [];
+  newGajTxt = [];
+
+  const newParkInfo = {kind:"park", polys:lay.park||[], trees:82};
+  const newFparkInfo = {kind:"fpark", polys:lay.fpark||[], trees:24};
+
+  // Roads
+  (lay.roads||[]).forEach(r=>r.polys.forEach(p=>newRoadPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#334155":"#262D3C"},gNewBase),{kind:"road",r}))));
+  if(lay.mainLine) newMainLine = el2("path",{d:dpath(lay.mainLine,false),fill:"none",stroke:"#F2C14E","stroke-width":1.4,"stroke-dasharray":"9 7","vector-effect":NSS,"pointer-events":"none"},gNewBase);
+  if(lay.subLines) newSubLines = lay.subLines.map(l=>el2("path",{d:dpath(l,false),fill:"none",stroke:"#C9D3E8","stroke-opacity":.55,"stroke-width":1,"stroke-dasharray":"6 7","vector-effect":NSS,"pointer-events":"none"},gNewBase));
+
+  // Parks & Greens
+  (lay.park||[]).forEach(p=>newParkPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gNewBase),newParkInfo)));
+  (lay.fpark||[]).forEach(p=>newParkPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#DCFCE7":"#184B2E",stroke:currentTheme==="light"?"#16A34A":"#4AC782","stroke-width":1.2,"vector-effect":NSS},gNewBase),newFparkInfo)));
+  newTreeDotsPath = el2("path",{d:treeDots(lay.park||[])+treeDots(lay.fpark||[]),fill:currentTheme==="light"?"#15803D":"#2F8F57","pointer-events":"none"},gNewBase);
+  (lay.green||[]).forEach(p=>newGreenPaths.push(pk2(el2("path",{d:dpath(p),fill:currentTheme==="light"?"#D1FAE5":"#214E34"},gNewBase),{kind:"green",pts:p})));
+
+  // Plots
+  const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
+  lay.plots.forEach((p,i)=>{
+    const c=c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
+    const path = pk2(el2("path",{d:dpath(p.pts),fill:c[0],stroke:c[1],"stroke-width":1,"vector-effect":NSS},gNewBase),{kind:"plot",p});
+    const fs=Math.max(4.5,Math.min(p.front,p.depth)*0.27);
+    const displayName = p.com?p.n:(p.n.endsWith(p.face)?p.n:`${p.n}${p.face}`);
+    const tN = txt2(displayName,[p.cw[0],p.cw[1]-fs*0.45],fs,c[2],null,gNewLabs);
+    const tG = txt2(`${Math.round(p.gaj)} GAJ`,[p.cw[0],p.cw[1]+fs*0.55],fs*0.62,currentTheme==="light"?"#334155":"#D5DEEF",null,gNewLabs);
+    newPlotTxt.push(tN); newGajTxt.push(tG);
+    newPlotSvgItems.push({path,p,txtN:tN,txtG:tG});
+  });
+
+  // Road and Park Labels
+  const roadTxtStyle = {"paint-order":"stroke fill", stroke:currentTheme==="light"?"#FFFFFF":"#262D3C", "stroke-width":"3.5"};
+  txt2("12 M MAIN ROAD (40 FT)",W([380.0,141.19]),8.5,"#F2C14E",0,gNewLabs,roadTxtStyle);
+  txt2("9 M ROAD (30 FT)",W([833.0,136.26]),7,"#9FB0D0",0,gNewLabs,roadTxtStyle);
+  if(lay.roads.some(r=>r.name.includes("Loop"))) txt2("7.5 M LOOP ROAD (25 FT)",W([818.2,394.1]),7,"#F2C14E",0,gNewLabs,roadTxtStyle);
+  (lay.subLines||[]).forEach(l=>{
+    const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
+    txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])),gNewLabs,roadTxtStyle);
+  });
+  (lay.park||[]).forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W([605.0,287.5]),12,"#BDF5D3",0,gNewLabs);});
+  (lay.fpark||[]).forEach((p,idx)=>{if(areaOf(p)>1000)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])),gNewLabs);});
+  txt2("CHAKROAD GREEN BELT",W([318.0,282.5]),7.5,"#BDF5D3",-6.0,gNewLabs);
+
+  // Update BrandMeta, Summary Bar, Chips
+  const brand=document.getElementById("brandMeta");
+  const st = lay.stats;
+  const nPlots = st ? st.plots : lay.plots.length;
+  const pPlot = st ? st.plot.toFixed(1) : (lay.plots.reduce((a,b)=>a+b.sqft,0)/SITE*100).toFixed(1);
+  const pRoad = st ? st.road.toFixed(1) : (lay.roads.reduce((a,b)=>a+b.sqft,0)/SITE*100).toFixed(1);
+  const pGreen = st ? (st.park + st.fpark + st.green).toFixed(1) : (100.0 - parseFloat(pPlot) - parseFloat(pRoad)).toFixed(1);
+
+  if(brand) brand.textContent=`MDA Master Plan · ${nPlots} Plots (${DESIGN_NAMES[currentDesignKey]||"New Grid"})`;
+  const sumEl = document.getElementById("sum");
+  if(sumEl) sumEl.innerHTML=`<div class="sum-left"><b>${nPlots} PLOTS</b> · ${pPlot}% PLOTTED · ROADS ${pRoad}% · PARKS ${pGreen}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+
+  const dSel = document.getElementById("designSelect");
+  if(dSel && dSel.value !== currentDesignKey) dSel.value = currentDesignKey;
+
+  updateChipCounts("new2d");
+  if(activeFilter) setFilter(activeFilter);
+  if(typeof apply2 === "function") apply2();
+}
+
+/* ----- COMMON TOP OVERLAYS ----- */
 const boundaryPath2 = el2("path",{d:dpath(POLY),fill:"none",stroke:currentTheme==="light"?"#0F172A":"#F4F7FF","stroke-width":2.6,"vector-effect":NSS,"stroke-linejoin":"round","pointer-events":"none"},top2);
 SIDES.forEach(sd=>pk2(el2("path",{d:dpath(sidePts(sd),false),fill:"none",stroke:"transparent","stroke-width":18,"vector-effect":NSS,"pointer-events":"stroke"},top2),{kind:"side",sd}));
 pk2(el2("path",{d:dpath(POLY.slice(8,J+1),false),fill:"none",stroke:"transparent","stroke-width":18,"vector-effect":NSS,"pointer-events":"stroke"},top2),{kind:"chakside"});
@@ -1154,34 +1455,10 @@ pk2(el2("path",{d:dpath(POLY.slice(8,J+1),false),fill:"none",stroke:"transparent
 if(gateInfo.w) gateInfo.w.forEach(w=>pk2(el2("rect",{x:w[0]-3,y:w[1]-3,width:6,height:6,fill:"#F2C14E"},top2),gateInfo));
 const dimLines2 = DIM2.filter(d=>d.line).map(d=>pk2(el2("path",{d:dpath(d.line,false),fill:"none",stroke:"#F2C14E","stroke-width":1.2,"vector-effect":NSS},top2),{kind:"side",sd:d.sd}));
 
-const L2=[];
-function txt2(str,w,size,color,ang,par,extra){const t=el2("text",Object.assign({x:w[0].toFixed(2),y:w[1].toFixed(2),"font-size":size.toFixed(2),fill:color},extra||{}),par||labs2);t.textContent=str;L2.push([t,w[0],w[1],ang]);return t;}
-const deg=a=>-a*180/Math.PI;
-
 const dimTexts2 = [];
 DIM2.filter(d=>d.text).forEach(d=>{const w=W(d.at);const t=txt2(d.text,w,Math.max(9,d.size*0.2),"#F2C14E",deg(d.ang),labs2);t.style.pointerEvents="auto";pk2(t,{kind:"side",sd:d.sd});dimTexts2.push(t);});
-const plotTxt=[], gajTxt=[];
-PLOTS.forEach((p,i)=>{
-  const c2Set = currentTheme==="light"?C2_LIGHT:C2_DARK;
-  const c=c2Set[p.com?"C":p.prem?"P":p.face]||c2Set.E;
-  const fs=Math.max(4.5,Math.min(p.front,p.depth)*0.27);
-  const tN = txt2(p.com?p.n:`${p.n}${p.face}`,[p.cw[0],p.cw[1]-fs*0.45],fs,c[2],null);
-  const tG = txt2(`${Math.round(p.gaj)} GAJ`,[p.cw[0],p.cw[1]+fs*0.55],fs*0.62,currentTheme==="light"?"#334155":"#D5DEEF",null);
-  plotTxt.push(tN); gajTxt.push(tG);
-  plotSvgItems[i].txtN = tN;
-  plotSvgItems[i].txtG = tG;
-});
 
-{ const l=LAY.mainLine,a=l[3],b=l[Math.min(l.length-1,40)],m=l[Math.min(l.length-1,22)]; txt2("12 M MAIN ROAD (40 FT)",W(m),8.5,"#F2C14E",deg(dirAngle(a,b))); }
-{ const m=[840.1,136.3]; txt2("9 M ROAD (30 FT)",W(m),7,"#9FB0D0",0); }
-{ const m=[821.5,394.1]; txt2("7.5 M LOOP ROAD (25 FT)",W(m),7,"#F2C14E",0); }
-LAY.subLines.forEach(l=>{
-  const m=[(l[0][0]+l[1][0])/2,(l[0][1]+l[1][1])/2];
-  txt2("9 M ROAD (30 FT)",W(m),6.5,"#9FB0D0",deg(dirAngle(l[0],l[1])));
-});
-LAY.park.forEach(p=>{if(areaOf(p)>5000)txt2("CENTRAL PARK",W(cen(p)),11,"#BDF5D3",null);});
-LAY.fpark.forEach(p=>{if(areaOf(p)>1500)txt2("FRONT GARDEN",W(cen(p)),7,"#BDF5D3",deg(dirAngle(POLY[J],POLY[0])));});
-{ const r=B.eastRoad,m=[(r[0][0]+r[1][0]+r[2][0]+r[3][0])/4,(r[0][1]+r[1][1]+r[2][1]+r[3][1])/4]; txt2("22'-6\" ROAD · ENTRY / EXIT",W(m),7,"#F2C14E",deg(dirAngle(r[0],r[1]))); }
+{ const r=B.eastRoad,m=[(r[0][0]+r[1][0]+r[2][0]+r[3][0])/4,(r[0][1]+r[1][1]+r[2][1]+r[3][1])/4]; txt2(`22'-6" ROAD · ENTRY / EXIT`,W(m),7,"#F2C14E",deg(dirAngle(r[0],r[1]))); }
 { const m=POLY[Math.floor((8+J)/2)+14],w=W(m); txt2("CHAKROAD · NO ACCESS",[w[0]+NW[0]*14,w[1]+NW[1]*14],7,"#B9A77C",deg(dirAngle(POLY[40],POLY[50]))); }
 if(gateInfo.mid) txt2("MAIN GATE",[gateInfo.mid[0]+EW[0]*14,gateInfo.mid[1]+EW[1]*14],7,"#F2C14E",null);
 
@@ -1235,21 +1512,38 @@ function applyTheme(t){
     item.edge.material.color.setHex(c.edge);
   });
 
-  // 2D SVG elements
+  // 2D SVG common elements
   sitePath2.setAttribute("fill", isLight?"#FFFFFF":"#111C33");
   eastRoad2.setAttribute("fill", isLight?"#94A3B8":"#283040");
   chakPaths2.forEach(p=>p.setAttribute("fill", isLight?"#CBD5E1":"#352F22"));
-  roadPaths2.forEach(p=>p.setAttribute("fill", isLight?"#334155":"#262D3C"));
   boundaryPath2.setAttribute("stroke", isLight?"#0F172A":"#F4F7FF");
+
+  // Old 2D elements
+  roadPaths2.forEach(p=>p.setAttribute("fill", isLight?"#334155":"#262D3C"));
   parkPaths2.forEach(p=>{
     p.setAttribute("fill", isLight?"#DCFCE7":"#184B2E");
     p.setAttribute("stroke", isLight?"#16A34A":"#4AC782");
   });
   treeDotsPath2.setAttribute("fill", isLight?"#15803D":"#2F8F57");
   greenPaths2.forEach(p=>p.setAttribute("fill", isLight?"#D1FAE5":"#214E34"));
-
   const colSet2d = isLight?C2_LIGHT:C2_DARK;
-  plotSvgItems.forEach(item=>{
+  oldPlotSvgItems.forEach(item=>{
+    const c=colSet2d[item.p.com?"C":item.p.prem?"P":item.p.face]||colSet2d.E;
+    item.path.setAttribute("fill", c[0]);
+    item.path.setAttribute("stroke", c[1]);
+    if(item.txtN) item.txtN.setAttribute("fill", c[2]);
+    if(item.txtG) item.txtG.setAttribute("fill", isLight?"#334155":"#D5DEEF");
+  });
+
+  // New 2D elements
+  newRoadPaths.forEach(p=>p.setAttribute("fill", isLight?"#334155":"#262D3C"));
+  newParkPaths.forEach(p=>{
+    p.setAttribute("fill", isLight?"#DCFCE7":"#184B2E");
+    p.setAttribute("stroke", isLight?"#16A34A":"#4AC782");
+  });
+  if(newTreeDotsPath) newTreeDotsPath.setAttribute("fill", isLight?"#15803D":"#2F8F57");
+  newGreenPaths.forEach(p=>p.setAttribute("fill", isLight?"#D1FAE5":"#214E34"));
+  newPlotSvgItems.forEach(item=>{
     const c=colSet2d[item.p.com?"C":item.p.prem?"P":item.p.face]||colSet2d.E;
     item.path.setAttribute("fill", c[0]);
     item.path.setAttribute("stroke", c[1]);
@@ -1283,7 +1577,10 @@ function apply2(){
   const c=Math.cos(th2)*s2,sn=Math.sin(th2)*s2;
   world2.setAttribute("transform",`matrix(${c} ${sn} ${-sn} ${c} ${tx2} ${ty2})`);
   const showN=s2*avgFs>=6.5, showG=s2*avgFs*0.62>=6.5;
-  plotTxt.forEach(t=>t.style.display=showN?"":"none"); gajTxt.forEach(t=>t.style.display=showG?"":"none");
+  const curPlotTxt = (view==="new2d") ? newPlotTxt : oldPlotTxt;
+  const curGajTxt = (view==="new2d") ? newGajTxt : oldGajTxt;
+  curPlotTxt.forEach(t=>t.style.display=showN?"":"none");
+  curGajTxt.forEach(t=>t.style.display=showG?"":"none");
   if(lastTh!==th2){lastTh=th2; const td=th2*180/Math.PI;
     L2.forEach(([t,x,y,a])=>{let r=a===null?-td:a; if(a!==null){let sa=((a+td)%360+540)%360-180; if(sa>90||sa<-90) r=a+180;} t.setAttribute("transform",`rotate(${r.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)})`);});}
   updateScaleBar();
@@ -1447,7 +1744,7 @@ const end2=e=>{
 
   const t=document.elementFromPoint(e.clientX,e.clientY);
   const h=t&&t.closest?t.closest("[data-k]"):null;
-  if(h) select(P2[+h.getAttribute("data-k")]);
+  if(h) select(h._info || P2[+h.getAttribute("data-k")]);
   else closeCard();
 };
 
@@ -1467,14 +1764,85 @@ if(btnNorth2) btnNorth2.onclick=e=>{
   animateRotate2(baseTh(),320);
 };
 
-function setTab(t){
-  view=t; document.body.classList.toggle("m2d",t==="2d"); document.body.classList.toggle("m3d",t==="3d");
-  document.getElementById("tab2").setAttribute("aria-pressed",t==="2d"); document.getElementById("tab3").setAttribute("aria-pressed",t==="3d");
-  if(t==="3d"){resize();} else {apply2();}
+function updateChipCounts(t){
+  const isNew = (t === "new2d");
+  const pList = isNew ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+  const cE = document.getElementById("cntE"); if(cE) cE.textContent = pList.filter(p=>p.face==="E"&&!p.com).length;
+  const cW = document.getElementById("cntW"); if(cW) cW.textContent = pList.filter(p=>p.face==="W"&&!p.com&&!p.prem).length;
+  const cN = document.getElementById("cntN"); if(cN) cN.textContent = pList.filter(p=>p.face==="N").length;
+  const cS = document.getElementById("cntS"); if(cS) cS.textContent = pList.filter(p=>p.face==="S").length;
+  const cP = document.getElementById("cntP"); if(cP) cP.textContent = pList.filter(p=>p.prem).length;
+  const cC = document.getElementById("cntC"); if(cC) cC.textContent = pList.filter(p=>p.com).length;
+  const chipS = document.querySelector('.chip[data-filter="S"]');
+  if(chipS) chipS.style.display = isNew ? "" : "none";
 }
+
+function setTab(t){
+  view=t;
+  const is2d = (t==="2d" || t==="new2d");
+  document.body.classList.toggle("m2d", is2d);
+  document.body.classList.toggle("m3d", t==="3d");
+  const tNew = document.getElementById("tabNew2"); if(tNew) tNew.setAttribute("aria-pressed", t==="new2d");
+  const t2 = document.getElementById("tab2"); if(t2) t2.setAttribute("aria-pressed", t==="2d");
+  const t3 = document.getElementById("tab3"); if(t3) t3.setAttribute("aria-pressed", t==="3d");
+
+  if(t==="new2d"){
+    gNewBase.style.display="";
+    gNewLabs.style.display="";
+    gOldBase.style.display="none";
+    gOldLabs.style.display="none";
+    const brand=document.getElementById("brandMeta");
+    const st = window.LAY_NEW ? window.LAY_NEW.stats : null;
+    const nPlots = st ? st.plots : (window.LAY_NEW ? window.LAY_NEW.plots.length : 130);
+    const pPlot = st ? st.plot.toFixed(1) : "55.7";
+    const pRoad = st ? st.road.toFixed(1) : "29.6";
+    const pGreen = st ? (st.park + st.fpark + st.green).toFixed(1) : "14.7";
+    const dName = (typeof DESIGN_NAMES!=="undefined" && DESIGN_NAMES[currentDesignKey]) ? DESIGN_NAMES[currentDesignKey] : "New Grid";
+    if(brand) brand.textContent=`MDA Master Plan · ${nPlots} Plots (${dName})`;
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>${nPlots} PLOTS</b> · ${pPlot}% PLOTTED · ROADS ${pRoad}% · PARKS ${pGreen}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("new2d");
+    if(activeFilter) setFilter(activeFilter);
+    apply2();
+  } else if(t==="2d"){
+    gNewBase.style.display="none";
+    gNewLabs.style.display="none";
+    gOldBase.style.display="";
+    gOldLabs.style.display="";
+    const brand=document.getElementById("brandMeta");
+    if(brand) brand.textContent="MDA Master Plan · 129 Plots (Original)";
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>129 PLOTS</b> · ${S.plot.toFixed(1)}% PLOTTED · ROADS ${S.road.toFixed(1)}% · PARKS ${(S.park+S.fpark+S.green).toFixed(1)}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("2d");
+    if(activeFilter) setFilter(activeFilter);
+    apply2();
+  } else if(t==="3d"){
+    gNewBase.style.display="none";
+    gNewLabs.style.display="none";
+    gOldBase.style.display="none";
+    gOldLabs.style.display="none";
+    const brand=document.getElementById("brandMeta");
+    if(brand) brand.textContent="MDA Master Plan · 129 Plots (Original)";
+    document.getElementById("sum").innerHTML=`<div class="sum-left"><b>129 PLOTS</b> · ${S.plot.toFixed(1)}% PLOTTED · ROADS ${S.road.toFixed(1)}% · PARKS ${(S.park+S.fpark+S.green).toFixed(1)}%<small>Tap for detailed land-use & MDA audit</small></div><div class="sum-right">Summary →</div>`;
+    updateChipCounts("3d");
+    if(activeFilter) setFilter(activeFilter);
+    resize();
+  }
+}
+
+const bNew2 = document.getElementById("tabNew2"); if(bNew2) bNew2.onclick=()=>setTab("new2d");
 document.getElementById("tab2").onclick=()=>setTab("2d");
 document.getElementById("tab3").onclick=()=>setTab("3d");
-fit2d(false); setTab("2d");
+renderNewLayout("1");
+fit2d(false);
+setTab("new2d");
+
+const dSel = document.getElementById("designSelect");
+if(dSel){
+  dSel.addEventListener("change", function(){
+    setTab("new2d");
+    renderNewLayout(this.value);
+    closeCard();
+  });
+}
 
 /* ---------- Labels orientation & Animation Loop ---------- */
 let lastAz=null;
@@ -1503,7 +1871,8 @@ function checkHash(){
   const params=new URLSearchParams(h.includes("=")?h:"plot="+h);
   const pNo=params.get("plot");
   if(pNo){
-    const p=PLOTS.find(x=>x.n.toUpperCase()===pNo.toUpperCase());
+    const curPlots = (view==="new2d") ? (window.LAY_NEW?window.LAY_NEW.plots:PLOTS) : PLOTS;
+    const p=curPlots.find(x=>x.n.toUpperCase()===pNo.toUpperCase());
     if(p){ select({kind:"plot",p}); flyTo(p.cw,140); }
   }
 }
