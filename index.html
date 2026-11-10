@@ -363,12 +363,12 @@ dd{margin:0;text-align:right;font:600 13.5px var(--mono);color:var(--ink);font-v
   <div class="top-row-2">
     <div class="design-wrap">
       <select id="designSelect" class="design-select" aria-label="Layout design">
-        <option value="6" selected>6 · Ultra-Optimized — 60.3% plotted (★ Target Met)</option>
         <option value="1">1 · Current — 55.7% plotted</option>
         <option value="2">2 · Optimized Grid — 52.7% plotted</option>
         <option value="3">3 · Pocket Parks — 54.7% plotted</option>
         <option value="4">4 · Ring Road — 49.4% plotted</option>
         <option value="5">5 · Long Blocks — 55.5% plotted</option>
+        <option value="6" selected>6 · Ultra-Optimized — 60.3% plotted (★ Target Met)</option>
       </select>
     </div>
 
@@ -1372,6 +1372,7 @@ let newPlotTxt = [], newGajTxt = [];
 let newMainLine = null, newSubLines = [];
 
 function renderNewLayout(key){
+  window.renderNewLayout = renderNewLayout;
   currentDesignKey = key || "1";
   const d = (window.ALL_LAYOUTS && window.ALL_LAYOUTS[currentDesignKey]) ? window.ALL_LAYOUTS[currentDesignKey] : window.LAY_NEW;
   window.LAY_NEW = d;
@@ -1853,7 +1854,7 @@ if(dSel){
     const opt = document.createElement("option");
     opt.value = "6";
     opt.textContent = "6 · Ultra-Optimized — 60.3% plotted (★ Target Met)";
-    dSel.insertBefore(opt, dSel.firstChild);
+    dSel.appendChild(opt);
   }
   dSel.value = initialDesign;
   dSel.addEventListener("change", function(){
